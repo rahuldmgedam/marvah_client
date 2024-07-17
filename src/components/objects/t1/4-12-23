@@ -1,0 +1,71 @@
+const onSaveSPEED = async () =>{
+
+    {
+    
+    let query = "INSERT INTO `rwt_variation` (`id`, `date`, `product`, `open_stk`, `receipt`, `total_stk`, `asale`, `bal_stk`, `actual_bal_stk`, `variation`, `t_variation`) VALUES (NULL, '"+datecache+"', 'SPEED', '"+document.getElementById("open2").value+"', '"+document.getElementById("rec2").value+"', '"+document.getElementById("tstk2").value+"', '"+document.getElementById("asale2").value+"', '"+document.getElementById("balstk2").value+"', '"+document.getElementById("variation2").value+"', '"+document.getElementById("variation2").value+"', '"+document.getElementById("tvariation2").value+"');";
+    
+    /* alert(query); */
+    const url = dbpath1 + 'getDynamic.php';
+    let fData = new FormData();
+    fData.append('query', query);
+      
+   
+        const response = await axios.post(url, fData);
+        
+        if (response && response.data) {
+            if (Array.isArray(response.data.phpresult) && response.data.phpresult.length > 0) {
+                // Data is available
+                let query="";
+                   
+                const url = dbpath1+'delTank.php';
+                let fData = new FormData();
+                fData.append('query', query);
+                
+                axios.post(url, fData)
+                    .then(response => {/* alert(response.data);  *//*  window.location.reload(); */})
+                    .catch(error => {
+                    console.log(error.toJSON());
+             });
+               
+  
+            } 
+        }
+    }
+   
+    } 
+
+    const onSaveHSD = async () =>{
+
+        {
+        
+        let query = "INSERT INTO `rwt_variation` (`id`, `date`, `product`, `open_stk`, `receipt`, `total_stk`, `asale`, `bal_stk`, `actual_bal_stk`, `variation`, `t_variation`) VALUES (NULL, '"+datecache+"', 'SPEED', '"+document.getElementById("open3").value+"', '"+document.getElementById("rec3").value+"', '"+document.getElementById("tstk3").value+"', '"+document.getElementById("asale3").value+"', '"+document.getElementById("balstk3").value+"', '"+document.getElementById("variation3").value+"', '"+document.getElementById("variation3").value+"', '"+document.getElementById("tvariation3").value+"');";
+        
+        /* alert(query); */
+        const url = dbpath1 + 'getDynamic.php';
+        let fData = new FormData();
+        fData.append('query', query);
+          
+       
+            const response = await axios.post(url, fData);
+            
+            if (response && response.data) {
+                if (Array.isArray(response.data.phpresult) && response.data.phpresult.length > 0) {
+                    // Data is available
+                    let query="";
+                       
+                    const url = dbpath1+'delTank.php';
+                    let fData = new FormData();
+                    fData.append('query', query);
+                    
+                    axios.post(url, fData)
+                        .then(response => {/* alert(response.data);  *//*  window.location.reload(); */})
+                        .catch(error => {
+                        console.log(error.toJSON());
+                 });
+                   
+      
+                } 
+            }
+        }
+       
+        } 

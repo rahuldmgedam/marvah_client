@@ -1,0 +1,27 @@
+{
+  "message": "See all machine",
+  "success": true,
+  "machine": [
+    {
+      "_id": "66852d3cb99d5a307abd72eb",
+      "machineAndSerial": "GILBARCO-93260208",
+      "mpdName": "DIESEL POINT",
+      "nozzles": 6,
+      "product": "MS-1/MS-2(SPEED)/HSD"
+    },
+    {
+      "_id": "6687e53bbd3a223528bf4c43",
+      "machineAndSerial": "TOKHIEM-N1551108",
+      "mpdName": "MIDDLE MPD",
+      "nozzles": 4,
+      "product": "MS-1/MS-2/SPEED"
+    },
+    {
+      "_id": "6687e560bd3a223528bf4c46",
+      "machineAndSerial": "TOKHIEM-M1061049",
+      "mpdName": "AUTO MPD",
+      "nozzles": 4,
+      "product": "MS-1/MS-2/SPEED"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+
+    _id: 
+  
+      '6688e84ea2190c08536e713a',
+  
+    machineNo: '1',
+  
+    make: 'GILBARCO',
+  
+    serialNo: '93260208',
+  
+    connectedTank: 3,
+  
+    product: 'MS-1/MS-2/HSD',
+  
+    nozzlesInMPD: 6,
+  
+    sides: [ 1, 2 ],
+  
+    nozzleLayout: Array(6) [
+  
+      {
+  
+        nozzlename: 'A1',
+  
+        fuletype: 'HSD'
+  
+      },
+  
+      {
+  
+        nozzlename: 'A2',
+  
+        fuletype: 'MS-1'
+  
+      },
+  
+      {
+  
+        nozzlename: 'A3',
+  
+        fuletype: 'MS-2 (speed)'
+  
+      },
+  
+      {
+  
+        nozzlename: 'B1',
+  
+        fuletype: 'HSD'
+  
+      },
+  
+      {
+  
+        nozzlename: 'B2',
+  
+        fuletype: 'MS-1'
+  
+      },
+  
+      {
+  
+        nozzlename: 'B3',
+  
+        fuletype: 'MS-2 (speed)'
+  
+      }
+  
+    ],
+  
+    createdAt: 
+  
+      '2024-07-06T06:46:38.500Z',
+  
+    updatedAt: 
+  
+      '2024-07-06T11:40:08.651Z',
+  
+    __v: 0
+  
+  }
