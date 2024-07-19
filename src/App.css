@@ -13,6 +13,15 @@
   }
 }
 
+/* //rahuls css from 19th july 24 */
+.client-input input {
+  border: 5px solid blue;
+}
+
+.client-input select {
+  border: 5px solid blue;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

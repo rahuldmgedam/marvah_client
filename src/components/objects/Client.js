@@ -245,10 +245,10 @@ export default function Client({ dbpath1 }) {
   return (
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-        <h2 className="mt-3 bg-blue-400 text-white p-3 text-2xl uppercase text-center">
+        <h2 className="mt-3 mb-3 bg-blue-400 text-white p-3 text-2xl uppercase text-center">
           Handloan Client
         </h2>
-        <span style={{ fontSize: "22px" }}>
+        <span className="mt-5 text-violet-700" style={{ fontSize: "22px" }}>
           {" "}
           Date :{todayDate.getDate()}/{todayDate.getMonth()}/{todayDate.getFullYear()}
         </span>
@@ -267,7 +267,7 @@ export default function Client({ dbpath1 }) {
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr className="client-input">
                 <td scope="row">
                   <input
                     type="text"
@@ -277,7 +277,7 @@ export default function Client({ dbpath1 }) {
                   />
                 </td>
                 <td>
-                  <select onChange={(e) => setReturnRecieve(e.target.value)} value={returnrecieve} class="form-select  editableInput bigFontWeight" >
+                  <select className="border-blue-500 bordder-5" onChange={(e) => setReturnRecieve(e.target.value)} value={returnrecieve} class="form-select  editableInput bigFontWeight" >
                     <option value="">Select </option>
                     <option value="Return">Return</option>
                     <option value="Recieved">Recieved</option>
@@ -286,7 +286,7 @@ export default function Client({ dbpath1 }) {
                 <td>
                   <input
                     type="number"
-                    class="form-control editableInput bigFontWeight"
+                    class=" text-black form-control editableInput bigFontWeight bg-blue-300"
                     placeholder="Amount"
                     onChange={(e) => setAmount(e.target.value)}
                   />
