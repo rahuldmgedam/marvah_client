@@ -1,6 +1,4 @@
-
-
-// my old code  
+// my old code
 // import React from "react";
 // import "../css/Tank.css";
 // import axios from "axios";
@@ -350,18 +348,13 @@
 //   );
 // }
 
-
 // 19th july
-
 
 import React, { useState, useEffect } from "react";
 import "../css/Tank.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-import Sidebar from "../Sidebar";
-import Navbar from "../Navbar";
-import Client from "./Client";
+
 
 export default function Handloans({ dbpath1 }) {
   const [handloan, setHandloan] = useState([]);
@@ -397,33 +390,46 @@ export default function Handloans({ dbpath1 }) {
 
   // Filter transactions to only include those from today
   const todaysTransactions = handloan
-    .map(client => ({
+    .map((client) => ({
       ...client,
       transactions: client.transactions.filter(
-        transaction => transaction.date.split("T")[0] === todayDate
-      )
+        (transaction) => transaction.date.split("T")[0] === todayDate
+      ),
     }))
-    .filter(client => client.transactions.length > 0); // Only include clients with transactions today
+    .filter((client) => client.transactions.length > 0); // Only include clients with transactions today
 
   return (
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-        <h2 className="mt-3 mb-2 bg-blue-400 text-white p-2 text-2xl uppercase text-center">
+        <h2 className="mt-3 mb-4 bg-blue-400 text-white p-2 text-2xl uppercase text-center">
           Handloans/Advances
         </h2>
-        <div className="flex justify-between">
+        <div className="flex justify-between mb-4 mt-3">
           <span style={{ fontSize: "22px" }}> Date : {todayDate}</span>
-          <Link className="bg-violet-700 px-2 py-1 rounded-md text-white" to={"/add_client"}>
-            Add Client
-          </Link>
-        </div>
 
-        <h4>
-          <span style={{ marginLeft: "800px", marginTop: "10px" }}>
-            Balance :
+          <span className=" text-violet-700 font-bold">
+            Balance : {balance}
           </span>
-          {balance}
-        </h4>
+          <div>
+            <span>
+              <Link
+                className="bg-violet-700 px-2 mr-3 py-1 rounded-md text-white"
+                to={"/add_client"}
+              > 
+                Add Client
+              </Link>
+            </span>
+            <span>
+              <Link
+                className=" px-2 bg-yellow-900 py-1 rounded-md text-white"
+
+              >
+                History
+              </Link>
+            </span>
+          </div>
+        </div>
+ 
         <table className="table">
           <thead>
             <tr className="table-secondary">
@@ -435,11 +441,11 @@ export default function Handloans({ dbpath1 }) {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr className="handloan-tr">
               <td>
                 <select
                   className="form-select editableInput bigFontWeight"
-                  value={partyname}
+                  value={partyname} 
                   aria-label="Default select example"
                   onChange={(e) => setPartyname(e.target.value)}
                 >
@@ -466,7 +472,7 @@ export default function Handloans({ dbpath1 }) {
               <td>
                 <input
                   type="text"
-                  className="form-control editableInput bigFontWeight"
+                  className="form-control editableInput bigFontWeight bg-blue-300"
                   placeholder="Amount"
                   onChange={(e) => setAmount(e.target.value)}
                 />
@@ -488,7 +494,7 @@ export default function Handloans({ dbpath1 }) {
           </tbody>
         </table>
         <br />
-        Todays Transactions: <br />
+       <h2 className="bg-yellow-400 text-center p-2 font-bold">Todays Transactions  </h2> <br />
         <table className="table">
           <thead>
             <tr className="table-secondary">
@@ -499,7 +505,7 @@ export default function Handloans({ dbpath1 }) {
             </tr>
           </thead>
           <tbody>
-            {todaysTransactions.map(client =>
+            {todaysTransactions.map((client) =>
               client.transactions.map((transaction, index) => (
                 <tr className="hovereffect" key={index}>
                   <td>{client.party_name}</td>
@@ -512,13 +518,15 @@ export default function Handloans({ dbpath1 }) {
           </tbody>
         </table>
         <br />
-        Client Transaction History: <br />
-        <span>Party Name : {partyname}</span> <br />
-        <table className="table">
+        <h2 className="bg-yellow-400 text-center px-1 py-2 font-bold">Client Transaction History  </h2> <br />
+
+       
+        <span className="bg-red-100 px-2 py-1">Party Name : {partyname}</span> <br />
+                <table className="table mt-3">
           <thead>
             <tr className="table-secondary">
               <th className="tablebg">Date</th>
-              <th className="tablebg">Particulars</th>
+              <th className="tablebg">Voucher-Type</th>
               <th className="tablebg">Amount Given</th>
               <th className="tablebg">Amount Received</th>
               <th className="tablebg">Balance</th>
@@ -527,8 +535,8 @@ export default function Handloans({ dbpath1 }) {
           </thead>
           <tbody>
             {handloan
-              .find(client => client.party_name === partyname)?.transactions
-              .map((transaction, index) => (
+              .find((client) => client.party_name === partyname)
+              ?.transactions.map((transaction, index) => (
                 <tr className="hovereffect" key={index}>
                   <td>{transaction.date.split("T")[0]}</td>
                   <td>{transaction.particular}</td>
@@ -544,16 +552,6 @@ export default function Handloans({ dbpath1 }) {
     </>
   );
 }
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState, useEffect } from "react";
 // import "../css/Tank.css";
@@ -612,7 +610,6 @@ export default function Handloans({ dbpath1 }) {
 //     );
 //   };
 
-
 //   return (
 //     <>
 //       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
@@ -629,6 +626,7 @@ export default function Handloans({ dbpath1 }) {
 //             {" "}
 //             Date : {new Date().toLocaleDateString()}
 //           </span>
+
 //           <span className=" text-violet-700 font-bold">
 //             Balance : {balance}
 //           </span>

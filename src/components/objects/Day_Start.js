@@ -141,7 +141,7 @@ export default function Tankd({ dbpath1, setDate }) {
     // Calculate the difference in milliseconds and convert to a number with 2 decimal places
     const differenceMS = amsToday - amsLast;
     setDifferenceMs(differenceMS);
-  }, []);
+  }, [amsToday,amsLast]);
 
   // Determine the border color based on the difference
   const borderColorMs = differenceMs > 0 ? "green" : "red";
@@ -151,7 +151,7 @@ export default function Tankd({ dbpath1, setDate }) {
     // Calculate the difference in milliseconds and convert to a number with 2 decimal places
     const differenceSpeed = bspeedToday - bspeedLast;
     setDifferenceSpeed(differenceSpeed);
-  }, []);
+  }, [bspeedToday,bspeedLast]);
 
   // Determine the border color based on the difference
   const borderColorSpeed = differenceSpeed > 0 ? "green" : "red";
@@ -161,7 +161,7 @@ export default function Tankd({ dbpath1, setDate }) {
     // Calculate the difference in milliseconds and convert to a number with 2 decimal places
     const differenceHsd = hsdToday - hsdLast;
     setDifferenceHsd(differenceHsd);
-  }, []);
+  }, [hsdToday,hsdLast]);
 
   // Determine the border color based on the difference
   const borderColorHsd = differenceHsd > 0 ? "green" : "red";
@@ -203,7 +203,7 @@ export default function Tankd({ dbpath1, setDate }) {
 
             <div className="text-2xl mt-4">
               <button className=" px-4 cursor-none rounded-md text-white py-2 text-2xl uppercase bg-violet-700 border-b-4">
-                rrRate
+                Rate
               </button>
             </div>
 

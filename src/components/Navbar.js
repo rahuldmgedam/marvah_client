@@ -14,15 +14,11 @@ export default function Navbar() {
                 </button>
             </div>
             <div>
-            <div class="btn-group">
-                        <button class="btn dropdown-to  navDrop1 btn-secondary  " type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Advances
-                        </button>
-                        <ul class="dropdown-menu navDrop1List">
-                            <li><Link class="dropdown-item" to="/Advances">Bank Income</Link></li> 
-                            <li><Link class="dropdown-item" to="/Handloans">Handloans</Link></li>
-                        </ul>
-                    </div>
+            <div>
+                    <button class="btn navDrop1 btn-secondary" type="button" >
+                        <Link class="dropdown-item" to="/handloans">Handloans</Link>
+                    </button>
+                </div>
             </div>
             <div>
                     <div class="btn-group">

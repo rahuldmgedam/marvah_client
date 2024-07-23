@@ -248,7 +248,7 @@ export default function Client({ dbpath1 }) {
         <h2 className="mt-3 mb-3 bg-blue-400 text-white p-3 text-2xl uppercase text-center">
           Handloan Client
         </h2>
-        <span className="mt-5 text-violet-700" style={{ fontSize: "22px" }}>
+        <span className="mt-5" style={{ fontSize: "22px" }}>
           {" "}
           Date :{todayDate.getDate()}/{todayDate.getMonth()}/{todayDate.getFullYear()}
         </span>

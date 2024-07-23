@@ -84,6 +84,7 @@ import { Toaster } from "react-hot-toast";
 import MachineReadings from "./components/objects/MachineReadings";
 import ReadingComponent from "./components/objects/ReadingComponent";
 import NozzleProductWise from "./components/objects/NozzleProductWise";
+import Footer from "./components/Footer";
 
 function App() {
 
@@ -1581,6 +1582,7 @@ function App() {
           }
         />
       </Routes>
+      <Footer/>
     </Router>
   );
 }
