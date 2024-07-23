@@ -371,9 +371,10 @@ export default function Handloans({ dbpath1 }) {
 
   const fetchHandloan = () => {
     axios
-      .get("http://localhost:4000/handloan/")
+      .get("http://localhost:4000/handloan")
       .then((res) => {
         setHandloan(res.data);
+        console.log(res.data);
       })
       .catch((error) => {
         console.log(error.message);
@@ -387,18 +388,7 @@ export default function Handloans({ dbpath1 }) {
   };
 
   const todayDate = getTodayDate();
-
-  // Filter transactions to only include those from today
-  const todaysTransactions = handloan
-    .map((client) => ({
-      ...client,
-      transactions: client.transactions.filter(
-        (transaction) => transaction.date.split("T")[0] === todayDate
-      ),
-    }))
-    .filter((client) => client.transactions.length > 0); // Only include clients with transactions today
-
-  return (
+(
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
         <h2 className="mt-3 mb-4 bg-blue-400 text-white p-2 text-2xl uppercase text-center">
@@ -447,14 +437,14 @@ export default function Handloans({ dbpath1 }) {
                   className="form-select editableInput bigFontWeight"
                   value={partyname} 
                   aria-label="Default select example"
-                  onChange={(e) => setPartyname(e.target.value)}
+                  // onChange={(e) => setPartyname(e.target.value)}
                 >
                   <option selected>- Party Name -</option>
-                  {handloan.map((rest) => (
+                  {/* {handloan.map((rest) => (
                     <option value={rest.party_name} key={rest._id}>
                       {rest.party_name}
                     </option>
-                  ))}
+                  ))} */}
                 </select>
               </td>
               <td>
@@ -462,7 +452,7 @@ export default function Handloans({ dbpath1 }) {
                   className="form-select editableInput bigFontWeight"
                   aria-label="Default select example"
                   value={particular}
-                  onChange={(e) => setParticular(e.target.value)}
+                  // onChange={(e) => setParticular(e.target.value)}
                 >
                   <option selected>- Voucher Type -</option>
                   <option value="Given">Given / Out</option>
@@ -474,7 +464,7 @@ export default function Handloans({ dbpath1 }) {
                   type="text"
                   className="form-control editableInput bigFontWeight bg-blue-300"
                   placeholder="Amount"
-                  onChange={(e) => setAmount(e.target.value)}
+                  // onChange={(e) => setAmount(e.target.value)}
                 />
               </td>
               <td>
@@ -482,7 +472,7 @@ export default function Handloans({ dbpath1 }) {
                   type="text"
                   className="form-control editableInput bigFontWeight"
                   placeholder="Narration"
-                  onChange={(e) => setNarration(e.target.value)}
+                  // onChange={(e) => setNarration(e.target.value)}
                 />
               </td>
               <td>
@@ -505,7 +495,7 @@ export default function Handloans({ dbpath1 }) {
             </tr>
           </thead>
           <tbody>
-            {todaysTransactions.map((client) =>
+            {/* {todaysTransactions.map((client) =>
               client.transactions.map((transaction, index) => (
                 <tr className="hovereffect" key={index}>
                   <td>{client.party_name}</td>
@@ -514,7 +504,7 @@ export default function Handloans({ dbpath1 }) {
                   <td>{transaction.balance}</td>
                 </tr>
               ))
-            )}
+            )} */}
           </tbody>
         </table>
         <br />
@@ -534,7 +524,7 @@ export default function Handloans({ dbpath1 }) {
             </tr>
           </thead>
           <tbody>
-            {handloan
+            {/* {handloan
               .find((client) => client.party_name === partyname)
               ?.transactions.map((transaction, index) => (
                 <tr className="hovereffect" key={index}>
@@ -545,7 +535,7 @@ export default function Handloans({ dbpath1 }) {
                   <td>{transaction.balance}</td>
                   <td>{transaction.narration}</td>
                 </tr>
-              ))}
+              ))} */}
           </tbody>
         </table>
       </div>
