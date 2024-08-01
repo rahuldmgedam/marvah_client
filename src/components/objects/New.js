@@ -36,12 +36,12 @@ const New = () => {
   };
 
   const handleEditMachineChange = (e) => {
-    const {name,value} = e.target;
-    console.log("lay name",name,"lay value:",value)
-    setEditMachine({ ...editMachine, [name]:value });
-     console.log("newww",editMachine);
-  console.log("editMachine.nozzleLayout.nozzlename",editMachine.nozzleLayout[0].nozzlename)
-    };
+    const { name, value } = e.target;
+    console.log("lay name", name, "lay value:", value)
+    setEditMachine({ ...editMachine, [name]: value });
+    console.log("newww", editMachine);
+    console.log("editMachine.nozzleLayout.nozzlename", editMachine.nozzleLayout[0].nozzlename)
+  };
   const handleEditMachineSubmit = () => {
     //console.log("edir", editTank);
     axios
@@ -53,8 +53,8 @@ const New = () => {
         console.log("res machine update", res.data);
 
         setMachineOpen(false);
-        toast.success(`machine  data updated`);
-        console.log("toast res.data",res.data.data.machineNo)
+        toast.success("machine  data updated");
+        console.log("toast res.data", res.data.data.machineNo)
         fetchmachine();
       })
       .catch((error) => {
@@ -62,10 +62,10 @@ const New = () => {
       });
   };
 
-  const {nozzleLayout} = editMachine
-  useEffect(()=>{
+  const { nozzleLayout } = editMachine
+  useEffect(() => {
     setNozzleData(nozzleLayout)
-  },[]);
+  }, []);
 
   const handleEditNozzleChange = (index, e) => {
     const { name, value } = e.target;
@@ -211,8 +211,8 @@ const New = () => {
                             name="nozzlename"
                             value={nozzleLayout.nozzlename}
                             onChange={(e) => handleEditNozzleChange(index, e)}
-                           
-                         
+
+
                             class="px-4 py-3 bg-gray-100  text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
                           />
                         </div>
@@ -220,7 +220,7 @@ const New = () => {
                         <div>
                           <input
                             type="text"
-                          
+
                             name="fuletype"
                             value={nozzleLayout.fuletype}
                             onChange={(e) => handleEditNozzleChange(index, e)}
@@ -255,58 +255,58 @@ const New = () => {
       )}
       {/* modal end */}
 
-      <div className="mt-[73px]">
+      <div className="mt-4">
         {/* here i  am mapping API's machine Array */}
         {machine.map((machine, index) => {
           return (
             <div className=" mb-11 ">
               <div className="flex">
                 <div className="w-[90%] m-auto ">
-                  <div className="flex font-bold border-2 ">
-                    <div className="w-[40%] bg-slate-100 flex items-center justify-center py-2 ">
+                  <div className="flex font-bold border-2  ">
+                    <div className="w-[40%] bg-slate-800 text-white flex items-center justify-center py-2 ">
                       MACHINE DESCRIPTION
                     </div>
-                    <div className="w-[20%] bg-slate-100 flex items-center justify-center border-r-2 border-l-2 py-2 ">
+                    <div className="w-[20%] bg-slate-800 text-white flex items-center justify-center border-r-2 border-l-2 py-2 ">
                       SIDES
                     </div>
-                    <div className="w-[40%] bg-slate-100 flex items-center justify-center py-2 ">
+                    <div className="w-[40%] bg-slate-800 text-white flex items-center justify-center py-2 ">
                       NOZZLE LAYOUT
                     </div>
                   </div>
                   <div className="flex ">
                     <div className=" gap-2 w-[40%] bg-slate-100 ">
-                      <div className="flex border-b-2 px-5 w-[100%]">
+                      <div className="flex font-semibold border-b-2 px-5 w-[100%]">
                         <div className="w-[60%] ">DESPENSING UNIT NO</div>
                         <div className="justify-start ">
                           {machine.machineNo}
                         </div>
                       </div>
-                      <div className="flex border-b-2 px-5 w-[100%]">
+                      <div className="flex font-semibold border-b-2 px-5 w-[100%]">
                         <div className="w-[60%] ">MAKE</div>
                         <div className="justify-start ">{machine.make}</div>
                       </div>
-                      <div className="flex border-b-2 px-5 w-[100%]">
+                      <div className="flex font-semibold border-b-2 px-5 w-[100%]">
                         <div className="w-[60%] ">SERIAL NO</div>
                         <div className="justify-start ">{machine.serialNo}</div>
                       </div>
-                      <div className="flex border-b-2 px-5 w-[100%]">
+                      <div className="flex font-semibold border-b-2 px-5 w-[100%]">
                         <div className="w-[60%] ">CONNECTED TANK</div>
                         <div className="justify-start ">
                           {machine.connectedTank}
                         </div>
                       </div>
-                      <div className="flex border-b-2 px-5 w-[100%]">
+                      <div className="flex font-semibold border-b-2 px-5 w-[100%]">
                         <div className="w-[60%] ">PRODUCT</div>
                         <div className="justify-start ">{machine.product}</div>
                       </div>
-                      <div className="flex border-b-2 px-5 w-[100%]">
+                      <div className="flex font-semibold border-b-2 px-5 w-[100%]">
                         <div className="w-[60%] ">NOZZLES IN MPD</div>
                         <div className="justify-start ">
                           {machine.nozzlesInMPD}
                         </div>
                       </div>
                     </div>
-                    <div className="w-[20%] ">
+                    <div className="w-[20%] font-semibold ">
                       <div className="w-[100%] bg-slate-100 flex items-center justify-center h-[50%] border-2 border-t-0">
                         {machine.sides[0]}
                       </div>
@@ -314,7 +314,7 @@ const New = () => {
                         {machine.sides[1]}
                       </div>
                     </div>
-                    <div className=" gap-2 w-[40%] bg-slate-100  ">
+                    <div className=" gap-2 w-[40%] font-semibold bg-slate-100  ">
                       {/* if number of nozzle will be 4 then it will execute */}
                       {machine.nozzleLayout.length === 4 &&
                         machine.nozzleLayout.map((nozzleLayout, index) => {
@@ -357,14 +357,14 @@ const New = () => {
                     <tr key={index}>
                       <td className="px-4 py-4 flex text-sm text-gray-800 font-bold  tracking-widest ">
                         <button
-                          class="text-white bg-green-800 px-2 py-2 rounded-md mr-4"
+                          class="text-white bg-blue-500 px-2 py-1 rounded-md mr-4"
                           onClick={() => handleMachineEdit(machine)}
                         >
                           Edit
                         </button>
-                        <button class="text-white bg-red-800 px-2 py-2 rounded-md">
+                        {/* <button class="text-white bg-red-500 px-2 py-1 rounded-md">
                           Delete
-                        </button>
+                        </button> */}
                       </td>
                     </tr>
                   </table>

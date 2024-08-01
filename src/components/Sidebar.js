@@ -67,8 +67,10 @@ import logo from './images/petrol.jpg'
                             Add Menu
                         </button>
                         <ul class="dropdown-menu sideDrop1List">
-                            <li><Link class="dropdown-item" to="/Tanks">Add Tanks</Link></li> 
-                            <li><Link class="dropdown-item" to="/Machine">Add Machines</Link></li>
+                        <li><Link class="dropdown-item" to="/mainhome">Add Tank Record</Link></li> 
+                        <li><Link class="dropdown-item" to="/machineLayout"> Add Make Record</Link></li>
+                            {/* <li><Link class="dropdown-item" to="/Tanks">Add Tanks</Link></li> 
+                            <li><Link class="dropdown-item" to="/Machine">Add Machines</Link></li> */}
                             <li><Link class="dropdown-item" to="/Nozzles">Add Nozzles</Link></li>
                             <li><Link class="dropdown-item" to="/Add_Bank">Add Banks</Link></li>
                             <li><Link class="dropdown-item" to="/add_client2" >Add Client</Link></li>
@@ -92,8 +94,12 @@ import logo from './images/petrol.jpg'
                         Log Out
                     </button>
                 </div>
-                <br></br>
-            </div>    
+                <br>
+                </br>
+                {/* <footer className='ml-4 p-2 rounded-lg bg-gray-100 text-black font-bold mr-4'>Designed & Developed by Royals Webtech Pvt. Ltd. ©️2024</footer>   */}
+
+            </div>  
+
         </>
     )
     }   
