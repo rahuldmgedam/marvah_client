@@ -1,368 +1,472 @@
-import React from 'react'
-import '../css/Tank.css'
-import axios from 'axios';
-import  {useState, useEffect} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-export default function Client({dbpath1}) {
+import React, { useState, useEffect } from "react";
+import "../css/Tank.css";
+import axios from "axios";
+
+const init = {
+  invoiceNumber: "",
+  mskl: "",
+  speedkl: "",
+  hsdkl: "",
+  totalkl: "",
+  tank1: "",
+  tank2: "",
+  tank3: "",
+  tanktotalkl: "",
+};
+
+export default function Client() {
+  const [decantation, setDecantation] = useState(init);
+  const [data, setData] = useState([]);
+  const [petrolInvoice, setPetrolInvoice] = useState([]);
+  const [ms, setMs] = useState("");
+  const [hsd, sethsd] = useState("");
+  const [speed, setSpeed] = useState("");
+  const [selectedInvoice, setSelectedInvoice] = useState("");
   
-    const [clients, setClients] = useState([]);
-    const [ProductData, setProductData] = useState([]);
+  useEffect(() => {
+    const totalkl =
+      Number(decantation.mskl) +
+      Number(decantation.speedkl) +
+      Number(decantation.hsdkl);
+    const tanktotalkl =
+      Number(decantation.tank1) +
+      Number(decantation.tank2) +
+      Number(decantation.tank3);
+    setDecantation((prevFormData) => ({
+      ...prevFormData,
+      totalkl,
+      tanktotalkl,
+    }));
+  }, [
+    decantation.mskl,
+    decantation.hsdkl,
+    decantation.speedkl,
+    decantation.tank1,
+    decantation.tank2,
+    decantation.tank3,
+  ]);
 
-
-
-    const loadProductData = async () => {
-        let query="SELECT * FROM `rwt_petrol_product`;";
-        /*  
-            alert(query); */
-            const url = dbpath1 + 'getDynamic.php';
-            let fData = new FormData();
-
-            fData.append('query', query);
-
-            try {
-                const response = await axios.post(url, fData);
-                
-                if (response && response.data) {
-                    
-                    if (response.data.phpresult) {
-                        setProductData(response.data.phpresult); 
-                        console.log(response.data.phpresult);
-                        
-                    }
-                }
-            } catch (error) {
-                console.log("Please Select Proper Input");
-            } 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "invoice") {
+     
+      setSelectedInvoice(value); 
     }
+    setDecantation((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
 
-    const [ date, setDate] = useState('');
-    const [ invoiceNo, setInvoiceNo] = useState('');
-    const [ ms, setMS] = useState('');
-    const [ hsd, setHsd] = useState('');
-    const [ total, setTotal] = useState('');
-    const [ tank1, serTank1] = useState('');
-    const [ tank2, setTank2] = useState('');
-    const [ tank3, setTank3] = useState('');
-    const [ ms_value, setms_value] = useState('');
-    const [ hsd_value, sethsd_value] = useState('');
-    const [ inv, setinv] = useState('');
-    const [ lfr_taxable_amt, setlfr_taxable_amt] = useState('');
-    const [ cgst, setcgst] = useState('');
-    const [ sgst, setsgst] = useState('');
-    const [ totallfr, settotallfr] = useState('');
-   
-    const [ totalp, setTotalp] = useState('');
-    const [ totald, setTotald] = useState('');
-  
+  const handleSubmit = () => {
+    const formattedData = {
+      ...decantation,
+      mskl: ms ? ms : 0,
+      hsdkl: hsd ? hsd : 0,
+      speedkl: speed ? speed : 0,
+      totalkl: Number(decantation.totalkl),
+      tank1: Number(decantation.tank1),
+      tank2: Number(decantation.tank2),
+      tank3: Number(decantation.tank3),
+      tanktotalkl: Number(decantation.tanktotalkl),
+    };
+    console.log("data",formattedData);
 
-const loadClients = async () => {
-  let query="SELECT * FROM `rwt_petrol_decantation` where date = '"+datecache+"';";
-        
-            /* alert(query);  */
-            const url = dbpath1 + 'getDynamic.php';
-            let fData = new FormData();
-
-            fData.append('query', query);
-
-            try {
-                const response = await axios.post(url, fData);
-                
-                if (response && response.data) {
-                    
-                    if (response.data.phpresult) {
-                        setClients(response.data.phpresult); 
-                        console.log(response.data.phpresult);
-                    }
-                }
-            } catch (error) {
-                console.log("Please Select Proper Input");
-            }
-
-}
-
-    const setInvoiceNoCache = () => {
-        Cookies.set('petrolInoviceNo', invoiceNo);
-    }
-
-    const navigate = useNavigate();
-
-    const onAdd = () =>{
-        
-        var val1 = document.getElementById('total1').value;
-        var val2 = document.getElementById('total2').value;
-
-        if (invoiceNo.length === 0) {
-            alert("Invoice No. has been left blank!");
-        }
-        else if (invoiceNo.length === 0) {
-           alert("Invoice No. has been left blank!");
-        }
-        else if(val1 != val2)
-        {
-            alert("Decantation Error : Total Mismatch!");
-         }
-               else {
-            {
-
-                CalculateLFR();
-                setInvoiceNoCache();
-        
-              const url = dbpath1+'delTank.php';
-  
-              var query = "INSERT INTO `rwt_petrol_decantation` (`decantation_id`, `date`, `invoiceNo`, `ms`, `hsd`, `total`, `tank1`, `tank2`, `tank3`) VALUES (NULL, '"+date+"', '"+invoiceNo+"', '"+ms+"', '"+hsd+"', '"+totalp+"', '"+tank1+"', '"+tank2+"', '"+tank3+"');";
-  
-              let fData = new FormData();
-              fData.append('query', query);
-              axios.post(url, fData)
-                .then(response => { alert(response.data); window.location.reload();})
-                .catch(error => {
-                  console.log(error.toJSON()); 
-            }); 
-          }
-          loadClients();
-            
-        }
-    }
-
-    useEffect(() => {
-       loadClients();
-       loadProductData();
-       setDate(datecache);
-      }, []); 
-
-    
-
-   /*  const onSave = async (index) => {
-        let query="UPDATE pupc_machines SET dispensing_unit_no = '"+document.getElementById("inputDispensingUnitNo"+index).value+"', make = '"+document.getElementById("inputMake"+index).value+"', serial_no = '"+document.getElementById("inputSerialNo"+index).value+"', connected_tanks = '"+document.getElementById("inputConnectedTanks"+index).value+"', product = '"+document.getElementById("inputProduct"+index).value+"', nozzles_in_mpd = '"+document.getElementById("inputNozzlesInMpd"+index).value+"' WHERE machine_id = "+index;
-        alert(query); 
-        const url = dbpath1+'delTank.php';
-        let fData = new FormData();
-        fData.append('query', query);
-        
-        axios.post(url, fData)
-            .then(response => alert(response.data))
-            .catch(error => {
-            console.log(error.toJSON());
-            });
-    } */
-
-    const onDelete = async (index) => {
-      let query="DELETE FROM `rwt_petrol_decantation` WHERE decantation_id = "+index+";";
-    
-      /* alert(query); */
-      const url = dbpath1+'delTank.php';
-      let fData = new FormData();
-      fData.append('query', query);
+    axios
+      .post("http://localhost:4000/petroldecantation/create", formattedData)
+      .then((res) => {
+        if (res.data.state) {
+          alert(res.data.msg);
+          console.log("resss",res.data);
+          handleUpdateInvoice()
+          fetchData();
+          setDecantation(init);
+          setMs("")
+          sethsd("")
       
-      axios.post(url, fData)
-          .then(response => alert(response.data))
-          .catch(error => {
-          console.log(error.toJSON());
-          });
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
-        loadClients();
-  }
-
-  const addDecant = (value) => {
-        setTotald(parseInt(document.getElementById('tank1').value)+parseInt(document.getElementById('tank2').value)+parseInt(document.getElementById('tank3').value));
-  }
-
-  const addPurchase = (value) => {
-        setTotalp(parseInt(ms) + parseInt(value));
-  }
-
-  const CalculateLFR = () => {
-    const selectedProduct1 = ProductData.find(product1 => product1.product_name ==="MS");
-    const selectedProduct2 = ProductData.find(product1 => product1.product_name ==="HSD");
-
-    setms_value(selectedProduct1.lfr_rate);
-    sethsd_value(selectedProduct2.lfr_rate);
-
-    let inv_temp = ms+" + "+hsd;
-
-    setinv(ms+" + "+hsd);
-
-    let lfr_taxable_amt_temp_1 = selectedProduct1.lfr_rate * ms;
-    let lfr_taxable_amt_temp_2 = selectedProduct2.lfr_rate * hsd;
-
-    let lfr_taxable_amt_temp = parseFloat(lfr_taxable_amt_temp_1) + parseFloat(lfr_taxable_amt_temp_2);
-
-    setlfr_taxable_amt(lfr_taxable_amt_temp);
-    
-    let gstrate = selectedProduct1.gst_rate;
-
-    let gstval_temp = parseFloat((parseFloat(lfr_taxable_amt_temp)/100)*gstrate);
-
-    setcgst(gstval_temp.toFixed(2));
-    setsgst(gstval_temp);
-
-    let totallfr_temp = parseFloat(lfr_taxable_amt_temp) + (parseFloat(gstval_temp)*2);
-
-    settotallfr(totallfr_temp);
-
-    const url = dbpath1+'delTank.php';
+  const handleUpdateInvoice = async()=> {
+ try {
+  const res = axios.patch(`http://localhost:4000/petrolInvoiceFeeding/updateshow/${selectedInvoice}`)
+    if(res.data.success){
+      console.log(res.data.msg);
+      alert(res.data.message)
+      handleFetchData()
+    }
+ } catch (error) {
+  console.log(error.message);
+ }
   
-    var query = "INSERT INTO `rwt_petrol_lfr` (`lfr_id`, `date`, `invoice_no`, `MS`, `HSD`, `inv`, `lfr_taxable_amount`, `cgst`, `sgst`, `tottal`) VALUES (NULL, '"+date+"', '"+invoiceNo+"', '"+selectedProduct1.lfr_rate+"', '"+selectedProduct2.lfr_rate+"', '"+inv_temp+"', '"+lfr_taxable_amt_temp.toFixed(2)+"', '"+gstval_temp.toFixed(2)+"', '"+gstval_temp.toFixed(2)+"', '"+totallfr_temp.toFixed(2)+"');";
-    let fData = new FormData();
-    fData.append('query', query);
-    axios.post(url, fData)
-      .then(response => alert(response.data))
-      .catch(error => {
-        console.log(error.toJSON()); 
-    }); 
-   
   }
 
+  const fetchData = () => {
+    axios
+      .get("http://localhost:4000/petroldecantation")
+      .then((res) => {
+        if (res.data) {
+          console.log(res.data);
+          setData(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  const handleDelete = async (id) => {
    
-//   function convertDateFormat(inputDate) {
-//     // Split the string into an array [yyyy, mm, dd]
-//     let parts = inputDate.split('-');
+    const response = await axios.delete(
+      `http://localhost:4000/petroldecantation/delete/${id}`
+    );
+    if (response) {
+      if (response.data.success) {
+        alert(response.data.msg);
+        fetchData();
+      }
+    }
+  };
 
-//     // Rearrange the array and join it back to a string
-//     return parts[2] + '-' + parts[1] + '-' + parts[0];
-// }
-  const datecache = Cookies.get('dateCookies');
-    return (
+  const handleFetchData = () => {
+    axios
+      .get("http://localhost:4000/petrolInvoiceFeeding")
+      .then((res) => {
+        const allInvoices = res.data.petrolInvoice;
+        console.log("All Invoices: ", allInvoices);
+  
+        const filteredInvoices = allInvoices.filter((invoice) => !invoice.show);
+        console.log("Filtered Invoices (show false): ", filteredInvoices);
+  
+        const invoiceNumbers = [
+          ...new Set(filteredInvoices.map((invoice) => invoice.invoiceNumber)),
+        ];
+        console.log("Filtered Invoice Numbers: ", invoiceNumbers);
+  
+        setPetrolInvoice(invoiceNumbers); // Set the state with the unique invoice numbers
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+  
+  
 
+  useEffect(() => {
+    console.log("ms", ms);
+  }, [ms]);
+
+  const handleFilter = async (id) => {
+    console.log("id", id);
+    const res = await axios.get(
+      `http://localhost:4000/petroldecantation/product/${id}`
+    );
+    console.log("ressss", res.data);
+    if (res.data) {
+      addProduct(res.data);
+    }
+  };
+
+  const addProduct = (props) => {
+    setMs("");
+    setSpeed("");
+    sethsd("");
+    props.map((item) => {
+      console.log("map");
+      if (item.ProductName === "MS") {
+        setMs(Number(item.klQty));
+      }
+      if (item.ProductName === "HSD") {
+        sethsd(Number(item.klQty));
+      }
+      if (item.ProductName === "SPEED") {
+        setSpeed(Number(item.klQty));
+      }
+    });
+  };
+
+  useEffect(() => {
+    handleFetchData();
+    fetchData();
+  }, []);
+
+  console.log("data", petrolInvoice);
+  return (
     <>
-        <div className='tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight' >
-        <span style={{fontSize:'22px'}}> Date : </span>   
-            <h2 className='mt-3 text-center'>Petrol Decantation</h2>
-            <div>
-                <br></br>
-                <h6>Purchase Record (Petrol/Diesel):</h6>
-                <table class="table" >
-                    <thead>
-                        <tr className='table-secondary'>
-                           
-                            <th className='tablebg'
->Invoice No</th>
-                            <th className='tablebg'
->MS (KL)</th>
-                            <th className='tablebg'
->HSD (KL)</th>
-                            <th className='tablebg'
->Total (KL)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>    
-                            <td><input type="text" class="form-control editableInput bigFontWeight"  placeholder="Invoice No" onChange={(e) => setInvoiceNo(e.target.value)} /></td>
-                            <td><input type="text" class="form-control editableInput bigFontWeight"  placeholder="MS" onChange={(e) => setMS(e.target.value)} /></td>
-                            <td><input type="text" class="form-control editableInput bigFontWeight"   placeholder="HSD" onChange={(e) =>{ setHsd(e.target.value); addPurchase((e.target.value)); } }/></td>
-                            <td><input type="text" id='total1' class="form-control  bigFontWeight"  value={totalp} placeholder="Total" onChange={(e) => setTotal(e.target.value)} disabled/></td>
-                            {/* <td><input type="text" class="form-control editableInput bigFontWeight"  placeholder="TCS" onChange={(e) => setTcs(e.target.value)} /></td>
-                           
-                            <td><button type="button" class="btn btn-primary" onClick={onAdd}>ADD</button></td> */}
-                        </tr>   
-                    </tbody>
-                </table>    
-                <br></br>
-                <h6>Decantation Record:</h6>
-                <table class="table" >
-                    <thead>
-                        <tr className='table-secondary'>
-                            <th className='tablebg'
->Tank 1-15KL <br></br>MS-1</th>
-                            <th className='tablebg'
->Tank 2-10KL <br></br>MS-2</th>
-                            <th className='tablebg'
->Tank 3-9KL <br></br>HSD</th>
-                            <th className='tablebg'
- id='total2'>Total (KL)</th>
-                            <th className='tablebg'
->Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>    
-                            <td scope="row">
-                                <input type="text" id='tank1' class="form-control editableInput bigFontWeight"   placeholder="Tank1" onChange={(e) => {serTank1(e.target.value); addDecant(e.target.value);}} />
-                            </td>
-                            <td><input type="text" id='tank2' class="form-control editableInput bigFontWeight"  placeholder="Tank2" onChange={(e) =>{ setTank2(e.target.value); addDecant(e.target.value);;}} /></td>
-                            <td><input type="text" id='tank3' class="form-control editableInput bigFontWeight"  placeholder="Tank3" onChange={(e) =>{ setTank3(e.target.value); addDecant(e.target.value);}} /></td>
-                            <td><input type="text" class="form-control  bigFontWeight"  value={totald} placeholder="Total" onChange={(e) => setTotal(e.target.value)} disabled/></td>
-                            
-                           
-                            <td><button type="button" style={{width:'150px'}} class="btn btn-primary"  onClick={(e) => { onAdd();  }}>ADD</button></td>
-                        </tr>   
-                    </tbody>
-                </table>    
-            </div>
-            <br></br><br></br><br></br> <h3 className='mt-3 text-center'>Decantation Records</h3><br></br>
-            <div>
-                <h6>Purchase Record (Petrol/Diesel):</h6>
-                <table class="table" style={{width:'900px'}}>
-                    <thead>
-                        <tr className='table-secondary'>
-                            <th className='tablebg'
->Sr.</th>
-                            <th className='tablebg'
->Invoice No</th>
-                            <th className='tablebg'
->MS</th>
-                            <th className='tablebg'
->HSD</th>
-                            <th className='tablebg'
->Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                       
-                        {clients.map((res,index)=>
-                                <tr className='hovereffect' key={index}>
-                                     <td>{index+1}</td>    
-                                     <td>{res.invoiceNo}</td>  
-                                    <td>{res.ms}</td>
-                                    <td>{res.hsd}</td>
-                                    <td>{res.total} </td>
-                                </tr>
-                            )}
-                      
-                    </tbody>
-                </table>    
-                <br></br>
-                <h6>Decantation Record:</h6>
-                <table class="table" >
-                    <thead>
-                        <tr className='table-secondary'>
-                            <th className='tablebg'
->Sr.</th>
-                            <th className='tablebg'
->Tank 1-15KL <br></br>MS-1</th>
-                            <th className='tablebg'
->Tank 2-10KL <br></br>MS-2</th>
-                            <th className='tablebg'
->Tank 3-9KL <br></br>HSD</th>
-                            <th className='tablebg'
->Total</th>
-                            <th className='tablebg'
->Action</th>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                         
-                        {clients.map((res,index)=>
-                                <tr className='hovereffect' key={index}>
-                                      <td>{index+1}</td>   
-                                     <td>{res.tank1}</td>    
-                                     <td>{res.tank2}</td>  
-                                    <td>{res.tank3}</td>
-                                    <td>{res.total}</td>
-                                    <td style={{width:'150px'}}>
-                                    {/* <button type="button" id={"tank"+res.machine_id} class="btn btn-primary " onClick={() => onSave(res.machine_id)}>Save</button> &nbsp;
-                                     */}    {/* <button type="button" id={"tank"+res.machine_id} class="btn btn-primary">Close</button> &nbsp;
-                                        <button type="button" id={"tank"+res.machine_id} class="btn btn-primary">Open</button> &nbsp; */}
-                                        <button type="button " id={"tank"+res.decantation_id} class="btn btn-danger " onClick={() => onDelete(res.decantation_id)}>Delete</button>
-                                    </td>
-                                </tr>
-                            )}
-                    </tbody>
-                </table>    
-            </div>      
+      <div className="">
+        <span style={{ fontSize: "22px" }}> Date : </span>
+        <h2 className=" text-center text-blue-600 uppercase text-xl font-bold">Petrol Decantation</h2>
+        <div>
+        
+          <h6 className="text-md font-semibold">Purchase Record (Petrol/Diesel):</h6>
+        
+          <table className="table">
+            <thead>
+              <tr className="table-secondary">
+                <th className="">Invoice No</th>
+                <th className="">MS (KL)</th>
+                <th className="">Speed (KL)</th>
+                <th className="">HSD (KL)</th>
+                <th className="">Total (KL)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                 
+                  <select
+                    style={{ width: "120px" }}
+                    name="invoice"
+                    className="form-select editableInput bigFontWeight"
+                    aria-label="Default select example"
+                    onChange={(e) => {
+                      handleChange(e);
+                      handleFilter(e.target.value);
+                    }}
+                  >
+                    <option>- Invoice -</option>
+                    {petrolInvoice &&
+                      petrolInvoice.map((invoiceNumber, index) => (
+                        <option key={index} value={ invoiceNumber}>
+                          {invoiceNumber}
+                        </option>
+                      ))}
+                  </select>
+                </td>
+                <td>
+                  <input
+                    className="form-control editableInput "
+                    placeholder="MS"
+                    type="text"
+                    name="mskl"
+                    value={ms ? ms : 0}
+                    onChange={handleChange}
+                    disabled
+                  />
+                </td>
+
+                <td>
+                  <input
+                    type="text"
+                    className="form-control editableInput "
+                    placeholder="Speed"
+                    name="speedkl"
+                    value={speed ? speed : 0}
+                    onChange={handleChange}
+                    disabled
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    className="form-control editableInput "
+                    placeholder="HSD"
+                    name="hsdkl"
+                    value={hsd ? hsd : 0}
+                    onChange={handleChange}
+                    disabled
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    id="total1"
+                    className="form-control "
+                    value={ms + hsd + speed}
+                    placeholder="Total"
+                    name="totalkl"
+                    disabled
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <br></br>
+          <h6>Decantation Record:</h6>
+      
+          <table className="table">
+            <thead>
+              <tr className="table-secondary">
+                <th className="">
+                  {/* Tank 1-15KL <br /> */}
+                  MS-1
+                </th>
+                <th className="">
+                  {/* Tank 2-10KL <br></br> */}
+                  Speed
+                </th>
+                <th className="">
+                  {/* Tank 3-9KL <br></br> */}
+                  HSD
+                </th>
+                <th className="" id="">
+                  Total (KL)
+                </th>
+                <th className="">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="row">
+                  <input
+                    type="text"
+                    id="tank1"
+                    className="form-control editableInput "
+                    placeholder="Tank1"
+                    name="tank1"
+                    value={decantation.tank1}
+                    onChange={handleChange}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    id="tank2"
+                    className="form-control editableInput "
+                    placeholder="Tank2"
+                    name="tank2"
+                    value={decantation.tank2}
+                    onChange={handleChange}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    id="tank3"
+                    className="form-control editableInput "
+                    placeholder="Tank3"
+                    name="tank3"
+                    value={decantation.tank3}
+                    onChange={handleChange}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    className="form-control "
+                    name="tanktotalkl"
+                    value={decantation.tanktotalkl}
+                    placeholder="Total"
+                    disabled
+                  />
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    style={{ width: "120px" }}
+                    className="btn btn-primary"
+                    onClick={handleSubmit}
+                  >
+                    ADD
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
         </div>
+        
+        
+        <br></br>
+        <div>
+          <h6 className="text-lg font-bold mb-1 text-center ">Purchase Record (Petrol/Diesel):</h6>
+         
+          <div class="font-[sans-serif] overflow-x-auto">
+      <table class="min-w-full bg-white">
+        <thead class="bg-gray-600 whitespace-nowrap">
+          <tr>
+            <th class=" text-center text-sm  border-2 border-black text-white">
+             Sr.
+            </th>
+            <th class=" text-center text-sm  border-2 border-black text-white">
+            Invoice No
+            </th>
+            <th class=" text-center text-sm border-2 border-black text-white">
+            MS
+            </th>
+            <th class=" text-center text-sm  border-2 border-black text-white">
+             SPEED
+            </th>
+            <th class=" text-center text-sm  border-2 border-black text-white">
+              TOTAL
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+              {data &&
+                data.map((res, index) => (
+                  <tr className="" key={index}>
+                    <td className="border-2 text-center border-gray-700">{index + 1}</td>
+                    <td className="border-2 border-gray-700 text-center">{res.invoice}</td>
+                    <td className="border-2 text-center border-gray-700">{res.mskl}</td>
+                    <td className="border-2 text-center border-gray-700">{res.hsdkl}</td>
+                    <td className="border-2 text-center border-gray-700">{res.totalkl} </td>
+                  </tr>
+                ))}
+            </tbody>
+      </table>
+
+    </div>
+          <br></br>
+          <h3 className="mt-3 text-center text-xl font-semibold mb-1">Decantation Records</h3>
+       
+
+
+
+
+          <table class="min-w-full bg-white">
+        <thead class="bg-gray-600 whitespace-nowrap">
+          <tr>
+            <th class=" text-center text-sm  border-2 border-black text-white">
+             Sr.
+            </th>
+            <th class=" text-center text-sm  border-2 border-black text-white">
+            MS
+            </th>
+            <th class=" text-center text-sm border-2 border-black text-white">
+            SPEED
+            </th>
+            <th class=" text-center text-sm  border-2 border-black text-white">
+             HSD
+            </th>
+            <th class=" text-center text-sm  border-2 border-black text-white">
+              TOTAL
+            </th>
+            <th class=" text-center text-sm  border-2 border-black text-white">
+             ACTION 
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+              {data &&
+                data.map((res, index) => (
+                  <tr className="" key={index}>
+                    <td className="border-2 text-center border-gray-700">{index + 1}</td>
+                    <td className="border-2 border-gray-700 text-center">{res.tank1}</td>
+                    <td className="border-2 text-center border-gray-700">{res.tank2}</td>
+                    <td className="border-2 text-center border-gray-700">{res.tank3}</td>
+                    <td className="border-2 text-center border-gray-700">{res.tanktotalkl} </td>
+                    <td className="border-2 text-center border-gray-700"><button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => handleDelete(res._id)}
+                    >
+                      Delete
+                    </button></td>
+                  </tr>
+                ))}
+            </tbody>
+      </table>
+          
+        </div>
+      </div>
     </>
-  )
+  );
 }

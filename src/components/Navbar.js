@@ -39,8 +39,9 @@ export default function Navbar() {
                             petrol
                         </button>
                         <ul class="dropdown-menu navDrop1List">
+                        <li><Link class="dropdown-item" to="/Petrol_Invoice_Feeding">Invoice Feeding   </Link></li>
+
                             <li><Link class="dropdown-item" to="/Petrol_Decantation">Decantation</Link></li> 
-                            <li><Link class="dropdown-item" to="/Petrol_Invoice_Feeding">Invoice Feeding   </Link></li>
                             <li><Link class="dropdown-item" to="/Fuel_Sales">Fuel Sales</Link></li>
                             <li><Link class="dropdown-item" to="/Variation">Variation</Link></li>
                         </ul>

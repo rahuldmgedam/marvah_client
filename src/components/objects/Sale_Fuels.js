@@ -1,46 +1,21 @@
-import React from "react";
-import "../css/Tank.css";
+
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import "../css/Tank.css";
+import { useNavigate } from "react-router-dom";
+
 export default function Sale_Fuels() {
   const [machineReadings, setMachineReadings] = useState([]);
-
-  const [ms1Readings, setMs1Readings] = useState([]);
-  const [ms2Readings, setMs2Readings] = useState([]);
   const [hsdReadings, setHsdReadings] = useState([]);
 
-  const [closing, setClosing] = useState(0);
-  const [sale, setSale] = useState(0);
-  const [testing, setTesting] = useState(0);
-  const [saleAct, setSaleAct] = useState(0);
-  const [rate, setRate] = useState(0);
-  const [amount, setAmount] = useState(0);
+  const [rates, setRates] = useState({ ms1Rate: 0, ms2Rate: 0, hsdRate: 0 });
 
   const navigate = useNavigate();
 
-  function getTodaysDate() {
-    const today = new Date();
-
-    // Extract day, month, and year
-    const day = String(today.getDate());
-    // .padStart(0, '0');
-    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based
-    const year = today.getFullYear(); // Full year
-
-    return `${day}-${month}-${year}`;
-  }
-
-  const todaysDate = getTodaysDate();
-
-  // console.log("ms2Readings", ms2Readings);
   const fetchMachineReadings = async () => {
     try {
       const res = await axios.get("http://localhost:4000/reading");
-      console.log(res.data.MeterReadingData);
       const allReadings = res.data.MeterReadingData;
-
       setMachineReadings(allReadings);
       setMs1Readings(
         allReadings.filter((item) => item.nozzleProduct.includes("MS-1"))
@@ -51,12 +26,8 @@ export default function Sale_Fuels() {
       setHsdReadings(
         allReadings.filter((item) => item.nozzleProduct.includes("HSD"))
       );
-
-      // setHsdReadings(
-      //   allReadings.filter((item) => item.nozzleProduct === "HSD")
-      // );
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -65,105 +36,40 @@ export default function Sale_Fuels() {
   }, []);
 
 
-  const renderTable = (data, title) => (
-    <div>
-      <h3>{title}</h3>
-      <table className="">
-        <thead className="bg-purple-700">
-          <tr>
-            {/* <th className="tablebg">sideNo</th> */}
-            <th className="tablebg">nozzleNo</th>
-            <th className="tablebg">nozzleProduct</th>
-            <th className="tablebg">opening</th>
-            <th className="tablebg">closing</th>
+  // ms1 data
 
-            <th className="tablebg">Sale</th>
-            <th className="tablebg">Testing</th>
-            <th className="tablebg">A. sale</th>
-            <th className="tablebg">Rate</th>
-            <th className="tablebg">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item) => (
-            <tr key={item._id}>
-              {/* <td>
-                <input value={item.sideNo} />
-              </td> */}
-              <td className="">
-                <input value={item.nozzleNo} />
-              </td>
-              <td>
-                <input value={item.nozzleProduct} />
-              </td>
-              <td>
-                <input value={item.opMeterReading} />
-              </td>
+  const [ms1Readings, setMs1Readings] = useState([]);
+  const [ms1Rate, setMs1Rate] = useState(0);
+  const [ms1RateAllDays, setMs1RateAllDays] = useState([]);
 
-              <td>
-                <input value={closing} />
-              </td>
-              <td>
-                <input value={sale} />
-              </td>
-              <td>
-                <input value={testing} />
-              </td>
-              <td>
-                <input value={saleAct} />
-              </td>
-              <td>
-                <input value={rate} />
-              </td>
-              <td>
-                <input value={amount} />
-              </td>
-            </tr>
-          ))}
-          <tr>
-            <th className="tablebg"></th>
-            <th className="tablebg"> </th>
-            <th className="tablebg">Total (=)</th>
-            <th className="tablebg">
-              <span id="saletotalspeed">4325</span> (-)
-            </th>
-            <th className="tablebg">
-              <span id="testingtotalspeed">0</span> (=)
-            </th>
-            <th className="tablebg">
-              <span id="asaletotalspeed">0</span> (x)
-            </th>
-            <th className="tablebg">
-              <span id="ratetotalspeed">
-                {/* {dayStartRate[0]['speed']} */}
-              </span>{" "}
-              (=)
-            </th>
-            <th className="tablebg">
-              <span id="amounttotalspeed">0.00</span>
-            </th>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  );
+
+  const [totals, setTotals] = useState({
+    saleTotal: 0,
+    testingTotal: 0,
+    saleActTotal: 0,
+    amountTotal: 0,
+  });
+
+  useEffect(() => {
+    let saleTotal = 0,
+      testingTotal = 0,
+      saleActTotal = 0,
+      amountTotal = 0;
+
+    ms1Readings.forEach((item) => {
+      const sale = (item.closing || 0) - (item.opMeterReading || 0);
+      const saleAct = sale - (item.testing || 0);
+      const amount = saleAct * rates.ms1Rate;
+      saleTotal += sale;
+      testingTotal += item.testing || 0;
+      saleActTotal += saleAct;
+      amountTotal += amount;
+    });
+
+    setTotals({ saleTotal, testingTotal, saleActTotal, amountTotal });
+  }, [ms1Readings, rates]);
 
   const handleSave = async () => {
-    // const tableData = ms1Readings.map((item) => ({
-    //   sideNo: item.sideNo,
-    //   nozzleProduct: item.nozzleProduct,
-    //   opMeterReading: item.opMeterReading,
-    //   closing,
-    //   sale,
-    //   testing,
-    //   saleAct,
-    //   rate,
-    //   amount,
-    // }));
-
-    console.log("ms1Readings : ", ms1Readings);
-
-    // console.log("tableData",tableData)
     try {
       await axios.post("http://localhost:4000/fuelsales/create", {
         ms1Readings,
@@ -176,496 +82,636 @@ export default function Sale_Fuels() {
   };
 
 
+  // ms2 speed
+  const [ms2Readings, setMs2Readings] = useState([]);
 
-  
+  const [ms2RateAllDays, setMs2RateAllDays] = useState([]);
+  const [hsdRateAllDays, setHsdRateAllDays] = useState([]);
+
+  const [ms2Rate, setMs2Rate] = useState(0);
+  const [hsdRate, setHsdRate] = useState(0);
 
 
-  const [fuelSales, setFuelSales] = useState([]);
-  const fetchFuelSales = () => {
+
+  const [totals2, setTotals2] = useState({
+    saleTotal2: 0,
+    testingTotal2: 0,
+    saleActTotal2: 0,
+    amountTotal2: 0,
+  });
+
+  useEffect(() => {
+    let saleTotal2 = 0,
+      testingTotal2 = 0,
+      saleActTotal2 = 0,
+      amountTotal2 = 0;
+
+    ms2Readings.forEach((item2) => {
+      const sale2 = (item2.closing || 0) - (item2.opMeterReading || 0);
+      const saleAct2 = sale2 - (item2.testing || 0);
+      const amount2 = saleAct2 * rates.ms2Rate;
+      saleTotal2 += sale2;
+      testingTotal2 += item2.testing || 0;
+      saleActTotal2 += saleAct2;
+      amountTotal2 += amount2;
+    });
+
+    setTotals2({ saleTotal2, testingTotal2, saleActTotal2, amountTotal2 });
+  }, [ms2Readings, rates]);
+
+  const handleSave2 = async () => {
     try {
-      axios.get("http://localhost:4000/fuelsales").then((res) => {
-        setFuelSales(res.data);
+      await axios.post("http://localhost:4000/fuelsales/create", {
+        ms2Readings,
       });
+      alert("Data saved successfully!");
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      alert("Error saving data.");
     }
   };
 
-  console.log("fuelSales:",fuelSales)
 
-  useState(() => {
-    fetchFuelSales();
-  }, []);
+  // hsd speed
+  // const [hsdReadings, setMs2Readings] = useState([]);
+
+  // const [ms2RateAllDays, setMs2RateAllDays] = useState([]);
+  // const [hsdRateAllDays, setHsdRateAllDays] = useState([]);
+
+  // const [ms2Rate, setMs2Rate] = useState(0);
+  // const [hsdRate, setHsdRate] = useState(0);
 
 
-   const [ ms1RateAllDays,setMs1RateAllDays] = useState([]);
-   const [ ms2RateAllDays,setMs2RateAllDays] = useState([]);
-   const [ hsdRateAllDays,setHsdRateAllDays] = useState([]);
 
-  const [ms1Rate,setMs1Rate] = useState(0);
-  const [ms2Rate,setMs2Rate] = useState(0);
-  const [hsdRate,setHsdRate] = useState(0);
+  const [totals3, setTotals3] = useState({
+    saleTotal3: 0,
+    testingTotal3: 0,
+    saleActTotal3: 0,
+    amountTotal3: 0,
+  });
+
+  useEffect(() => {
+    let saleTotal3 = 0,
+      testingTotal3 = 0,
+      saleActTotal3 = 0,
+      amountTotal3 = 0;
+
+    hsdReadings.forEach((item3) => {
+      const sale3 = (item3.closing || 0) - (item3.opMeterReading || 0);
+      const saleAct3 = sale3 - (item3.testing || 0);
+      const amount3 = saleAct3 * rates.hsdRate;
+      saleTotal3 += sale3;
+      testingTotal3 += item3.testing || 0;
+      saleActTotal3 += saleAct3;
+      amountTotal3 += amount3;
+    });
+
+    setTotals3({ saleTotal3, testingTotal3, saleActTotal3, amountTotal3 });
+  }, [hsdReadings, rates]);
+
+  const handleSave3 = async () => {
+    try {
+      await axios.post("http://localhost:4000/fuelsales/create", {
+       ms1Readings: hsdReadings,
+      });
+      alert("Data saved successfully!");
+    } catch (error) {
+      console.error(error);
+      alert("Error saving data.");
+    }
+  };
+
 
   const fetchAllDAyStartReading = () => {
-
     axios
       .get("http://localhost:4000/ms")
       .then((res) => {
-        setMs1RateAllDays(res.data)
-        setMs1Rate(ms1RateAllDays[ms1RateAllDays.length-1].reading)
-         console.log("ms1RateAllDays", ms1RateAllDays[ms1RateAllDays.length-1].reading);
-
-    
-
+        setMs1RateAllDays(res.data);
+        setMs1Rate(ms1RateAllDays[ms1RateAllDays.length - 1].reading);
       })
       .catch((error) => {
         console.log(error.message);
       });
 
-
-      axios
+    axios
       .get("http://localhost:4000/speed")
       .then((res) => {
-        setMs2RateAllDays(res.data)
-        setMs2Rate(ms2RateAllDays[ms2RateAllDays.length-1].reading)
- 
+        setMs2RateAllDays(res.data);
+        setMs2Rate(ms2RateAllDays[ms2RateAllDays.length - 1].reading);
       })
       .catch((error) => {
         console.log(error.message);
       });
 
-      axios
+    axios
       .get("http://localhost:4000/hsd")
       .then((res) => {
-        setHsdRateAllDays(res.data)
-        // console.log(hsdRateAllDays[hsdRateAllDays.length-1].reading)
-        setHsdRate(hsdRateAllDays[hsdRateAllDays.length-1].reading)
+        setHsdRateAllDays(res.data);
+        setHsdRate(hsdRateAllDays[hsdRateAllDays.length - 1].reading);
       })
       .catch((error) => {
         console.log(error.message);
       });
   };
 
-
-  // console.log("ms1Rate", ms1Rate);
-  // console.log("ms2Rate", ms2Rate);
-  // console.log("hsdRate", hsdRate);
-
-
   useEffect(() => {
     fetchAllDAyStartReading();
- 
-  }, []);
+  }, [ms1Readings,ms2Readings,hsdReadings]);
 
-  // const calculateTotal = (field) => {
-  //   return fuelSales.reduce((total, item) => total + (item[field] || 0), 0);
-  // };
   return (
-    <>
-   
-   <div>
-        <h2>Totals</h2>
-        {/* <p>Total Op Meter Reading: {calculateTotal('opMeterReading')}</p>
-        <p>Total Op Meter Reading: {calculateTotal('saleAct')}</p> */}
-      </div>
-
-      <main className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-        <h1 className="mt-1  uppercase font-bold text-center text-3xl text-blue-800 px-3 py-1">
-          Fuel sales
+    <main className="tankMainDiv shadow-lg p-1 mb-5 bg-body-tertiary rounded bigFontWeight">
+      <div className="relative">
+        <h1 className="tracking-wide uppercase font-bold text-center text-3xl text-blue-800 px-3 py-1">
+          Fuel Sales
         </h1>
-        <span style={{ fontSize: "22px" }}>Date :{todaysDate}</span>
+        <h1 className="flex items-start font-bold font-sm text-black">
+          Date: {new Date().toLocaleDateString()}
+        </h1>
+      </div>
+      {/* ms1 start */}
+      <section className="ms-1">
+        <div className="flex">
+          <h1 className="block text-2xl tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
+            ms-1
+          </h1>
+        </div>
+        <table className="w-[100%]">
+          <thead className="tablebg py-2">
+            <tr className="text-center font-bold py-2">
+              <th>Nozzle ID</th>
+              <th>Side</th>
+              <th>Opening</th>
+              <th>Closing</th>
+              <th>Sale</th>
+              <th>Testing</th>
+              <th>Actual Sale</th>
+              <th>Rate</th>
+              <th></th>
+              <th>T Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ms1Readings.map((item, index) => (
+              <tr
+                key={item._id}
+                className="font-bold border-2 border-slate-300"
+              >
+                <td>
+                  <input
+                    className="text-center w-32"
+                    value={item.nozzleProduct}
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    className="text-center w-20"
+                    value={item.sideNo}
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    className="text-center w-32"
+                    value={item.opMeterReading}
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    value={item.closing || ""}
+                    className="text-center bg-blue-600 w-32"
+                    onChange={(e) => {
+                      const newClosing = parseFloat(e.target.value) || 0;
+                      const updatedReadings = [...ms1Readings];
+                      updatedReadings[index].closing = newClosing;
 
-        {/* //ms-1 start */}
-        <section className="ms-1">
-          <h4 className="bg-slate-700 text-xl text-white p-2  mb-3 rounded-md  uppercase text-center font-bold">
-            product name : ms-1
-          </h4>
+                      // Calculate the sale if both closing and opMeterReading are present
+                      if (newClosing && item.opMeterReading !== undefined) {
+                        updatedReadings[index].sale =
+                          newClosing - item.opMeterReading;
+                      } else {
+                        updatedReadings[index].sale = ""; // Set sale as empty string initially
+                      }
 
-          <table class="table">
-            <div>
-              <table className="">
-                <thead className="py-2">
-                  <tr className="text-center font-bold py-2">
-                    <th className="tablebg">side</th>
-                    <th className="tablebg">nozzleId</th>
-                    <th className="tablebg">opening</th>
+                      setMs1Readings(updatedReadings);
+                    }}
+                  />
+                </td>
+                <td>
+                  <input
+                    value={item.sale !== undefined ? item.sale : ""}
+                    className="text-center w-32"
+                    readOnly
+                  />
+                </td>
 
-                    <th className="tablebg">closing</th>
+                <td>
+                  <input
+                    className="bg-blue-700 text-center text-white w-32"
+                    value={item.testing || ""}
+                    type="number"
+                    onChange={(e) => {
+                      const newTesting = parseFloat(e.target.value) || 0;
+                      const updatedReadings = [...ms1Readings];
+                      updatedReadings[index].testing = newTesting;
+                      setMs1Readings(updatedReadings);
+                    }}
+                  />
+                </td>
 
-                    <th className="tablebg">Sale</th>
-                    <th className="tablebg">Testing</th>
-                    <th className="tablebg">Actual sale</th>
-                    <th className="tablebg">Rate</th>
-                    <th className="tablebg">Total Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {ms1Readings.map((item) => (
-                    <tr
-                      key={item._id}
-                      className="font-bold border-2 border-slate-300"
-                    >
-                      <td>
-                        <input
-                          className="text-center w-20"
-                          value={item.sideNo}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="text-center w-32"
-                          value={item.nozzleProduct}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="text-center w-32"
-                          value={item.opMeterReading}
-                        />
-                      </td>
+                <td>
+                  <input
+                    value={
+                      item.closing == null ||
+                      item.opMeterReading == null ||
+                      item.testing == null
+                        ? ""
+                        : (item.closing || 0) -
+                          (item.opMeterReading || 0) -
+                          (item.testing || 0)
+                    }
+                    className="text-center w-32"
+                    readOnly
+                  />
+                </td>
 
-                      <td className=" text-white">
-                        <input
-                          value={item.closing}
-                          className="text-center bg-blue-600 w-32"
-                          onChange={(e) => item.closing = e.target.value}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          value={item.sale}
-                          className="text-center w-32"
-                          onChange={(e) => item.sale = e.target.value}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="bg-blue-700 text-white w-32"
-                          value={item.testing}
-                          onChange={(e)=> item.testing = e.target.value}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          value={item.saleAct}
-                          onChange={(e) =>item.testing = e.target.value}
-                          className="text-center w-32"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          value={item.rate}
-                          className="text-center w-32"
-                          onChange={(e) => (item.rate = e.target.value)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="text-center w-40"
-                          value={item.amount}
-                          onChange={(e) => (item.amount = e.target.value)}
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                  <br />
-                  <tr>
-                    <th className="tablebg"></th>
-                    <th className="tablebg"> </th>
-                    <th className="tablebg"> </th>
+                <td>
+                  <input
+                    disabled
+                    style={{ display: "none" }}
+                    value={(item.rate = ms1Rate)}
+                    className="text-center w-32 bg-rose-500"
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    style={{ display: "none" }}
+                    className="text-center w-40"
+                    value={(item.saleActTotal = totals.saleActTotal)}
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    hidden
+                    className="text-center w-40"
+                    value={(item.totalAmount = totals.saleActTotal * ms1Rate)}
+                    readOnly
+                  />
+                </td>
+              </tr>
+            ))}
+            <tr className="tablebg">
+              <th className="text-center" colSpan="4">
+                Total
+              </th>
+              <th className="text-center">{totals.saleTotal}</th>
+              <th className="text-center">{totals.testingTotal}</th>
+              <th className="text-center">{totals.saleActTotal}</th>
+              <th className="text-center">{ms1Rate}</th>
+              <th className="text-center"></th>
+              <th className="text-center">{totals.saleActTotal * ms1Rate}</th>
+            </tr>
+          </tbody>
+        </table>
+        <div className="flex justify-between">
+          <button>
 
-                    <th className="tablebg">Total (=)</th>
-                    <th className="tablebg">
-                      <span id="saletotalspeed">4325</span> (-)
-                    </th>
-                    <th className="tablebg">
-                      <span id="testingtotalspeed">0</span> (=)
-                    </th>
-                    <th className="tablebg">
-                      <span id="asaletotalspeed">0</span> (x)
-                    </th>
-                    <th className="tablebg">
-                      <span id="ratetotalspeed">
-                      </span>{" "}
-                      (=)
-                    </th>
-                    <th className="tablebg">
-                      <span id="amounttotalspeed">0.00</span>
-                    </th>
-                  </tr>
-                  <button onClick={handleSave} className="bg-blue-600 flex justify-end mt-3 text-white px-3 py-1  rounded-lg">
-                    Save
-                  </button>
-                </tbody>
-              </table>
-            </div>
-     
-          </table>
-        </section>
+          </button>
+          <button
+            className="bg-blue-600 px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold"
+            onClick={handleSave}
+          >
+            Save 
+          </button>
+        </div>
+      </section>
+            {/* ms1 end */}
 
-   
-          {/* ms-1 end */}
- {/* /////////////////////////////////////////////////////////////     */}
-          {/* ms-2 start */}
-          <section className="ms-2">
-          <h4 className="bg-slate-700 text-xl text-white p-2  mb-3 rounded-md  uppercase text-center font-bold">
-            product name : ms-2(Speed)
-          </h4>
+               {/* ms2 start */}
+      <section className="ms-2">
+        <div className="flex">
+          <h1 className="block text-2xl tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
+            ms-2
+          </h1>
+        </div>
+        <table className="w-[100%]">
+          <thead className="tablebg py-2">
+            <tr className="text-center font-bold py-2">
+              <th>Nozzle ID</th>
+              <th>Side</th>
+              <th>Opening</th>
+              <th>Closing</th>
+              <th>Sale</th>
+              <th>Testing</th>
+              <th>Actual Sale</th>
+              <th>Rate</th>
+              <th></th>
+              <th>T Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ms2Readings.map((item2, index) => (
+              <tr
+                key={item2._id}
+                className="font-bold border-2 border-slate-300"
+              >
+                <td>
+                  <input
+                    className="text-center w-32"
+                    value={item2.nozzleProduct}
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    className="text-center w-20"
+                    value={item2.sideNo}
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    className="text-center w-32"
+                    value={item2.opMeterReading}
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    value={item2.closing || ""}
+                    className="text-center bg-blue-600 w-32"
+                    onChange={(e) => {
+                      const newClosing = parseFloat(e.target.value) || 0;
+                      const updatedReadings = [...ms2Readings];
+                      updatedReadings[index].closing = newClosing;
 
-          <table class="table">
-            <div>
-              <table className="">
-                <thead className="py-2">
-                  <tr className="text-center font-bold py-2">
-                    <th className="tablebg">side</th>
-                    <th className="tablebg">nozzleId</th>
-                    <th className="tablebg">opening</th>
+                      // Calculate the sale if both closing and opMeterReading are present
+                      if (newClosing && item2.opMeterReading !== undefined) {
+                        updatedReadings[index].sale2 =
+                          newClosing - item2.opMeterReading;
+                      } else {
+                        updatedReadings[index].sale2 = ""; // Set sale as empty string initially
+                      }
 
-                    <th className="tablebg">closing</th>
+                      setMs2Readings(updatedReadings);
+                    }}
+                  />
+                </td>
+                <td>
+                  <input
+                    value={item2.sale2 !== undefined ? item2.sale2: ""}
+                    className="text-center w-32"
+                    readOnly
+                  />
+                </td>
 
-                    <th className="tablebg">Sale</th>
-                    <th className="tablebg">Testing</th>
-                    <th className="tablebg">Actual sale</th>
-                    <th className="tablebg">Rate</th>
-                    <th className="tablebg">Total Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {ms2Readings.map((item) => (
-                    <tr
-                      key={item._id}
-                      className="font-bold border-2 border-slate-300"
-                    >
-                      <td>
-                        <input
-                          className="text-center w-20"
-                          value={item.sideNo}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="text-center w-32"
-                          value={item.nozzleProduct}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="text-center w-32"
-                          value={item.opMeterReading}
-                        />
-                      </td>
+                <td>
+                  <input
+                    className="bg-blue-700 text-center text-white w-32"
+                    value={item2.testing || ""}
+                    type="number"
+                    onChange={(e) => {
+                      const newTesting = parseFloat(e.target.value) || 0;
+                      const updatedReadings = [...ms2Readings];
+                      updatedReadings[index].testing = newTesting;
+                      setMs2Readings(updatedReadings);
+                    }}
+                  />
+                </td>
 
-                      <td className=" text-white">
-                        <input
-                          value={item.closing}
-                          className="text-center bg-blue-600 w-32"
-                          onChange={(e) => (item.closing = e.target.value)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          value={item.sale}
-                          className="text-center w-32"
-                          onChange={(e) => (item.sale = e.target.value)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="bg-blue-700 text-white w-32"
-                          value={item.testing}
-                          onChange={(e) => (item.testing = e.target.value)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          value={item.saleAct}
-                          onChange={(e) => (item.saleAct = e.target.value)}
-                          className="text-center w-32"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          value={item.rate}
-                          className="text-center w-32"
-                          onChange={(e) => (item.rate = e.target.value)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="text-center w-40"
-                          value={item.amount}
-                          onChange={(e) => (item.amount = e.target.value)}
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                  <br />
-                  <tr>
-                    <th className="tablebg"></th>
-                    <th className="tablebg"> </th>
-                    <th className="tablebg"> </th>
+                <td>
+                  <input
+                    value={
+                      item2.closing == null ||
+                      item2.opMeterReading == null ||
+                      item2.testing == null
+                        ? ""
+                        : (item2.closing || 0) -
+                          (item2.opMeterReading || 0) -
+                          (item2.testing || 0)
+                    }
+                    className="text-center w-32"
+                    readOnly
+                  />
+                </td>
 
-                    <th className="tablebg">Total (=)</th>
-                    <th className="tablebg">
-                      <span id="saletotalspeed">4325</span> (-)
-                    </th>
-                    <th className="tablebg">
-                      <span id="testingtotalspeed">0</span> (=)
-                    </th>
-                    <th className="tablebg">
-                      <span id="asaletotalspeed">0</span> (x)
-                    </th>
-                    <th className="tablebg">
-                      <span id="ratetotalspeed">
-                      </span>{" "}
-                      (=)
-                    </th>
-                    <th className="tablebg">
-                      <span id="amounttotalspeed">0.00</span>
-                    </th>
-                  </tr>
-                  <button className="bg-blue-600 mt-3 text-white px-3 py-1 rounded-lg">
-                    Save
-                  </button>
-                </tbody>
-              </table>
-            </div>
-   
-          </table>
-        </section>
-        {/* ms-2 end */}
-   
- {/* /////////////////////////////////////////////////////////////     */}
+                <td>
+                  <input
+                    disabled
+                    style={{ display: "none" }}
+                    value={(item2.rate = ms2Rate)}
+                    className="text-center w-32 bg-rose-500"
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    style={{ display: "none" }}
+                    className="text-center w-40"
+                    value={(item2.saleActTotal2 = totals2.saleActTotal2)}
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    hidden
+                    className="text-center w-40"
+                    value={(item2.totalAmount = totals2.saleActTotal2 * ms2Rate)}
+                    readOnly
+                  />
+                </td>
+              </tr>
+            ))}
+            <tr className="tablebg">
+              <th className="text-center" colSpan="4">
+                Total
+              </th>
+              <th className="text-center">{totals2.saleTotal2}</th>
+              <th className="text-center">{totals2.testingTotal2}</th>
+              <th className="text-center">{totals2.saleActTotal2}</th>
+              <th className="text-center">{ms2Rate}</th>
+              <th className="text-center"></th>
+              <th className="text-center">{totals2.saleActTotal2 * ms2Rate}</th>
+            </tr>
+          </tbody>
+        </table>
+        <div className="flex justify-between">
+          <button></button>
+        <button
+            className="bg-blue-600 px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold"
+            onClick={handleSave}
+          >
+            Save 
+          </button>
+        </div>
+      </section>
+            {/* ms2 end */}
 
-        {/* hsd -start  */}
-        <section className="hsd">
-          <h4 className="bg-slate-700 text-xl text-white p-2  mb-3 rounded-md  uppercase text-center font-bold">
-            product name : HSD
-          </h4>
+                   {/* hsd start */}
+      <section className="ms-2">
+        <div className="flex">
+          <h1 className="block text-2xl tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
+            HSD
+          </h1>
+        </div>
+        <table className="w-[100%]">
+          <thead className="tablebg py-2">
+            <tr className="text-center font-bold py-2">
+              <th>Nozzle ID</th>
+              <th>Side</th>
+              <th>Opening</th>
+              <th>Closing</th>
+              <th>Sale</th>
+              <th>Testing</th>
+              <th>Actual Sale</th>
+              <th>Rate</th>
+              <th></th>
+              <th>T Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {hsdReadings.map((item2, index) => (
+              <tr
+                key={item2._id}
+                className="font-bold border-2 border-slate-300"
+              >
+                <td>
+                  <input
+                    className="text-center w-32"
+                    value={item2.nozzleProduct}
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    className="text-center w-20"
+                    value={item2.sideNo}
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    className="text-center w-32"
+                    value={item2.opMeterReading}
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    value={item2.closing || ""}
+                    className="text-center bg-blue-600 w-32"
+                    onChange={(e) => {
+                      const newClosing = parseFloat(e.target.value) || 0;
+                      const updatedReadings = [...hsdReadings];
+                      updatedReadings[index].closing = newClosing;
 
-          <table class="table">
-            <div>
-              <table className="">
-                <thead className="py-2">
-                  <tr className="text-center font-bold py-2">
-                    <th className="tablebg">side</th>
-                    <th className="tablebg">nozzleId</th>
-                    <th className="tablebg">opening</th>
+                      // Calculate the sale if both closing and opMeterReading are present
+                      if (newClosing && item2.opMeterReading !== undefined) {
+                        updatedReadings[index].sale3 =
+                          newClosing - item2.opMeterReading;
+                      } else {
+                        updatedReadings[index].sale3 = ""; // Set sale as empty string initially
+                      }
 
-                    <th className="tablebg">closing</th>
+                      setHsdReadings(updatedReadings);
+                    }}
+                  />
+                </td>
+                <td>
+                  <input
+                    value={item2.sale3 !== undefined ? item2.sale3: ""}
+                    className="text-center w-32"
+                    readOnly
+                  />
+                </td>
 
-                    <th className="tablebg">Sale</th>
-                    <th className="tablebg">Testing</th>
-                    <th className="tablebg">Actual sale</th>
-                    <th className="tablebg">Rate</th>
-                    <th className="tablebg">Total Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {hsdReadings.map((item) => (
-                    <tr
-                      key={item._id}
-                      className="font-bold border-2 border-slate-300"
-                    >
-                      <td>
-                        <input
-                          className="text-center w-20"
-                          value={item.sideNo}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="text-center w-32"
-                          value={item.nozzleProduct}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="text-center w-32"
-                          value={item.opMeterReading}
-                        />
-                      </td>
+                <td>
+                  <input
+                    className="bg-blue-700 text-center text-white w-32"
+                    value={item2.testing || ""}
+                    type="number"
+                    onChange={(e) => {
+                      const newTesting = parseFloat(e.target.value) || 0;
+                      const updatedReadings = [...hsdReadings];
+                      updatedReadings[index].testing = newTesting;
+                      setHsdReadings(updatedReadings);
+                    }}
+                  />
+                </td>
 
-                      <td className=" text-white">
-                        <input
-                          value={item.closing}
-                          className="text-center bg-blue-600 w-32"
-                          onChange={(e) => (item.closing = e.target.value)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          value={item.sale}
-                          className="text-center w-32"
-                          onChange={(e) => (item.sale = e.target.value)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="bg-blue-700 text-white w-32"
-                          value={item.testing}
-                          onChange={(e) => (item.testing = e.target.value)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          value={item.saleAct}
-                          onChange={(e) => (item.saleAct = e.target.value)}
-                          className="text-center w-32"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          value={item.rate}
-                          className="text-center w-32"
-                          onChange={(e) => (item.rate = e.target.value)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="text-center w-40"
-                          value={item.amount}
-                          onChange={(e) => (item.amount = e.target.value)}
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                  <br />
-                  <tr>
-                    <th className="tablebg"></th>
-                    <th className="tablebg"> </th>
-                    <th className="tablebg"> </th>
+                <td>
+                  <input
+                    value={
+                      item2.closing == null ||
+                      item2.opMeterReading == null ||
+                      item2.testing == null
+                        ? ""
+                        : (item2.closing || 0) -
+                          (item2.opMeterReading || 0) -
+                          (item2.testing || 0)
+                    }
+                    className="text-center w-32"
+                    readOnly
+                  />
+                </td>
 
-                    <th className="tablebg">Total (=)</th>
-                    <th className="tablebg">
-                      <span id="saletotalspeed">4325</span> (-)
-                    </th>
-                    <th className="tablebg">
-                      <span id="testingtotalspeed">0</span> (=)
-                    </th>
-                    <th className="tablebg">
-                      <span id="asaletotalspeed">0</span> (x)
-                    </th>
-                    <th className="tablebg">
-                      <span id="ratetotalspeed">
-                      </span>{" "}
-                      (=)
-                    </th>
-                    <th className="tablebg">
-                      <span id="amounttotalspeed">0.00</span>
-                    </th>
-                  </tr>
-                  <button className="bg-blue-600 mt-3 text-white px-3 py-1 rounded-lg">
-                    Save
-                  </button>
-                </tbody>
-              </table>
-            </div>
-   
-          </table>
-        </section>
-        {/* hsd -end  */}
-      </main>
-    </>
+                <td>
+                  <input
+                    disabled
+                    style={{ display: "none" }}
+                    value={(item2.rate = ms2Rate)}
+                    className="text-center w-32 bg-rose-500"
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    style={{ display: "none" }}
+                    className="text-center w-40"
+                    value={(item2.saleActTotal2 = totals2.saleActTotal2)}
+                    readOnly
+                  />
+                </td>
+                <td>
+                  <input
+                    hidden
+                    className="text-center w-40"
+                    value={(item2.totalAmount = totals2.saleActTotal2 * ms2Rate)}
+                    readOnly
+                  />
+                </td>
+              </tr>
+            ))}
+            <tr className="tablebg">
+              <th className="text-center" colSpan="4">
+                Total
+              </th>
+              <th className="text-center">{totals3.saleTotal3}</th>
+              <th className="text-center">{totals3.testingTotal3}</th>
+              <th className="text-center">{totals3.saleActTotal3}</th>
+              <th className="text-center">{hsdRate}</th>
+              <th className="text-center"></th>
+              <th className="text-center">{totals3.saleActTotal3 * hsdRate}</th>
+            </tr>
+          </tbody>
+        </table>
+        <div className="flex justify-between">
+          <button></button>
+        <button
+            className="bg-blue-600 px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold"
+            onClick={handleSave}
+          >
+            Save 
+          </button>
+        </div>
+      </section>
+            {/* hsd end */}
+    </main>
   );
 }

@@ -1,486 +1,448 @@
-import React from 'react'
-import '../css/Tank.css'
-import axios from 'axios';
-import  {useState, useEffect} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-export default function Petrol_Invoice_Feeding({dbpath1}) {
-  
-    const [tanks, setTanks] = useState([]);
-    const [feedings, setFeedings] = useState([]);
-    const [machinen, setMachinen] = useState([]);
-    const [ProductData, setProductData] = useState([]);
-    
-    const [nozzle_name, setNozzle_name] = useState('');
-    
-    const [machine, setMachine] = useState('');
-    const [smachine, setSMachine] = useState('');
-    const [side, setSide] = useState('');
-    const [nozzle_no, setNozzle_no] = useState('');
-    const [op_meter_reading, setOp_meter_reading] = useState('');
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import "../css/Tank.css";
+import { MdDelete } from "react-icons/md";
+const initValue = {
+  serialNumber: "",
+  invoiceNumber: "",
+  product: "",
+  klQty: "",
+  Value: "",
+  productAmount: "",
+  vatPercent: "",
+  vatlst: "",
+  totalAmount: "",
+};
 
-    const [sr, setSr] = useState('');
-    const [date, setDate] = useState('');
-    const [invoice_no, setInvoiceNo] = useState('');
-    const [product, setProduct] = useState('');
-    const [Qty, setQty] = useState('');
-    const [rate, setRate] = useState('');
-    const [value, setValue] = useState('');
-    const [taxable_amount, setTaxableAmount] = useState('');
-    const [ProductAmt, setProductAmt] = useState('');
-    const [vat, setVat] = useState('');
-    const [vatlst, setVatlst] = useState('');
-    const [cess, setCess] = useState('');
-    const [tcs, setTCS] = useState('');
-    const [tamount, setTamount] = useState('');
-    const [productName, setProductName] = useState('');
+export default function Petrol_Invoice_Feeding() {
+  const [feedings, setFeedings] = useState([]);
+  const [saveData, setSaveData] = useState(initValue);
+  const [data, setData] = useState([]);
+  const [filterData, setFilterData] = useState({});
+  const [petrolInvoice, setPetrolInvoice] = useState([]);
 
-    const loadProductData = async () => {
-        let query="SELECT * FROM `rwt_petrol_product`;";
-         
-           /*  alert(query); */
-            const url = dbpath1 + 'getDynamic.php';
-            let fData = new FormData();
-
-            fData.append('query', query);
-
-            try {
-                const response = await axios.post(url, fData);
-                
-                if (response && response.data) {
-                    
-                    if (response.data.phpresult) {
-                        setProductData(response.data.phpresult); 
-                        console.log(response.data.phpresult);
-                        
-                    }
-                }
-            } catch (error) {
-                console.log("Please Select Proper Input");
-            } 
+  const handleSelect = (e) => {
+    const finalProduct = data?.filter(
+      (item) => item.ProductName === e.target.value
+    );
+    if (finalProduct.length > 0) {
+      setFilterData(finalProduct[0]);
+      setSaveData((prevFormData) => ({
+        ...prevFormData,
+        product: e.target.value,
+        rate: finalProduct[0].rate,
+        taxamount: finalProduct[0].taxamount,
+        vat: finalProduct[0].vat,
+        cess: finalProduct[0].cess,
+        tcs: finalProduct[0].tcs,
+      }));
     }
+  };
 
-    // const loadInvoiceFeeding = async () => {
-    //     let query="SELECT * FROM `rwt_petrol_invoice_feeding` where date ='"+datecache+"';;";
-    //     /*  
-    //         alert(query); */
-    //         const url = dbpath1 + 'getDynamic.php';
-    //         let fData = new FormData();
+  const fetchPetrol = () => {
+    axios
+      .get("http://localhost:4000/petrol")
+      .then((res) => {
+        if (res.data) {
+          setData(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
-    //         fData.append('query', query);
+  useEffect(() => {
+    fetchPetrol();
+  }, []);
 
-    //         try {
-    //             const response = await axios.post(url, fData);
-                
-    //             if (response && response.data) {
-                    
-    //                 if (response.data.phpresult) {
-    //                     setFeedings(response.data.phpresult); 
-    //                     console.log(response.data.phpresult);
-                        
-    //                 }
-    //             }
-    //         } catch (error) {
-    //             console.log("Please Select Proper Input");
-    //         } 
-    //   }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSaveData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
 
-    //   const loadtamount = async () => {
-    //     let query="SELECT sum(total_amount) as ftamount FROM `rwt_petrol_invoice_feeding` where date ='"+datecache+"';";
-    //         /* alert(query); */
-    //         const url = dbpath1 + 'getDynamic.php';
-    //         let fData = new FormData();
+  const calculateValues = (formData, filterData) => {
+    const { klQty, vatPercent } = formData;
+    const { rate, taxamount, cess, tcs } = filterData;
 
-    //         fData.append('query', query);
+    const Value = (klQty * rate).toFixed(1);
+    const productAmount = (parseFloat(Value) + parseFloat(taxamount) * parseFloat(saveData.klQty)).toFixed(
+      1
+    );
+    const vatlst = (productAmount  * (vatPercent / 100)).toFixed(1);
+    const totalAmount = (
+      parseFloat(productAmount) +
+      parseFloat(vatlst) +
+      parseFloat(cess) * saveData.klQty +
+      parseFloat(tcs)
+    ).toFixed(1);
+console.log("total amount",totalAmount);
 
-    //         try {
-    //             const response = await axios.post(url, fData);
-                
-    //             if (response && response.data) {
-                    
-    //                 if (response.data.phpresult) {
-    //                     document.getElementById('tamountid').innerHTML = response.data.phpresult[0]['ftamount'];
-    //                     console.log(response.data.phpresult[0]['ftamount']);
-                        
-    //                 }
-    //             }
-    //         } catch (error) {
-    //             console.log("Please Select Proper Input");
-    //         } 
-    //   }
+    return {
+      Value: parseFloat(Value),
+      productAmount: parseFloat(productAmount),
+      vatlst: parseFloat(vatlst),
+      totalAmount: parseFloat(totalAmount),
+    };
+  };
 
-    //   const loadMachine = async () => {
-    //     const result1 = await axios.get(dbpath1+"getMachine.php");
-    //     setMachinen(result1.data.phpresult);
-    //     console.log(result1.data.phpresult); 
-    //   }
-  
-    const navigate = useNavigate();
+  useEffect(() => {
+    if (saveData.klQty && filterData.rate) {
+      const calculatedValues = calculateValues(saveData, filterData);
+      setSaveData((prevFormData) => ({
+        ...prevFormData,
+        ...calculatedValues,
+      }));
+    }
+  }, [saveData.klQty, saveData.vatPercent, filterData]);
 
-    // const onAdd = () =>{
-      
-    //           const url = dbpath1+'delTank.php';
-  
-    //           var query = "INSERT INTO `rwt_petrol_invoice_feeding` (`feeding_id`, `sno`, `date`, `invoice_no`, `product`, `quantity`, `rate`, `value`, `taxable_value`, `product_amount`, `vat`, `vatlst`, `cess`, `tcs`, `total_amount`) VALUES (NULL, '"+sr+"', '"+datecache+"', '"+invoice_no+"', '"+productName+"', '"+Qty+"', '"+rate+"', '"+value+"', '"+taxable_amount+"', '"+ProductAmt+"', '"+vat+"', '"+vatlst+"', '"+cess+"', '"+tcs+"', '"+tamount+"');";
-  
-    //           let fData = new FormData();
-    //           fData.append('query', query);
-    //           axios.post(url, fData)
-    //             .then(response =>{ alert(response.data); window.location.reload(); setCacheData();})
-    //             .catch(error => {
-    //               console.log(error.toJSON()); 
-    //         }); 
-        
-    // }
+  const handleSubmit = () => {
+    const calculatedValues = calculateValues(saveData, filterData);
+    const finalData = {
+      ...saveData,
+      ...filterData,
+      ...calculatedValues,
+      serialNumber: petrolInvoice.length + 1,
+      klQty: parseFloat(saveData.klQty),
+      vatPercent: parseFloat(saveData.vatPercent),
+      Value: parseFloat(calculatedValues.Value),
+      productAmount: parseFloat(calculatedValues.productAmount),
+      vatlst: parseFloat(calculatedValues.vatlst),
+      totalAmount: parseFloat(calculatedValues.totalAmount),
+    };
+    console.log("fiii", finalData);
+    axios
+      .post("http://localhost:4000/petrolInvoiceFeeding/create", finalData)
+      .then((res) => {
+        alert(res.data.msg);
+        handleFetchData();
+        setSaveData(initValue); // Reset the form
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
-//     const onDelete = async (index) => {
-//       let query="DELETE FROM `rwt_petrol_invoice_feeding` WHERE feeding_id = "+index+";";
-    
-//       /* alert(query); */
-//       const url = dbpath1+'delTank.php';
-//       let fData = new FormData();
-//       fData.append('query', query);
-      
-//       axios.post(url, fData)
-//           .then(response =>{ alert(response.data); window.location.reload();})
-//           .catch(error => {
-//           console.log(error.toJSON());
-//           });
-        
-//     //   loadInvoiceFeeding();
-      
-//   }
+  const handleFetchData = () => {
+    axios
+      .get("http://localhost:4000/petrolInvoiceFeeding")
+      .then((res) => {
+        setPetrolInvoice(res.data.petrolInvoice);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
-//   const calc = (qty) => {
-//     const selectedProduct = ProductData.find(product1 => product1.product_id ===product);
-//     let temp1 = selectedProduct.rate;
-//     setProductName(selectedProduct.product_name);
-//     setRate(selectedProduct.rate);
-//     let temp2 = qty * selectedProduct.rate;
-//     setValue(temp2.toFixed(2));
-//     setTaxableAmount(selectedProduct.t_amount*qty);
-//     let temp3  = temp2+(selectedProduct.t_amount*qty);
-//     setProductAmt(temp3.toFixed(2));
-//     setVat(selectedProduct.vat);
-//     let temp4 = parseFloat(((temp3/100)*selectedProduct.vat)+temp3.toFixed(2));
-//     setVatlst(temp4.toFixed(2));
-//     let temp5 = selectedProduct.cess*qty;
-//     setCess(temp5.toFixed(2));
-//     setTCS(selectedProduct.tcs);
-//     let temp6 = parseFloat(temp3.toFixed(2)) + parseFloat(temp4.toFixed(2)) + parseFloat(temp5.toFixed(2));
-//     setTamount(temp6.toFixed(2));
+  const topScrollRef = useRef(null);
+  const tableScrollRef = useRef(null);
 
-// } 
+  const handleScroll = (sourceRef, targetRef) => {
+    if (sourceRef.current && targetRef.current) {
+      targetRef.current.scrollLeft = sourceRef.current.scrollLeft;
+    }
+  };
 
- 
-// function convertDateFormat(inputDate) {
-//     // Split the string into an array [yyyy, mm, dd]
-//     let parts = inputDate.split('-');
+  const handleDelete = async (id) => {
+    const res = await axios.delete(
+      `http://localhost:4000/petrolInvoiceFeeding/delete/${id}`
+    );
+    if (res.data.success) {
+      alert(res.data.message);
+      handleFetchData();
+    }
+  };
 
-//     // Rearrange the array and join it back to a string
-//     return parts[2] + '-' + parts[1] + '-' + parts[0];
-// }
+  const totalSum = petrolInvoice.reduce((accumulator, item) => {
+    return accumulator + (item.totalAmount || 0); // Default to 0 if totalAmount is undefined or null
+  }, 0);
+console.log("ttt",totalSum);
 
-//   const displaySelectedProduct = async (index) => {
-//     let query="select * FROM `pupc_machines` WHERE dispensing_unit_no = '"+index+"';";
-//    /*  
-//     alert(query); */
-//     const url = dbpath1 + 'getDynamic.php';
-//     let fData = new FormData();
-//     fData.append('query', query);
+  useEffect(() => {
+    handleFetchData();
+  }, []);
 
-//     try {
-//         const response = await axios.post(url, fData);
-        
-//         if (response && response.data) {
-            
-//             if (response.data.phpresult) {
-//                 setSMachine(response.data.phpresult); 
-//                 console.log(response.data.phpresult);
-//                 document.getElementById('ddun').innerHTML=response.data.phpresult[0]['dispensing_unit_no'];
-//                 document.getElementById('dmake').innerHTML=response.data.phpresult[0]['make'];
-//                 document.getElementById('dserial_no').innerHTML=response.data.phpresult[0]['serial_no'];
-//                 document.getElementById('dconnected_tanks').innerHTML=response.data.phpresult[0]['connected_tanks'];
-//                 document.getElementById('dproduct').innerHTML=response.data.phpresult[0]['product'];
-//                 document.getElementById('dnozzles_in_mpd').innerHTML=response.data.phpresult[0]['nozzles_in_mpd'];
-//             }
-//         }
-//     } catch (error) {
-//         console.log("Please Select Proper Input");
-//     }
-// }
-
-// const getCacheData = () => {
-   
-//     const ino = Cookies.get('petrolInoviceNo');
-//     setInvoiceNo(ino);
-// }
-
-// const setCacheData = () => {
-    
-//     Cookies.set('petrolInoviceNo', invoice_no);
-//     Cookies.set('userLoggedIn', 'true');
-// }
-
-//     useEffect(() => {
-//         loadProductData();
-//         loadInvoiceFeeding();
-//         loadMachine();
-//         loadtamount();
-//         setDate(datecache);
-
-//         getCacheData();
-        
-//       }, []); 
-//       const datecache = Cookies.get('dateCookies');
-    return (
+  return (
     <>
-        <div className='tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded'>  
-        <span style={{fontSize:'22px'}}> Date : </span>
-        <h2 className='mt-3 text-center'>Petrol Invoice Feeding</h2>
-            <div>
-                <br></br>
-                <table class="table">
-                    <thead>
-                        <tr className='table-secondary'>
-                           
-                            <th className='tablebg' >S.No.</th>
-                            {/* <th className='tablebg' >Date</th> */}
-                            <th className='tablebg' >Invoice No.</th>
-                            <th className='tablebg' >Product</th>
-                            <th className='tablebg' >KL/Qty</th>
-                            <th className='tablebg' >(X)</th>
-                            <th className='tablebg' >Rate/Unit</th>
-                            <th className='tablebg' >(=)</th>
-                            <th className='tablebg' >(Value)</th>
-                            <th className='tablebg' >(+)</th>
-                            <th className='tablebg' >Taxable Amount</th>
-                            <th className='tablebg' >(=)</th>
-                            <th className='tablebg' >Product Amount</th>
-                        </tr>   
-                    </thead>
-                    <tbody>
-                        <tr>    
-                            <td className='bigFontWeight' >
-                                <input type="text" class="form-control bigFontWeight editableInput" placeholder="S.No." onChange={(e) =>  setSr(e.target.value)} />
-                            </td>
-                         {/*    <td className='bigFontWeight' >
-                                <input type="Date" value={datecache} class="form-control bigFontWeight" placeholder="S.No." onChange={(e) => setDate(e.target.value)} />
-                            </td> */}
-                            <td className='bigFontWeight' >
-                                <input type="text" class="form-control bigFontWeight editableInput" value={invoice_no} placeholder="Invoice no" onChange={(e) => setInvoiceNo(e.target.value)} />
-                            </td>
-                            <td >
-                            
-                                <select style={{width:'120px'}} class="form-select editableInput bigFontWeight" aria-label="Default select example" value={product} /* onChange={displaySelectedProduct(product)} */ onChange={(e) => setProduct(e.target.value)}>
-                                <option selected>- Product -</option>
-                                    {ProductData.map((rest) => (
-                                        <option value={rest.product_id}>{rest.product_name}</option>
-                                    ))}
-                                </select>
-                               
-                            </td>
-                            <td className='bigFontWeight' >
-                                <input type="text" class=" editableInput form-control bigFontWeight"  placeholder="KL/Qty" 
-                                 />
-                            </td>
-                            <td className='bigFontWeight' >
-                               (X)
-                            </td>
-                            <td className='bigFontWeight' >
-                                <input type="text" class="form-control bigFontWeight" value={rate} placeholder="Rate/Unit" onChange={(e) => setNozzle_name(e.target.value)} disabled/>
-                            </td>
-                            <td className='bigFontWeight' >
-                                (=)
-                            </td>
-                            <td className='bigFontWeight' >
-                                <input type="text" class="form-control bigFontWeight" value={value} placeholder="Value" onChange={(e) => setNozzle_name(e.target.value)} disabled/>
-                            </td>
-                            <td className='bigFontWeight' >(+)</td>
-                            <td><input type="text" class="form-control bigFontWeight" value={taxable_amount} placeholder="Taxable amount" onChange={(e) => setNozzle_no(e.target.value)} disabled/></td>
-                            <td className='bigFontWeight' >(=)</td>
-                             <td className='bigFontWeight' >
-                                <input type="text" class="form-control bigFontWeight" value={ProductAmt} placeholder="Amount" onChange={(e) => setNozzle_name(e.target.value)} disabled/>
-                            </td>
-                        </tr>
-                        
-                    </tbody>
-                </table>  
-                <br></br>
-                <table class="table">
-                    <thead>
-                        <tr className='table-secondary'>
-                            <th className='tablebg' >(=)</th>
-                            <th className='tablebg' >VAt %</th>
-                            <th className='tablebg' >VAT/LST</th>
-                            <th className='tablebg' >(+)</th>
-                            <th className='tablebg' >CESS</th>
-                            <th className='tablebg' >(+)</th>
-                            <th className='tablebg' >TCS</th>
-                            <th className='tablebg' >(=)</th>
-                            <th className='tablebg' >T. AMT</th>
-                           
-                        </tr>
-                    </thead>
-                    <tbody>
-                                <tr>
-                                <td className='bigFontWeight' >
-                                (=)
-                            </td>
-                            <td className='bigFontWeight' >
-                                <input type="text" class="form-control bigFontWeight" value={vat} placeholder="VAT %" onChange={(e) => setNozzle_name(e.target.value)} disabled/>
-                            </td>
-                            <td className='bigFontWeight' > 
-                                <input type="text" class="form-control bigFontWeight" value={vatlst} placeholder="VAT/LST" onChange={(e) => setNozzle_name(e.target.value)} disabled/>
-                            </td>
-                            <td className='bigFontWeight' >
-                                (+)
-                            </td>
-                            <td className='bigFontWeight' >
-                                <input type="text" class="form-control bigFontWeight" value={cess} placeholder="CESS" onChange={(e) => setNozzle_name(e.target.value)} disabled/>
-                            </td>
-                            <td className='bigFontWeight' >
-                                (+)
-                            </td>
-                            
-                            <td className='bigFontWeight' >
-                                <input type="text" class="form-control bigFontWeight" value={tcs} placeholder="TCS" onChange={(e) => setNozzle_name(e.target.value)} disabled/>
-                            </td>
-                            <td className='bigFontWeight' >
-                                (=)
-                                 
-                            </td>
-                            <td className='bigFontWeight' >
-                                <input type="text" class="form-control bigFontWeight" value={tamount} placeholder="T Amount" onChange={(e) => setNozzle_name(e.target.value)} disabled/>
-                            </td>   
-                        </tr>
-                    </tbody>
-                </table>    
-                <center><button type="button" class="btn btn-primary " >Add</button></center>
-            </div>
-            <br></br>
-            <div>
-                <br></br>
-                <table class="table">
-                    <thead>
-                        <tr className='table-secondary'>
-                           
-                            <th className='tablebg' >S.No.</th>
-                            {/* <th className='tablebg' >Date</th> */}
-                            <th className='tablebg' >Invoice No.</th>
-                            <th className='tablebg' >Product</th>
-                            <th className='tablebg' >KL/Qty</th>
-                            <th className='tablebg' >(X)</th>
-                            <th className='tablebg' >Rate/Unit</th>
-                            <th className='tablebg' >(=)</th>
-                            <th className='tablebg' >(Value)</th>
-                            <th className='tablebg' >(+)</th>
-                            <th className='tablebg' >Taxable Amount</th>
-                            <th className='tablebg' >(=)</th>
-                            <th className='tablebg' >Product Amount</th>
-                        </tr>   
-                    </thead>
-                    <tbody>
-                    {feedings.map((res,index)=>
-                        <tr className='hovereffect'>    
-                            <td className='bigFontWeight' >
-                                {res.sno}
-                            </td>
-                          {/*   <td className='bigFontWeight' >
-                                {res.date}
-                            </td> */}
-                            <td className='bigFontWeight' >
-                                {res.invoice_no}
-                            </td>
-                            <td className='bigFontWeight' >
-                                {res.product}
-                               
-                            </td>
-                            <td className='bigFontWeight' >
-                                {res.quantity}
-                            </td>
-                            <td className='bigFontWeight' >
-                               (X)
-                            </td>
-                            <td className='bigFontWeight' >
-                                {res.rate}
-                            </td>
-                            <td className='bigFontWeight' >
-                                (=)
-                            </td>
-                            <td className='bigFontWeight' >
-                                {res.value}
-                            </td>
-                            <td className='bigFontWeight' >(+)</td>
-                            <td className='bigFontWeight'  >{res.taxable_value}</td>
-                            <td className='bigFontWeight' >(=)</td>
-                             <td className='bigFontWeight' >
-                             {res.rate}
-                            </td>
-                        </tr>
-                    )}
-                    </tbody>
-                </table>  
-                <br></br>
-                <table class="table">
-                    <thead>
+      <div className="tankMainDiv shadow-lg  bg-body-tertiary rounded">
+        <h2 className=" text-xl font-bold mb-1">Petrol Invoice Feeding</h2>
+        <div>
+          <table className="table">
+            <thead>
+              <tr className="">
+                <th className="">S.No.</th>
+                <th className="">Invoice No.</th>
+                <th className="">Product</th>
+                <th className="">KL/Qty</th>
 
-                        <tr className='table-secondary'>
-                            <th className='tablebg' >(=)</th>
-                            <th className='tablebg' >VAt %</th>
-                            <th className='tablebg' >VAT/LST</th>
-                            <th className='tablebg' >(+)</th>
-                            <th className='tablebg' >CESS</th>
-                            <th className='tablebg' >(+)</th>
-                            <th className='tablebg' >TCS</th>
-                            <th className='tablebg' >(=)</th>
-                            <th className='tablebg' >T. AMT</th>
-                            <th className='tablebg' >Action</th>
-                           
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {feedings.map((res,index)=>
-                                <tr className='hovereffect'>
-                                <td className='bigFontWeight' >
-                                (=)
-                            </td>
-                            <td className='bigFontWeight' >
-                            {res.vat}
-                            </td>
-                            <td className='bigFontWeight' > 
-                            {res.vatlst}
-                            </td>
-                            <td className='bigFontWeight' >
-                                (+) 
-                            </td>
-                            <td className='bigFontWeight' >
-                            {res.cess}
-                            </td>
-                            <td className='bigFontWeight' >
-                                (+)
-                            </td>
-                            
-                            <td className='bigFontWeight' >
-                            {res.tcs}
-                            </td>
-                            <td className='bigFontWeight' >
-                                (=)
-                                 
-                            </td>
-                            <td className='bigFontWeight' >
-                                {res.total_amount}
-                            </td>
-                           <td><button type="button" id={"tank"+res.feeding_id} class="btn btn-danger">Delete</button>
-                                  </td>
-                                </tr>   
-                    )}
-                    </tbody>
-                
-                </table>   
-                <span className='bigFontWeight'  style={{marginLeft:'800px'}}> Total : <span id='tamountid'>00</span></span>
-            </div>      
+                <th className="">Rate/Unit</th>
+
+                <th className="">(Value)</th>
+
+                <th className="">Taxable Amount</th>
+
+                <th className="">Product Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="bigFontWeight">
+                  <input
+                    name="serialNumber"
+                    value={
+                      petrolInvoice.length >= 0
+                        ? petrolInvoice.length + 1
+                        : saveData.serialNumber
+                    }
+                    type="text"
+                    className="form-control bigFontWeight editableInput"
+                    onChange={handleChange}
+                  />
+                </td>
+                <td className="bigFontWeight">
+                  <textarea
+                    type="text"
+                    name="invoiceNumber"
+                    value={saveData.invoiceNumber}
+                    className="form-control bigFontWeight editableInput resize-x w-[150px]  h-6"
+                    onChange={handleChange}
+                  />
+                </td>
+                <td>
+                  <select
+                    style={{ width: "120px" }}
+                    name="product"
+                    className="form-select editableInput bigFontWeight"
+                    aria-label="Default select example"
+                    onChange={(e) => handleSelect(e)}
+                  >
+                    <option>- Product -</option>
+                    {data &&
+                      data.map((rest, index) => (
+                        <option key={index} value={rest.ProductName}>
+                          {rest.ProductName}
+                        </option>
+                      ))}
+                  </select>
+                </td>
+                <td className="bigFontWeight">
+                  <input
+                    type="text"
+                    name="klQty"
+                    value={saveData.klQty}
+                    className="editableInput form-control bigFontWeight"
+                    onChange={handleChange}
+                  />
+                </td>
+
+                <td className="bigFontWeight">
+                  <input
+                    type="text"
+                    className="form-control bigFontWeight"
+                    value={filterData.rate || ""}
+                    disabled
+                  />
+                </td>
+
+                <td className="bigFontWeight">
+                  <textarea
+                    type="text"
+                    name="Value"
+                    className="form-control bigFontWeight resize-x h-6"
+                    value={saveData.Value}
+                    disabled
+                  />
+                </td>
+
+                <td>
+                  <input
+                    type="text"
+                    value={filterData.taxamount * saveData.klQty || ""}
+                    className="form-control bigFontWeight"
+                    disabled
+                  />
+                </td>
+
+                <td className="bigFontWeight">
+                  <textarea
+                    type="text"
+                    name="productAmount"
+                    className="form-control bigFontWeight resize-x h-6"
+                    // value={saveData.productAmount}
+                    value={filterData.taxamount * saveData.klQty + saveData.Value}
+                    onChange={handleChange}
+                    disabled
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br></br>
+          <table className="table">
+            <thead>
+              <tr className="">
+                <th className="">(=)</th>
+                <th className="">VAT %</th>
+                <th className="">VAT/LST</th>
+                <th className="">(+)</th>
+                <th className="">CESS</th>
+                <th className="">(+)</th>
+                <th className="">TCS</th>
+                <th className="">(=)</th>
+                <th className="">T. AMT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="bigFontWeight">(=)</td>
+                <td className="bigFontWeight">
+                  <input
+                    type="text"
+                    name="vatPercent"
+                    className="form-control bigFontWeight"
+                    value={saveData.vatPercent}
+                    onChange={handleChange}
+                  />
+                </td>
+                <td className="bigFontWeight">
+                  <input
+                    type="text"
+                    name="vatlst"
+                    className="form-control bigFontWeight"
+                    value={saveData.vatPercent ? saveData.vatlst : ""}
+                    disabled
+                  />
+                </td>
+                <td className="bigFontWeight">(+)</td>
+                <td className="bigFontWeight">
+                  <input
+                    type="text"
+                    value={filterData.cess * saveData.klQty || ""}
+                    className="form-control bigFontWeight"
+                    disabled
+                  />
+                </td>
+                <td className="bigFontWeight">(+)</td>
+                <td className="bigFontWeight">
+                  <input
+                    type="text"
+                    value={filterData.tcs || ""}
+                    className="form-control bigFontWeight"
+                    disabled
+                  />
+                </td>
+                <td className="bigFontWeight">(=)</td>
+                <td className="bigFontWeight">
+                  <input
+                    type="text"
+                    name="totalAmount"
+                    className="form-control bigFontWeight"
+                    value={saveData.totalAmount}
+                    disabled
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className="text-right">
+            <button
+              type="submit"
+              className="px-5 py-2.5 rounded-lg text-white text-sm tracking-wider font-medium border border-current outline-none bg-gradient-to-tr hover:bg-gradient-to-tl from-blue-700 to-blue-300"
+              onClick={handleSubmit}
+            >
+              ADD
+            </button>
+          </div>
         </div>
+        <br />
+        <h2 className=" text-xl font-bold mb-1">Petrol Invoice Feeding Data ${totalSum}</h2>
+
+        <div className="relative">
+          <div
+            className="overflow-x-auto scroll-mx-5"
+            ref={topScrollRef}
+            onScroll={() => handleScroll(topScrollRef, tableScrollRef)}
+            style={{ height: "1.5rem" }}
+          >
+            <div style={{ width: "200%" }}></div>
+          </div>
+          {/* <div
+            className="border-2  overflow-x-auto scroll-mx-5"
+            ref={tableScrollRef}
+            onScroll={() => handleScroll(tableScrollRef, topScrollRef)}
+          > */}
+            <table className="table">
+              <thead className="whitespace-nowrap">
+                <tr className="">
+                  <th className="border-2 border-gray-900">S.No.</th>
+                  <th className="border-2 border-gray-900">Invoice No.</th>
+                  <th className="border-2 border-gray-900">Product</th>
+                  <th className="border-2 border-gray-900">KL/Qty</th>
+
+                  <th className="border-2 border-gray-900">Rate/Unit</th>
+
+                  <th className="border-2 border-gray-900">(Value)</th>
+
+                  <th className="border-2 border-gray-900">Taxable Amount</th>
+
+                  <th className="border-2 border-gray-900">Product Amount</th>
+
+                  <th className="border-2 border-gray-900">VAT %</th>
+                  <th className="border-2 border-gray-900">VAT/LST</th>
+
+                  <th className="border-2 border-gray-900">CESS</th>
+                  <th className="border-2 border-gray-900">TCS</th>
+
+                  <th className="border-2 border-gray-900">T. AMT</th>
+                  <th className="border-2 border-gray-900">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {petrolInvoice.length > 0 &&
+                  petrolInvoice.map((item, index) => (
+                    <tr key={index}>
+                      <td border-2 border-gray-900>{item.serialNumber}</td>
+                      <td border-2 border-gray-900>{item.invoiceNumber}</td>
+                      <td border-2 border-gray-900>{item.ProductName}</td>
+                      <td border-2 border-gray-900>{item.klQty}</td>
+
+                      <td border-2 border-gray-900>{item.rate}</td>
+
+                      <td border-2 border-gray-900>{item.Value}</td>
+
+                      <td border-2 border-gray-900>{item.taxamount}</td>
+
+                      <td border-2 border-gray-900>{item.productAmount}</td>
+
+                      <td border-2 border-gray-900>{item.vatPercent}</td>
+                      <td border-2 border-gray-900>{item.vatlst}</td>
+
+                      <td border-2 border-gray-900>{item.cess}</td>
+
+                      <td border-2 border-gray-900>{item.tcs}</td>
+
+                      <td border-2 border-gray-900>{item.totalAmount}</td>
+                      <td border-2 border-gray-900>
+                        {" "}
+                        <button
+                          onClick={() => handleDelete(item._id)}
+                          type="button"
+                          class="w-10 h-10 inline-flex items-center justify-center rounded border-none outline-none shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] bg-white"
+                        >
+                          <MdDelete color="red" size={25} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          {/* </div> */}
+        </div>
+      </div>
     </>
-  )
+  );
 }
