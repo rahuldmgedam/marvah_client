@@ -1,201 +1,263 @@
-import React from 'react'
-import '../css/Tank.css'
-import axios from 'axios';
-import  {useState, useEffect} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import { useForm } from 'react-hook-form';
+import React from "react";
+import "../css/Tank.css";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
-export default function Client2({dbpath1}) {
+const init = {
+  partyName : "",
+  Number : "",
+  Remark :"",
+  Cheque_Amount : "",
+  Cheque_Date : "",
+  Cheque_number : "",
+  DespositeDetails : "",
+  Desposite_Bank : "",
+  Desposite_Date : ""
+
+}
+
+
+export default function Client2() {
+ const [clientData, setClientData] = useState([])
+const [formData, setFormData] = useState(init)
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData((prevFormData) => ({
+    ...prevFormData,
+    [name]: value,
+  }));
+};
+
+
+const handleSubmit = async() => {
+  try {
+    const res = await axios.post("http://localhost:4000/credit_client/create", formData)
+    if(res.data){
+     console.log(res.data);
+     
+    }
+  } catch (error) {
+    console.log(error.message);
+    
+  }
   
-    const [clients, setClients] = useState([]);
-    
-    const [ party_name, setParty_name] = useState('');
-    const [contact_no, setContact_no] = useState('');
-    const [remarks, setRemarks] = useState('');
-    const [amount, setAmount] = useState('');
-    const [product, setproduct] = useState('');
-    const [nozzles_in_mpd, setnozzles_in_mpd] = useState('');
+}
 
-    const [inputDispensingUnitNo, setInputDispensingUnitNo] = useState({});
-const [inputMake, setInputMake] = useState({});
-const [inputSerialNo, setInputSerialNo] = useState({});
-const [inputConnectedTanks, setInputConnectedTanks] = useState({});
-const [inputProduct, setInputProduct] = useState({});
-const [inputNozzlesInMpd, setInputNozzlesInMpd] = useState({});
-
-
-// const loadClients = async () => {
-//   let query="SELECT * FROM `rwt_client`;";
-//         /*  
-//             alert(query); */
-//             const url = dbpath1 + 'getDynamic.php';
-//             let fData = new FormData();
-
-//             fData.append('query', query);
-
-//             try {
-//                 const response = await axios.post(url, fData);
-                
-//                 if (response && response.data) {
-                    
-//                     if (response.data.phpresult) {
-//                         setClients(response.data.phpresult); 
-//                         console.log(response.data.phpresult);
-//                     }
-//                 }
-//             } catch (error) {
-//                 console.log("Please Select Proper Input");
-//             }
-
-
-//         }
-
-    const navigate = useNavigate();
-    const datecache = Cookies.get('dateCookies');
-    // const onAdd = () =>{
-        
-    //     if (party_name.length === 0) {
-    //         alert("Party Name has been left blank!");
-    //       }   else if (contact_no.length === 0) {
-    //         alert("Contact No has been left blank!");
-    //       }   else if (remarks.length === 0) {
-    //         alert("Remarks has been left blank!");
-    //       }  else {
-    //         {
-        
-    //           const url = dbpath1+'delTank.php';
-  
-    //           var query = "INSERT INTO `rwt_client` (`client_id`, `party_name`, `contact_no`, `remarks`, `amount`) VALUES (NULL, '"+party_name+"', '"+contact_no+"', '"+remarks+"', '"+0+"');";
-  
-    //           let fData = new FormData();
-    //           fData.append('query', query);
-    //           axios.post(url, fData)
-    //             .then(response =>{ alert(response.data); window.location.reload();})
-    //             .catch(error => {
-    //               console.log(error.toJSON()); 
-    //         }); 
-    //       }
-    //       loadClients();
-            
-    //     }
-    // }
-
-    // useEffect(() => {
-    //    loadClients();
-    //   }, []); 
-
-    //   function convertDateFormat(inputDate) {
-    //     // Split the string into an array [yyyy, mm, dd]
-    //     let parts = inputDate.split('-');
-    
-    //     // Rearrange the array and join it back to a string
-    //     return parts[2] + '-' + parts[1] + '-' + parts[0];
-    // }
-    
-
-    // const onSave = async (index) => {
-    //     let query="UPDATE pupc_machines SET dispensing_unit_no = '"+document.getElementById("inputDispensingUnitNo"+index).value+"', make = '"+document.getElementById("inputMake"+index).value+"', serial_no = '"+document.getElementById("inputSerialNo"+index).value+"', connected_tanks = '"+document.getElementById("inputConnectedTanks"+index).value+"', product = '"+document.getElementById("inputProduct"+index).value+"', nozzles_in_mpd = '"+document.getElementById("inputNozzlesInMpd"+index).value+"' WHERE machine_id = "+index;
-    //     /* alert(query); */
-    //     const url = dbpath1+'delTank.php';
-    //     let fData = new FormData();
-    //     fData.append('query', query);
-        
-    //     axios.post(url, fData)
-    //         .then(response => alert(response.data))
-    //         .catch(error => {
-    //         console.log(error.toJSON());
-    //         });
-    // }
-
-//     const onDelete = async (index) => {
-//       let query="DELETE FROM `rwt_client` WHERE client_id = "+index+";";
-    
-//       /* alert(query); */
-//       const url = dbpath1+'delTank.php';
-//       let fData = new FormData();
-//       fData.append('query', query);
+useEffect(()=>{
+  const FetchData = async() => {
+    try {
+      const res = await axios.get("http://localhost:4000/credit_client")
+      if(res.data){
+       console.log(res.data.creditClient);
+       setClientData(res.data.creditClient)
+       
+      }
+    } catch (error) {
+      console.log(error.message);
       
-//       axios.post(url, fData)
-//           .then(response =>{ alert(response.data); window.location.reload();})
-//           .catch(error => {
-//           console.log(error.toJSON());
-//           });
-//   }
-    return (
+    }
+    
+  }
+  FetchData()
+},[])
 
+  return (
     <>
-        <div className='tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight'>   
-      
-            <h2 className='mt-3 text-center'>Add Client</h2>
-            <span style={{fontSize:'22px'}}> Date :
-                 {/* {convertDateFormat(datecache)} */}
-                 </span>
-            <div>
-                <br></br>
-                <table class="table" style={{width:'900px'}}>
-                    <thead>
-                        <tr className='table-secondary'>
-                            <th className='tablebg'>Party Name</th>
-                            <th className='tablebg'>Contact no.</th>
-                            <th className='tablebg'>Remarks</th>
-                           {/*  <th className='tablebg'>Amount</th> */}
-                            
-                            <th className='tablebg'>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>    
-                            <td scope="row">
-                                <input type="text" class="form-control  editableInput bigFontWeight" placeholder="Name" onChange={(e) => setParty_name(e.target.value)} />
-                            </td>
-                            <td><input type="text" class="form-control  editableInput bigFontWeight" placeholder="Contact No." onChange={(e) => setContact_no(e.target.value)} /></td>
-                            <td><input type="text" class="form-control  editableInput bigFontWeight" placeholder="Remarks" onChange={(e) => setRemarks(e.target.value)} /></td>
-                            {/* <td><input type="text" class="form-control  editableInput bigFontWeight" placeholder="Amount" onChange={(e) => setAmount(e.target.value)} /></td>
-                            */}
-                            <td><button type="button" class="btn btn-primary" 
-                            // onClick={onAdd}
-                            >ADD</button></td>
-                        </tr>   
-                    </tbody>
-                </table>    
-            </div>
-            <br></br>
-            <div>
-                <br></br>
-                <table class="table">
-                    <thead>
-                    <tr className='table-secondary'>
-                            <th className='tablebg'>Party Name</th>
-                            <th className='tablebg'>Contact no.</th>
-                            <th className='tablebg'>Remarks</th>
-                           {/*  <th className='tablebg'>Amount</th>
-                             */}
-                            <th className='tablebg'>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {clients.map((res,index)=>
-                                <tr className='hovereffect' key={index}>
-                                     <td>{res.party_name}</td>    
-                                     <td>{res.contact_no}</td>  
-                                    <td>{res.remarks}</td>
-                                    
-                                    {/* <td>{res.amount}</td>  */}
-                                    <td style={{width:'150px'}}>
-                                    {/* <button type="button" id={"tank"+res.machine_id} class="btn btn-primary " onClick={() => onSave(res.machine_id)}>Save</button> &nbsp;
-                                     */}    {/* <button type="button" id={"tank"+res.machine_id} class="btn btn-primary">Close</button> &nbsp;
-                                        <button type="button" id={"tank"+res.machine_id} class="btn btn-primary">Open</button> &nbsp; */}
-                                        <button type="button" id={"tank"+res.client_id} class="btn btn-danger "
-                                        //  onClick={() => onDelete(res.client_id)}
-                                         >Delete</button>
-                                    </td>
-                                </tr>
-                            )}
-                    </tbody>
-                </table>    
-            </div>      
+      <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
+        <h2 className="mt-3 text-center">Add Client</h2>
+       
+        <div>
+          <br></br>
+          <table class="table">
+            <thead>
+              <tr className="table-secondary">
+                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Party Name</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Contact no.</th>
+             
+                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Deposite Details</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Cheque No.</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Cheque Date</th>
+               
+               
+              </tr>
+            </thead>
+            
+            <tbody>
+              <tr>
+                {/* party_name */}
+                <td scope="row">
+                  <input
+                  name="partyName"
+                  value={formData.partyName}
+                  onChange={handleChange}
+                    type="text"
+                    placeholder="partyName"
+                    class="form-control  editableInput bigFontWeight"
+                  />
+                </td>
+            
+            {/* contact_no */}
+                <td>
+                  <input
+                    type="text"
+                    class="form-control  editableInput w-[130px] bigFontWeight"
+                    name="Number"
+                    value={formData.Number}
+                    onChange={handleChange}
+                     placeholder="Number"
+                  />
+                </td>
+            
+          
+             
+             {/* DespositeDetails */}
+                <td>
+                  <input
+                    type="text"
+                    class="form-control  editableInput bigFontWeight" 
+                    name="DespositeDetails"
+                    value={formData.DespositeDetails}
+                    onChange={handleChange}
+                  />
+                </td>
+              
+              {/* Cheque_number */}
+                <td>
+                  <input
+                    type="text"
+                    class="form-control  editableInput bigFontWeight" 
+                    name="Cheque_number"
+                    value={formData.Cheque_number}
+                    onChange={handleChange}
+                  />
+                </td>
+              
+              {/* Cheque_Date */}
+                <td>
+                  <input
+                    type="date"
+                    class="form-control  editableInput bigFontWeight"
+                    name="Cheque_Date"
+                    value={formData.Cheque_Date}
+                    onChange={handleChange} 
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table">
+            <thead>
+              <tr className="table-secondary">
+              
+                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Cheque Amount</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Deposite Bank</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Deposite Date</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Remarks</th>
+               
+              </tr>
+            </thead>
+            
+            <tbody>
+           <tr>
+ 
+              {/* Cheque_Amount */}
+                <td>
+                  <input
+                    type="text"
+                    class="form-control  editableInput bigFontWeight" 
+                    name="Cheque_Amount"
+                    value={formData.Cheque_Amount}
+                    onChange={handleChange} 
+                  />
+                </td>
+              
+              {/* Desposite_Bank */}
+                <td>
+                  <input
+                    type="text"
+                    class="form-control  editableInput bigFontWeight" 
+                    name="Desposite_Bank"
+                    value={formData.Desposite_Bank}
+                    onChange={handleChange} 
+                  />
+                </td>
+
+{/* Desposite_Date */}
+                <td>
+                  <input
+                    type="date"
+                    class="form-control  editableInput bigFontWeight" 
+                    name="Desposite_Date"
+                    value={formData.Desposite_Date}
+                    onChange={handleChange} 
+                  />
+                </td>
+                  {/* Remark */}
+                  <td>
+                  <input
+                    type="text"
+                    class="form-control  editableInput bigFontWeight"
+                    name="Remark"
+                    value={formData.Remark}
+                    onChange={handleChange}
+                  />
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        <div>
+            </div>  <button type="button"
+        class="px-5 py-2.5 rounded-lg text-white text-sm tracking-wider font-medium border border-current outline-none bg-blue-700 hover:bg-blue-800 active:bg-blue-700"onClick={handleSubmit}>ADD</button>
         </div>
+        <br></br>
+        <div>
+          <br></br>
+          <table class="table">
+            <thead>
+              <tr className="table-secondary">
+                <th className=" text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Party Name</th>
+                <th className=" text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Contact no.</th>
+                <th className=" text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Deposite Details</th>
+                <th className=" text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Cheque No.</th>
+                <th className=" text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Cheque Date</th>
+                <th className=" text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Cheque Amount</th>
+                <th className=" text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Deposite Bank</th>
+                <th className=" text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Deposite Date</th>
+                <th className=" text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Remarks</th>
+                
+                <th className="py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {clientData.map((res, index) => (
+                <tr className="hovereffect" key={index}>
+                  <td>{res.partyName}</td>
+                  <td>{res.Number}</td>
+                  <td>{res.DespositeDetails}</td>
+                  <td>{res.Cheque_number}</td>
+                  <td>{res.Cheque_Date}</td>
+                  <td>{res.Cheque_Amount}</td>
+                  <td>{res.Desposite_Bank}</td>
+                  <td>{res.Desposite_Date}</td>
+                  <td>{res.Remark}</td>
+                  <td style={{ width: "150px" }}>
+                    <button
+                      type="button"
+                      id={"tank" + res.client_id}
+                      class="btn btn-danger "
+                  
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </>
-  )
+  );
 }
