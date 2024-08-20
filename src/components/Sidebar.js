@@ -92,8 +92,8 @@ import logo from './images/petrol.jpg'
                 <br/>
                 <br/>
                 <div>
-                    <button class="btn sideDrop1 bg-primary " type="button" onClick={onLogout} >
-                        Log Out
+                    <button className='bg-green-600 px-4 py-2 rounded-lg ml-16 text-center text-white font-bold uppercase' type="button" onClick={onLogout} >
+                     admin login
                     </button>
                 </div>
                 <br>

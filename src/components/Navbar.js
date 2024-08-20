@@ -23,19 +23,6 @@ export default function Navbar() {
             <div>
                     <div class="btn-group">
                         <button class="btn dropdown-to  navDrop1 btn-secondary  " type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Oil
-                        </button>
-                        <ul class="dropdown-menu navDrop1List">
-                            <li><Link class="dropdown-item" to="/Oil_Purchase">Purchase</Link></li> 
-                            <li><Link class="dropdown-item" to="/Oil_Godown">Godown</Link></li>
-                            <li><Link class="dropdown-item" to="/Oil_Retail">Retail Sales</Link></li>
-                            <li><Link class="dropdown-item" to="/Oil_Pouches">Pouches</Link></li>
-                        </ul>
-                    </div>
-            </div>
-            <div>
-                    <div class="btn-group">
-                        <button class="btn dropdown-to  navDrop1 btn-secondary  " type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             petrol
                         </button>
                         <ul class="dropdown-menu navDrop1List">
@@ -47,6 +34,20 @@ export default function Navbar() {
                         </ul>
                     </div>
             </div>
+            <div>
+                    <div class="btn-group">
+                        <button class="btn dropdown-to  navDrop1 btn-secondary  " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Oil
+                        </button>
+                        <ul class="dropdown-menu navDrop1List">
+                            <li><Link class="dropdown-item" to="/Oil_Purchase">Purchase</Link></li> 
+                            <li><Link class="dropdown-item" to="/Oil_Godown">Godown</Link></li>
+                            <li><Link class="dropdown-item" to="/Oil_Retail">Retail Sales</Link></li>
+                            <li><Link class="dropdown-item" to="/Oil_Pouches">Pouches</Link></li>
+                        </ul>
+                    </div>
+            </div>
+           
            
             <div>
                     <div class="btn-group">
