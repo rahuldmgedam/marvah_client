@@ -96,6 +96,11 @@ import logo from './images/petrol.jpg'
                      admin login
                     </button>
                 </div>
+
+                <div>
+                <h2 className='mt-6 ml-10 text-md font-bold'>Designed & Developed  by </h2>
+                 <h2 className=' ml-6 p-1  text-md font-bold '> Royals Webtech Pvt. Ltd. ©️2024</h2>
+                </div>
                 <br>
                 </br>
                 {/* <footer className='ml-4 p-2 rounded-lg bg-gray-100 text-black font-bold mr-4'>Designed & Developed by Royals Webtech Pvt. Ltd. ©️2024</footer>   */}

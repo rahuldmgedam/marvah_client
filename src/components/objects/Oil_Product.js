@@ -30,7 +30,7 @@ export default function Tank({ dbpath1 }) {
 
   const onAdd = async () => {
     const newAddedOil = {
-        srNo:srNo,
+      srNo: srNo,
       productName: productName,
       grade: grade,
       colour: colour,
@@ -59,29 +59,29 @@ export default function Tank({ dbpath1 }) {
     }
   };
 
-//   const editOil = async (id) => {
-//     const EditAddedOil = {
-//         productName: productName,
-//         grade: grade,
-//         colour: colour,
-//         mrp: mrp,
-//         volumePerPieces: volumePerPieces,
-//         volumeType: volumeType,
-//         pcsPerCase: pcsPerCase,
-//         pcsType: pcsType,
-//       };
-//     try {
-//       const res = await axios.patch(
-//         `http://localhost:4000/addoil/update/${id}`,EditAddedOil
-//       );
+  //   const editOil = async (id) => {
+  //     const EditAddedOil = {
+  //         productName: productName,
+  //         grade: grade,
+  //         colour: colour,
+  //         mrp: mrp,
+  //         volumePerPieces: volumePerPieces,
+  //         volumeType: volumeType,
+  //         pcsPerCase: pcsPerCase,
+  //         pcsType: pcsType,
+  //       };
+  //     try {
+  //       const res = await axios.patch(
+  //         `http://localhost:4000/addoil/update/${id}`,EditAddedOil
+  //       );
 
-//       //   toast.success("Oil Data Updated");
-//       console.log(res.data);
-//       fetchOil();
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
+  //       //   toast.success("Oil Data Updated");
+  //       console.log(res.data);
+  //       fetchOil();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
   const deleteOil = async (id) => {
     try {
@@ -103,7 +103,9 @@ export default function Tank({ dbpath1 }) {
   return (
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-        <h2 className="mt-3 text-center">Add Index - Create Oil</h2>
+        <h2 className="mb-2 text-2xl leading-4 text-green-500 uppercase text-center">
+          Add Oil products
+        </h2>
         <span style={{ fontSize: "22px" }}>
           {" "}
           Date :{new Date().toLocaleDateString()}
@@ -111,34 +113,34 @@ export default function Tank({ dbpath1 }) {
         </span>
         <div>
           <br></br>
-          <table class="table">
+          <table className="bg-white border border-gray-700 w-[100%]">
             <thead>
-              <tr className="text-center">
-              <th className="tablebg">Serial No</th>
-                <th className="tablebg">Product Name</th>
-                <th className="tablebg">Grade</th>
-                <th className="tablebg">Colour</th>
-                <th className="tablebg">MRP</th>
-                <th className="tablebg">Volume Per PCS</th>
-                <th className="tablebg">PCS Per Case</th>
-                <th className="tablebg">Type</th>
-                <th className="tablebg">Action</th>
+              <tr className="bg-[#3A1078] text-white uppercase text-md text-center">
+                <th className="py-1 px-2 text-center">Serial No</th>
+                <th className="py-1 px-2 text-center">Product Name</th>
+                <th className="py-1 px-2 text-center">Grade</th>
+                <th className="py-1 px-2 text-center">Colour</th>
+                <th className="py-1 px-2 text-center">MRP</th>
+                <th className="py-1 px-2 text-center">Vol. Per PCS</th>
+                <th className="py-1 px-2 text-center">PCS Per Case</th>
+                <th className="py-1 px-2 text-center">Type</th>
+                <th className="py-1 px-2 text-center">Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-              <td scope="row">
+            <tbody className="text-md">
+              <tr className="border-b border-gray-300 text-center">
+                <td>
                   <input
                     type="number"
-                    class="form-control editableInput bigFontWeight"
+                    className="w-12 border-4 border-blue-500 text-center"
                     placeholder="Sr No"
                     onChange={(e) => setSrNo(e.target.value)}
                   />
                 </td>
-                <td scope="row">
+                <td>
                   <input
                     type="text"
-                    class="form-control editableInput bigFontWeight"
+                    className="w-36  border-4 border-blue-500 text-center"
                     placeholder="Product Name"
                     onChange={(e) => setProductName(e.target.value)}
                   />
@@ -146,7 +148,7 @@ export default function Tank({ dbpath1 }) {
                 <td scope="row">
                   <input
                     type="text"
-                    class="form-control editableInput bigFontWeight"
+                    className="w-32 text-center  border-4 border-blue-500"
                     placeholder="Grade"
                     onChange={(e) => setGrade(e.target.value)}
                   />
@@ -154,7 +156,7 @@ export default function Tank({ dbpath1 }) {
                 <td>
                   <input
                     type="text"
-                    class="form-control editableInput bigFontWeight"
+                    className="w-24 text-center  border-4 border-blue-500"
                     placeholder="Color"
                     onChange={(e) => setColour(e.target.value)}
                   />
@@ -162,7 +164,7 @@ export default function Tank({ dbpath1 }) {
                 <td>
                   <input
                     type="text"
-                    class="form-control editableInput bigFontWeight"
+                    className="w-24 text-center  border-4 border-blue-500"
                     placeholder="MRP"
                     onChange={(e) => setMrp(e.target.value)}
                   />
@@ -170,15 +172,12 @@ export default function Tank({ dbpath1 }) {
                 <td style={{ display: "flex" }}>
                   <input
                     type="text"
-                    class="form-control editableInput bigFontWeight"
-                    style={{ width: "120px" }}
+                    className="w-20 text-center  border-4 border-blue-500"
                     placeholder="Volume"
                     onChange={(e) => setVolumePerPieces(e.target.value)}
                   />
                   <select
-                    class="form-select editableInput bigFontWeight"
-                    style={{ width: "100px" }}
-                    aria-label="Default select example"
+                    className="w-24 text-center  border-4 border-blue-500"
                     value={volumeType}
                     onChange={(e) => setVolumeType(e.target.value)}
                   >
@@ -191,16 +190,14 @@ export default function Tank({ dbpath1 }) {
                 <td>
                   <input
                     type="text"
-                    class="form-control editableInput bigFontWeight"
+                    className="w-24 text-center  border-4 border-blue-500"
                     placeholder="PCS Per Case"
                     onChange={(e) => setPcsPerCase(e.target.value)}
                   />
                 </td>
                 <td style={{ display: "flex" }}>
                   <select
-                    class="form-select editableInput bigFontWeight"
-                    style={{ width: "100px" }}
-                    aria-label="Default select example"
+                    className="w-24 text-center  border-4 border-blue-500"
                     value={pcsType}
                     onChange={(e) =>
                       setPcsType(e.target.value)
@@ -223,50 +220,45 @@ export default function Tank({ dbpath1 }) {
         <br></br>
         <div>
           <br></br>
+          <h2 className="mb-6 text-2xl leading-4 text-green-500 uppercase text-center">
+          Added Oils
+        </h2>
           {/* //added table on add */}
-          <table className="text-center">
-            <thead>
-              <tr className="table-secondary bg-violet-700">
-              <th className="tablebg bg-violet-700">Sr No</th>
+          <table className="text-center  w-[100%]">
+            <thead className="">
+              <tr className="bg-[#3A1078] text-white uppercase text-md">
+                <th className="px-3 py-2">Sr No</th>
 
-                <th className="tablebg">Product Name</th>
-                <th className="tablebg">Grade</th>
-                <th className="tablebg">Colour</th>
-                <th className="tablebg">MRP</th>
-                <th className="tablebg">Volume Per PCS</th>
-                <th className="tablebg">volumeType</th>
-                <th className="tablebg">PCS Per Case</th>
-                <th className="tablebg">Type</th>
-                <th className="tablebg">Action</th>
+                <th className="">Product Name</th>
+                <th className="">Grade</th>
+                <th className="">Colour</th>
+                <th className="">MRP</th>
+                <th className="">Volume Per PCS</th>
+                <th className="">volumeType</th>
+                <th className="">PCS Per Case</th>
+                <th className="">Type</th>
+                <th className="">Action</th>
               </tr>
             </thead>
             <tbody>
               {oilProductData.map((res) => (
                 <tr className="text-center">
-                    <td>{res.srNo}</td>
+                  <td>{res.srNo}</td>
                   <td>{res.productName}</td>
                   <td>{res.grade}</td>
                   <td>{res.colour}</td>
                   <td>
-                    <input
-                      type="text"
-                      class="form-control editableInput bigFontWeight"
-                      value={res.mrp}
-                    />
+                    {res.mrp}
                   </td>
 
                   <td>
-                    <input
-                      type="text"
-                      class="form-control editableInput bigFontWeight"
-                      value={res.volumePerPieces}
-                    />
+                    {res.volumePerPieces}
                   </td>
                   <td>{res.volumeType}</td>
                   <td>{res.pcsPerCase}</td>
                   <td>{res.pcsType}</td>
 
-                  <td >
+                  <td>
                     {/* <button
                       type="button"
                       class="btn btn-success"
