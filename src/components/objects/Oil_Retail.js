@@ -102,7 +102,7 @@ const Retail_Stock_Sale = () => {
           </thead>
           <tbody className="text-md">
             {oilProductData.map((item, index) => (
-              <tr key={index} className="border-b border-gray-300">
+              <tr key={index} className="border-b border-gray-300 hovereffect">
                 <td className="px-1 border-r">
                   <input
                     className="w-8 text-center"

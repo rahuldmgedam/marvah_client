@@ -571,21 +571,21 @@ const Oil_Godown = () => {
                 <th className="py-1 px-2 text-center border-r">MRP </th>
                 <th className="py-1 px-2 text-center border-r">
                   Opening <br />
-                  Stock <br />
+                  Stk (Pcs) <br />
                   (+)
                 </th>
                 <th className="py-1 px-2 text-center">
                   Invoice <br />
-                  Stock <br />
-                  (+)
+                  Stk   (Pcs)<br />
+                 (+)
                 </th>
                 <th className="py-1 px-2 text-center">
-                  Total
-                  <br /> Opening <br />
-                  stock (=)
+                  Tot. Open
+                  <br /> stk (Pcs) <br />
+                 (=)
                 </th>
                 <th className="py-1 px-2 text-center">
-                  outward <br /> Retail <br />
+                  outward <br />to Retail <br />
                   (-)
                 </th>
                 <th className="py-1 px-2 text-center">
@@ -652,12 +652,10 @@ const Oil_Godown = () => {
 
                   <td className="text-center">
                     <input
-                      className="w-12 text-center border-4 border-blue-600"
+                      className="w-12 text-center"
                       type="number"
                       value={item.opStock}
-                      onChange={(e) =>
-                        handleInputChange(index, "opStock", e.target.value)
-                      }
+                      readOnly
                     />
                   </td>
                   <td className="px-2 text-center">
@@ -712,7 +710,7 @@ const Oil_Godown = () => {
       <div className="flex justify-around">
         <button></button>
         <button onClick={handleSaveStock} className="px-4 py-2 bg-blue-500 rounded-lg mt-3 font-bold">
-          Save Stock Record
+          Save Stock to Retail
         </button>
       </div>
     </>

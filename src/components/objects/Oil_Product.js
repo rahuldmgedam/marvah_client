@@ -7,6 +7,8 @@ import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 export default function Tank({ dbpath1 }) {
   const [srNo, setSrNo] = useState(0);
+  const [opStock, setOpStock] = useState(0);
+
   const [oilProductData, setOilProductData] = useState([]);
 
   const [productName, setProductName] = useState("");
@@ -31,6 +33,7 @@ export default function Tank({ dbpath1 }) {
   const onAdd = async () => {
     const newAddedOil = {
       srNo: srNo,
+      opStock:opStock,
       productName: productName,
       grade: grade,
       colour: colour,
@@ -104,7 +107,7 @@ export default function Tank({ dbpath1 }) {
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
         <h2 className="mb-2 text-2xl leading-4 text-green-500 uppercase text-center">
-          Add Oil products
+          Add New Oil products
         </h2>
         <span style={{ fontSize: "22px" }}>
           {" "}
@@ -117,6 +120,8 @@ export default function Tank({ dbpath1 }) {
             <thead>
               <tr className="bg-[#3A1078] text-white uppercase text-md text-center">
                 <th className="py-1 px-2 text-center">Serial No</th>
+                <th className="py-1 px-2 text-center">op Stock</th>
+
                 <th className="py-1 px-2 text-center">Product Name</th>
                 <th className="py-1 px-2 text-center">Grade</th>
                 <th className="py-1 px-2 text-center">Colour</th>
@@ -124,7 +129,7 @@ export default function Tank({ dbpath1 }) {
                 <th className="py-1 px-2 text-center">Vol. Per PCS</th>
                 <th className="py-1 px-2 text-center">PCS Per Case</th>
                 <th className="py-1 px-2 text-center">Type</th>
-                <th className="py-1 px-2 text-center">Action</th>
+                {/* <th className="py-1 px-2 text-center">Action</th> */}
               </tr>
             </thead>
             <tbody className="text-md">
@@ -133,15 +138,20 @@ export default function Tank({ dbpath1 }) {
                   <input
                     type="number"
                     className="w-12 border-4 border-blue-500 text-center"
-                    placeholder="Sr No"
                     onChange={(e) => setSrNo(e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="w-12 border-4 border-blue-500 text-center"
+                    onChange={(e) => setOpStock(e.target.value)}
                   />
                 </td>
                 <td>
                   <input
                     type="text"
                     className="w-36  border-4 border-blue-500 text-center"
-                    placeholder="Product Name"
                     onChange={(e) => setProductName(e.target.value)}
                   />
                 </td>
@@ -149,7 +159,6 @@ export default function Tank({ dbpath1 }) {
                   <input
                     type="text"
                     className="w-32 text-center  border-4 border-blue-500"
-                    placeholder="Grade"
                     onChange={(e) => setGrade(e.target.value)}
                   />
                 </td>
@@ -157,7 +166,6 @@ export default function Tank({ dbpath1 }) {
                   <input
                     type="text"
                     className="w-24 text-center  border-4 border-blue-500"
-                    placeholder="Color"
                     onChange={(e) => setColour(e.target.value)}
                   />
                 </td>
@@ -165,7 +173,6 @@ export default function Tank({ dbpath1 }) {
                   <input
                     type="text"
                     className="w-24 text-center  border-4 border-blue-500"
-                    placeholder="MRP"
                     onChange={(e) => setMrp(e.target.value)}
                   />
                 </td>
@@ -173,7 +180,6 @@ export default function Tank({ dbpath1 }) {
                   <input
                     type="text"
                     className="w-20 text-center  border-4 border-blue-500"
-                    placeholder="Volume"
                     onChange={(e) => setVolumePerPieces(e.target.value)}
                   />
                   <select
@@ -191,7 +197,6 @@ export default function Tank({ dbpath1 }) {
                   <input
                     type="text"
                     className="w-24 text-center  border-4 border-blue-500"
-                    placeholder="PCS Per Case"
                     onChange={(e) => setPcsPerCase(e.target.value)}
                   />
                 </td>
@@ -208,34 +213,39 @@ export default function Tank({ dbpath1 }) {
                     <option value="Pouches">Pouches </option>
                   </select>
                 </td>
-                <td>
+            
+              </tr>
+            </tbody>
+          </table>
+          <div className="flex justify-between mt-3 mr-4">
+            <td></td>
+            <td>
                   <button type="button" class="btn btn-primary" onClick={onAdd}>
                     ADD
                   </button>
                 </td>
-              </tr>
-            </tbody>
-          </table>
+          </div>
         </div>
         <br></br>
         <div>
           <br></br>
           <h2 className="mb-6 text-2xl leading-4 text-green-500 uppercase text-center">
-          Added Oils
+          Added New Oil Products
         </h2>
           {/* //added table on add */}
           <table className="text-center  w-[100%]">
             <thead className="">
               <tr className="bg-[#3A1078] text-white uppercase text-md">
-                <th className="px-3 py-2">Sr No</th>
+                <th className="">Sr No</th>
+                <th className="">Op. <br /> Stock</th>
 
                 <th className="">Product Name</th>
                 <th className="">Grade</th>
                 <th className="">Colour</th>
                 <th className="">MRP</th>
-                <th className="">Volume Per PCS</th>
-                <th className="">volumeType</th>
-                <th className="">PCS Per Case</th>
+                <th className="">Vol. Per PCS</th>
+                <th className=""> unit</th>
+                <th className="">PCS Per <br /> Case</th>
                 <th className="">Type</th>
                 <th className="">Action</th>
               </tr>
@@ -244,6 +254,7 @@ export default function Tank({ dbpath1 }) {
               {oilProductData.map((res) => (
                 <tr className="text-center">
                   <td>{res.srNo}</td>
+                  <td>{res.opStock}</td>
                   <td>{res.productName}</td>
                   <td>{res.grade}</td>
                   <td>{res.colour}</td>

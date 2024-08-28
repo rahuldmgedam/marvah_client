@@ -1,525 +1,342 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../css/Tank.css";
 import axios from "axios";
-import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-export default function Advances({ dbpath1 }) {
-  const [tanks, setTanks] = useState([]);
-  const [nozzles, setNozzles] = useState([]);
-  const [machinen, setMachinen] = useState([]);
-  const [thistory, setTHistory] = useState([]);
+
+export default function Handloans({ dbpath1 }) {
+  const [handloan, setHandloan] = useState([]);
 
   const [clients, setClients] = useState([]);
-  const [history, setHistory] = useState([]);
-
-  const [nozzle_name, setNozzle_name] = useState("");
-  const [product, setProduct] = useState("");
-  const [machine, setMachine] = useState("");
-  const [smachine, setSMachine] = useState("");
-  const [side, setSide] = useState("");
-  const [nozzle_no, setNozzle_no] = useState("");
-  const [op_meter_reading, setOp_meter_reading] = useState("");
-
   const [partyname, setPartyname] = useState("");
-  const [date, setdate] = useState("");
-  const [amount, setAmount] = useState("");
+  const [voucher_type, setVoucher_type] = useState("");
+  const [amount, setAmount] = useState(0);
   const [narration, setNarration] = useState("");
   const [balance, setBalance] = useState("0");
-  /*    const [tgiven, setTgiven] = useState('');
-    const [trecived, setTrecived] = useState(''); */
-
-  const loadNozzles = async () => {
-    /*   const result = await axios.get(dbpath1+"getNozzles.php");
-      setNozzles(result.data.phpresult);
-      console.log(result.data.phpresult); 
-     */
-  };
-
-  const todayHistory = async (value) => {
-    let query =
-      "SELECT * FROM rwt_advances_transaction WHERE date = '" +
-      datecache +
-      "';";
-
-    /*  alert(query);  */
-    const url = dbpath1 + "getDynamic.php";
-    let fData = new FormData();
-
-    fData.append("query", query);
-
-    try {
-      const response = await axios.post(url, fData);
-
-      if (response && response.data) {
-        if (response.data.phpresult) {
-          setTHistory(response.data.phpresult);
-          console.log(response.data.phpresult);
-          /*  setTrecived(response.data.phpresult.reduce((acc, row) => acc + parseInt(row.amount_rcvd), 0));
-                    setTgiven(response.data.phpresult.reduce((acc, row) => acc + parseInt(row.amount_given), 0)); */
-        }
-      }
-    } catch (error) {
-      console.log("Please Select Proper Input");
-    }
-  };
-
-  const loadClients = async () => {
-    let query = "SELECT * FROM `rwt_handloans_client` ;";
-    /*  
-          alert(query); */
-    const url = dbpath1 + "getDynamic.php";
-    let fData = new FormData();
-
-    fData.append("query", query);
-
-    try {
-      const response = await axios.post(url, fData);
-
-      if (response && response.data) {
-        if (response.data.phpresult) {
-          setClients(response.data.phpresult);
-          console.log(response.data.phpresult);
-        }
-      }
-    } catch (error) {
-      console.log("Please Select Proper Input");
-    }
-  };
-
-  const loadMachine = async (value) => {};
-
+  const [partyId, setPartyId] = useState("");
   const navigate = useNavigate();
+  const [dependency,setDependency] = useState(false)
 
-  const getBalance = async (value) => {
-    let query =
-      "SELECT balance FROM rwt_advances_transaction WHERE client_name = '" +
-      value +
-      "' ORDER BY transaction_id desc LIMIT 1 ;";
+  const [ddmmyy, setDdmmyy] = useState("")
 
-    /*  alert(query); */
-    const url = dbpath1 + "getDynamic.php";
-    let fData = new FormData();
+  const [todaysTransactions, setTodaysTransactions] = useState([]);
 
-    fData.append("query", query);
+  const todayDate = new Date();
 
-    try {
-      const response = await axios.post(url, fData);
 
-      if (response && response.data) {
-        if (response.data.phpresult) {
-          console.log(response.data.phpresult);
-          setBalance(response.data.phpresult[0].balance);
-        }
-      }
-    } catch (error) {
-      console.log("Please Select Proper Input");
-    }
-  };
-
-  const onAdd = () => {
-    if (partyname.length === 0) {
-      alert("Party Name has been left blank!");
-    } else if (date.length === 0) {
-      alert("Date has been left blank!");
-    } else if (amount.length === 0) {
-      alert("Amount has been left blank!");
-    } else if (balance.length === 0) {
-      alert("Balance has been left blank!");
-    } else {
-      let updatedBalance = parseInt(balance) + parseInt(amount);
-      let query =
-        "INSERT INTO `rwt_advances_transaction` (`transaction_id`, `client_name`, `amount`, `balance`, `narration`, `date`) VALUES (NULL, '" +
-        partyname +
-        "', '" +
-        amount +
-        "', '" +
-        updatedBalance +
-        "', '" +
-        narration +
-        "', '" +
-        date +
-        "');";
-      /*  alert(query); */
-      const url = dbpath1 + "delTank.php";
-      let fData = new FormData();
-      fData.append("query", query);
-
-      axios
-        .post(url, fData)
-        .then((response) => {
-          alert(response.data);
-          window.location.reload();
-        })
-        .catch((error) => {
-          console.log(error.toJSON());
-        });
-      //load();
-      loadClients();
-      todayHistory();
-    }
-  };
-
-  const loadHistory = async (value) => {
-    let query =
-      "SELECT * FROM rwt_advances_transaction WHERE client_name = '" +
-      value +
-      "';";
-
-    /* alert(query); */
-    const url = dbpath1 + "getDynamic.php";
-    let fData = new FormData();
-
-    fData.append("query", query);
-
-    try {
-      const response = await axios.post(url, fData);
-
-      if (response && response.data) {
-        if (response.data.phpresult) {
-          setHistory(response.data.phpresult);
-          console.log(response.data.phpresult);
-        }
-      }
-    } catch (error) {
-      console.log("Please Select Proper Input");
-    }
-  };
-
-  const onDelete = async (index) => {
-    let query = "DELETE FROM `pupc_nozzles` WHERE nozzle_id = " + index + ";";
-
-    /* alert(query); */
-    const url = dbpath1 + "delTank.php";
-    let fData = new FormData();
-    fData.append("query", query);
-
+  const fetchClient = () => {
     axios
-      .post(url, fData)
-      .then((response) => alert(response.data))
+      .get("http://localhost:4000/client")
+      .then((res) => {
+        console.log(" client res", res.data);
+        // setDependency(!dependency)
+        setClients(res.data);
+        setPartyId(res.data[0]._id);
+      })
       .catch((error) => {
-        console.log(error.toJSON());
+        console.log(error.message);
       });
   };
 
-  const displaySelectedProduct = async (index) => {
-    let query =
-      "select * FROM `pupc_machines` WHERE dispensing_unit_no = '" +
-      index +
-      "';";
-    /*  
-    alert(query); */
-    const url = dbpath1 + "getDynamic.php";
-    let fData = new FormData();
-    fData.append("query", query);
+  // console.log(" client res", partyId);
 
-    try {
-      const response = await axios.post(url, fData);
-
-      if (response && response.data) {
-        if (response.data.phpresult) {
-          setSMachine(response.data.phpresult);
-          console.log(response.data.phpresult);
-          document.getElementById("ddun").innerHTML =
-            response.data.phpresult[0]["dispensing_unit_no"];
-          document.getElementById("dmake").innerHTML =
-            response.data.phpresult[0]["make"];
-          document.getElementById("dserial_no").innerHTML =
-            response.data.phpresult[0]["serial_no"];
-          document.getElementById("dconnected_tanks").innerHTML =
-            response.data.phpresult[0]["connected_tanks"];
-          document.getElementById("dproduct").innerHTML =
-            response.data.phpresult[0]["product"];
-          document.getElementById("dnozzles_in_mpd").innerHTML =
-            response.data.phpresult[0]["nozzles_in_mpd"];
-        }
-      }
-    } catch (error) {
-      console.log("Please Select Proper Input");
-    }
+  const fetchHandloan = () => {
+    axios
+      .get("http://localhost:4000/handloan")
+      .then((res) => {
+        const formattedData = handleDateConversion(res.data);
+        // setDependency(!dependency)
+        setHandloan(formattedData);
+        console.log("resssss",res.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
-  const getPartyInfo = async (value) => {};
+
+  const handleSave = () => {
+    const newTransaction = {
+      party_name: partyname,
+      voucher_type: voucher_type,
+      amount: amount,
+      narration: narration,
+      party_id: partyId,
+      // date: new Date().toISOString()
+    };
+    // console.log("newTransaction", newTransaction);
+    axios
+      .post("http://localhost:4000/handloan/create", { ...newTransaction })
+      .then((res) => {
+        if (res.data.success) {
+          alert(res.data.msg);
+          fetchClient();
+          fetchHandloan();
+          setHandloan([]);
+          setDependency(!dependency)
+          setPartyname("");
+          setVoucher_type("");
+          setAmount("");
+          setNarration("");
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+
+  function formatDateString(dateString) {
+    const date = new Date(dateString);
+
+    // Extract day, month, and year
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const year = String(date.getFullYear()); // Get last two digits of the year
+
+    return `${day}-${month}-${year}`;
+  }
+
+  function getTodaysDate() {
+    const today = new Date();
+
+    // Extract day, month, and year
+    let day = String(today.getDate());
+    // .padStart(0, '0');
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const year = today.getFullYear(); // Full year
+
+    if (day==1 || day==2 || day==3 || day==4 || day==5 || day==6 || day==7 || day==8 || day==9 ) {
+      day = "0"+day
+    }
+
+    return `${day}-${month}-${year}`;
+  }
+
+  // Example usage
+  const todaysDate = getTodaysDate();
+  // console.log(
+  //   formatDateString("Wed Jul 24 2024 08:31:55 GMT+0530 (India Standard Time)")
+  // );
+
+  const fetchTodaysTransactions = () => {
+    // const todayDate = new Date().toISOString().slice(0, 10);
+    axios
+      .get("http://localhost:4000/handloan")
+      .then((res) => {
+        console.log(" today's transactions", res.data);
+        // setDependency(!dependency)
+
+        const formattedData = handleDateConversion(res.data);
+        setTodaysTransactions(formattedData);
+        setDdmmyy(res.data[10].date)
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+
+  console.log("ddmmyy", formatDateString(ddmmyy))
+
+
+  const handleDateConversion = (data) => {
+    return data.map(item => ({
+      ...item,
+      date: formatDateString(item.date)
+    }));
+  };
 
   useEffect(() => {
-    loadNozzles();
-    loadClients();
-    loadMachine();
-    todayHistory();
-    setdate(datecache);
-  }, []);
-  const datecache = Cookies.get("dateCookies");
-//   function convertDateFormat(inputDate) {
-//     // Ensure the input is a string
-//     if (typeof inputDate !== "string") {
-//       throw new Error("Input must be a string in the format yyyy-mm-dd");
-//     }
+    fetchClient();
+    fetchHandloan();
+    fetchTodaysTransactions();
+    // handleSave();
+  }, [dependency]);
 
-//     // Split the string into an array [yyyy, mm, dd]
-//     let parts = inputDate.split("-");
-
-//     // Validate the date parts
-//     if (parts.length !== 3) {
-//       throw new Error("Input must be in the format yyyy-mm-dd");
-//     }
-
-//     // Rearrange the array and join it back to a string
-//     return `${parts[2]}-${parts[1]}-${parts[0]}`;
-//   }
-
-  // Example usage:
-  //console.log(convertDateFormat("2023-07-02")); // Output: "02-07-2023"
-
-  //   function convertDateFormat(inputDate) {
-  //     // Split the string into an array [yyyy, mm, dd]
-  //     let parts = inputDate.split('-');
-
-  //     // Rearrange the array and join it back to a string
-  //     return parts[2] + '-' + parts[1] + '-' + parts[0];
-  // }
   return (
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-        <h2 className="mt-3 text-center">Bank Income</h2>
-        <span style={{ fontSize: "22px" }}>
-          {" "}
-          Date :
-           {/* {convertDateFormat(datecache)} */}
-        </span>
-        <div>
-          <h4>
-            {" "}
-            <span style={{ marginLeft: "800px", marginTop: "10px" }}>
-              Balance :{" "}
-            </span>{" "}
-            {balance}
-          </h4>
-          <table class="table">
-            <thead>
-              <tr className="table-secondary">
-                <th className="tablebg" style={{ width: "355px" }}>
-                  Party Name
-                </th>
-                {/*  <th className='tablebg'>Date</th> */}
-
-                <th className="tablebg" style={{ width: "355px" }}>
-                  Amount
-                </th>
-
-                <th className="tablebg" style={{ width: "355px" }}>
-                  Narration
-                </th>
-                <th className="tablebg">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <select
-                    class="form-select  editableInput bigFontWeight"
-                    value={partyname}
-                    aria-label="Default select example"
-                    onChange={(e) => {
-                      setPartyname(e.target.value);
-                      getBalance(e.target.value);
-                      loadHistory(e.target.value);
-                    }}
-                  >
-                    <option selected>- Party Name -</option>
-                    {clients.map((rest) => (
-                      <option value={rest.party_name}>
-                        {rest.party_name}{" "}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-                {/*   <td><input type="date" class="form-control" value={datecache} placeholder="Side" onChange={(e) => setdate(e.target.value)}   /></td>
-                 */}
-
-                {/*  <td>
-                            
-                                <select class="form-select" aria-label="Default select example" value={product} /* onChange={displaySelectedProduct(product)} onChange={(e) => setProduct(e.target.value)}>
-                                <option selected>- Product -</option>
-                                    {tanks.map((rest) => (
-                                        <option value={rest.product}>{rest.product}</option>
-                                    ))}
-                                </select>
-                               
-                            </td> */}
-
-                <td>
-                  <input
-                    type="text"
-                    class="form-control editableInput bigFontWeight"
-                    placeholder="Amount"
-                    onChange={(e) => setAmount(e.target.value)}
-                  />
-                </td>
-
-                <td>
-                  <input
-                    type="text"
-                    class="form-control  editableInput bigFontWeight"
-                    placeholder="Narration"
-                    onChange={(e) => setNarration(e.target.value)}
-                  />
-                </td>
-                <td>
-                  <button type="button" class="btn btn-primary" onClick={onAdd}>
-                    ADD
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          Todays Transactions:
-          <table class="table">
-            <thead>
-              <tr className="table-secondary">
-                <th className="tablebg">Party Name</th>
-                <th className="tablebg">Amount</th>
-                <th className="tablebg">Balance</th>
-                <th className="tablebg">Narration</th>
-              </tr>
-            </thead>
-            <tbody>
-              {thistory.map((res, index) => (
-                <tr key={index}>
-                  <td>{res.client_name}</td>
-                  <td>{res.amount}</td>
-                  <td>{res.balance}</td>
-                  <td>{res.narration}</td>
-
-                  {/*   <td style={{width:'50px'}}>
-                                       
-                                        <button type="button" id={"tank"+res.tank_no} class="btn btn-primary" onClick={() => onMoveRetail(res.product_id)}>Move</button>
-                                    </td> */}
-                </tr>
-              ))}
-
-              {/* <tr>
-                                  <td id="ddun">Haldirams</td>
-                                      <td id="dmake">Recived</td>   
-                                      <td id="dserial_no">0</td>
-                                    <td id="dserial_no">5000</td>
-                                    <td id="dproduct">12000</td>
-                                    <td id="dnozzles_in_mpd">Cash</td>
-                                 
-                                </tr>   
-                                <tr>
-                                <td id="dconnected_tanks">15-10-2023</td>
-                                      <td id="dmake">Given</td>   
-                                    <td id="dserial_no">3000</td>
-                                    <td id="dserial_no">0</td>
-                                    <td id="dproduct">17000</td>
-                                    <td id="dnozzles_in_mpd">Cash</td>
-                                </tr>   
-                                <tr>
-                                <td id="dconnected_tanks">02-10-2023</td>
-                                      <td id="dmake">Recived</td>   
-                                      <td id="dserial_no">0</td>
-                                    <td id="dserial_no">1000</td>
-                                    
-                                    <td id="dproduct">14000</td>
-                                    <td id="dnozzles_in_mpd">Cash</td>
-                                </tr>   
-                                <tr>
-                                <td id="dconnected_tanks">25-09-2023</td>
-                                
-                                      <td id="dmake">Given</td>   
-                                    <td id="dserial_no">2000</td>
-                                    <td id="dserial_no">0</td>
-                                    <td id="dproduct">15000</td>
-                                    <td id="dnozzles_in_mpd">Cheque</td>
-                                 
-                                </tr>    */}
-              {/*  <tr>
-                                  <td><b>Closing Balance</b></td>
-                                  <td></td>
-                                  
-                                  <td><b>{tgiven}</b></td>
-                                  <td><b>{trecived}</b></td>
-                                  <td></td>
-                                  <td></td>
-                                </tr> */}
-            </tbody>
-          </table>
-          Client Transaction History: <br></br>
-          Party Name : {partyname}
-          <table class="table">
-            <thead>
-              <tr className="table-secondary">
-                <th className="tablebg">Date</th>
-                <th className="tablebg">Amount</th>
-                <th className="tablebg">Balance</th>
-                <th className="tablebg">Narration</th>
-              </tr>
-            </thead>
-            <tbody>
-              {history.map((res, index) => (
-                <tr key={index}>
-                  <td>{res.date}</td>
-                  <td>{res.amount}</td>
-                  <td>{res.balance}</td>
-                  <td>{res.narration}</td>
-
-                  {/*   <td style={{width:'50px'}}>
-                                       
-                                        <button type="button" id={"tank"+res.tank_no} class="btn btn-primary" onClick={() => onMoveRetail(res.product_id)}>Move</button>
-                                    </td> */}
-                </tr>
-              ))}
-
-              {/* <tr>
-                                  <td id="ddun">Haldirams</td>
-                                      <td id="dmake">Recived</td>   
-                                      <td id="dserial_no">0</td>
-                                    <td id="dserial_no">5000</td>
-                                    <td id="dproduct">12000</td>
-                                    <td id="dnozzles_in_mpd">Cash</td>
-                                 
-                                </tr>   
-                                <tr>
-                                <td id="dconnected_tanks">15-10-2023</td>
-                                      <td id="dmake">Given</td>   
-                                    <td id="dserial_no">3000</td>
-                                    <td id="dserial_no">0</td>
-                                    <td id="dproduct">17000</td>
-                                    <td id="dnozzles_in_mpd">Cash</td>
-                                </tr>   
-                                <tr>
-                                <td id="dconnected_tanks">02-10-2023</td>
-                                      <td id="dmake">Recived</td>   
-                                      <td id="dserial_no">0</td>
-                                    <td id="dserial_no">1000</td>
-                                    
-                                    <td id="dproduct">14000</td>
-                                    <td id="dnozzles_in_mpd">Cash</td>
-                                </tr>   
-                                <tr>
-                                <td id="dconnected_tanks">25-09-2023</td>
-                                
-                                      <td id="dmake">Given</td>   
-                                    <td id="dserial_no">2000</td>
-                                    <td id="dserial_no">0</td>
-                                    <td id="dproduct">15000</td>
-                                    <td id="dnozzles_in_mpd">Cheque</td>
-                                 
-                                </tr>    */}
-              {/*  <tr>
-                                  <td><b>Closing Balance</b></td>
-                                  <td></td>
-                                  
-                                  <td><b>{tgiven}</b></td>
-                                  <td><b>{trecived}</b></td>
-                                  <td></td>
-                                  <td></td>
-                                </tr> */}
-            </tbody>
-          </table>
+        <h2 className="mt-3 mb-4 p-2 text-3xl font-bold uppercase text-center">
+          Advances
+        </h2>
+        <div className="flex justify-between mb-4 mt-3">
+          <span className="text-2xl"> Date :{todaysDate}</span>
+          {/* <span className="font-bold">
+            Balance : <span className="bg-yellow-300"> {balance} </span>
+          </span> */}
+          <div>
+            <span>
+              <Link
+                className="bg-green-700 px-2 mr-3 py-1 rounded-md text-white"
+                to={"/add_client"}
+              >
+                Add Client
+              </Link>
+            </span>
+            {/* <span>
+              <Link className=" px-2 bg-yellow-900 py-1 rounded-md text-white">
+                History
+              </Link>
+            </span> */}
+          </div>
         </div>
-        <br></br>
+        <table className="w-[100%]">
+          <thead className="px-2 py-3 w-[100%]">
+            <tr className="bg-[#3A1078] w-[100%] text-white text-center">
+              <th className="px-2 py-2">Party Name</th>
+              <th className="">Voucher Type</th>
+              <th className="">Amount</th>
+              <th className="">Narration</th>
+              <th className="">Action</th>
+            </tr>
+          </thead>
+          <tbody className="">
+            <tr className="handloan-tr">
+              <td>
+                <select
+                  className="form-select editableInput bigFontWeight w-48"
+                  value={partyname}
+                  onChange={(e) => setPartyname(e.target.value)}
+                >
+                  <option selected>-Select Party -</option>
+                  {clients.sort((a, b) => {
+                    if (a.party_name.toLowerCase() < b.party_name.toLowerCase()) {
+                      return -1;
+                    }
+                    if (a.party_name.toLowerCase() > b.party_name.toLowerCase()) {
+                      return 1;
+                    }
+                    return 0;
+                  }).map((rest) => (
+                    <option value={rest.party_name} key={rest._id}>
+                      {rest.party_name}
+                    </option>
+                  ))}
+                </select>
+              </td>
+              <td>
+                <select
+                  className="form-select editableInput bigFontWeight w-48"
+                  aria-label="Default select example"
+                  value={voucher_type}
+                  onChange={(e) => setVoucher_type(e.target.value)}
+                >
+                  <option selected> -</option>
+                  <option value="Debit-Out">Advance</option>
+                </select>
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="form-control editableInput bigFontWeight bg-blue-300 w-48"
+                  value={amount || ""}
+                  onChange={(e) => setAmount(e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  className="form-control editableInput bigFontWeight w-96"
+                  value={narration}
+                  onChange={(e) => setNarration(e.target.value)}
+                />
+              </td>
+              <td>
+                <button
+                  onClick={handleSave}
+                  type="button"
+                  className="btn btn-primary"
+                >
+                  SAVE
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br />
+
+        <h2 className="text-center text-green-500 text-xl p-2 font-bold">
+          Today's Transactions
+        </h2>
+        <br />
+
+        <table className="w-[90%] border-2">
+          <thead className="">
+            <tr className="bg-[#3A1078] text-center text-white  border-2 border-grey-200">
+              {/* <th className="tablebg">Sr No.</th> */}
+              <th className="bg-[#3A1078] px-1 py-2">Party Name</th>
+              <th className="py-2 w-32">Advances</th>
+     
+              <th className="py-2">Narration</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {
+              todaysTransactions.map((transaction, index) => (
+
+                (todaysDate === transaction.date) && (<tr className="hovereffect text-center" key={index}>
+                  {/* <td>{index + 1}</td> */}
+                  <td className="p-2 border-2 border-grey-200">{transaction.party_name}</td>
+                  <td className="p-2 border-2 border-grey-200">
+                    {transaction.voucher_type === "Debit-Out"
+                      ? transaction.amount
+                      : "-"}
+                  </td>
+           
+                  <td className="p-2 border-2 border-grey-200">{transaction.narration}</td>
+                </tr>)
+
+
+
+              ))
+            }
+          </tbody>
+        </table>
+
+        <br />
+        <h2 className="text-center text-green-500 text-xl p-2 font-bold">
+          Client's Transaction History
+        </h2>
+        <br />
+        <h1 className=" px-2 py-1 text-xl ">Party Name : {partyname}</h1>
+        <br />
+        <table className="w-[90%] border-2">
+          <thead className="items-center p-2">
+          <tr className="bg-[#3A1078] hovereffect text-center p-2 text-white  border-2 border-grey-200">
+          <th className="items-center p-2" >Sr No.</th>
+              <th className="items-center">Date</th>
+              {/* <th className="tablebg">Voucher-Type</th> */}
+              <th className="">Debit- Out</th>
+              <th className="">Credit-In</th>
+              {/* <th className="tablebg">Balance</th> */}
+              <th className="">Narration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {handloan
+              .filter((client) => client.party_name === partyname)
+              .map((client, index) => (
+                <tr className="hovereffect text-center" key={index}>
+                  <td className="p-2 border-2 border-grey-200">{index + 1}</td>
+                  <td>{client?.date}</td>
+                  {/* <td>{client.voucher_type}</td> */}
+                  <td className="p-2 border-2 border-grey-200">
+                    {client.voucher_type === "Debit-Out" ? client.amount : "-"}
+                  </td>
+                  <td className="p-2 border-2 border-grey-200">
+                    {client.voucher_type === "Credit-In" ? client.amount : "-"}
+                  </td>
+                  {/* <td>{balance}</td> */}
+                  <td className="p-2 border-2 border-grey-200">{client.narration}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
       </div>
     </>
   );
 }
+
+
+

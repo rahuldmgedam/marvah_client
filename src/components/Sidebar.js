@@ -98,8 +98,8 @@ import logo from './images/petrol.jpg'
                 </div>
 
                 <div>
-                <h2 className='mt-6 ml-10 text-md font-bold'>Designed & Developed  by </h2>
-                 <h2 className=' ml-6 p-1  text-md font-bold '> Royals Webtech Pvt. Ltd. ©️2024</h2>
+                <h2 className='mt-6 ml-10 text-md text-white font-bold'>Designed & Developed  by </h2>
+                 <h2 className=' ml-6 p-1 text-white  text-md font-bold '> Royals Webtech Pvt. Ltd. ©️2024</h2>
                 </div>
                 <br>
                 </br>
