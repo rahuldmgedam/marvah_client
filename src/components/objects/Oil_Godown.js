@@ -544,11 +544,11 @@ const Oil_Godown = () => {
     <>
       <div>
         <div className="">
-          <h2 className="mb-2 text-2xl text-green-500 uppercase text-center">
+          <h2 className="mb-2 text-2xl font-bold uppercase text-center">
             Godown stock
           </h2>
           <div className="mb-4">
-            <label className="font-bold">
+            <label className="font-bold text-2xl">
               Date :{localDate}
               {/* {formatDate(oilProductData[0].purchaseOilDate)} */}
             </label>{" "}

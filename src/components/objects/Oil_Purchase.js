@@ -1111,7 +1111,7 @@ const PurchaseOil = () => {
           Purchase Oil
         </h1>
         <div>
-          <label className="font-bold">
+          <label className="font-bold text-xl">
             Date : {formattedDate}
             {/* // */}
           </label>
@@ -1122,18 +1122,21 @@ const PurchaseOil = () => {
           id=""
         /> */}
         </div>
+        <h2 className="mb-2 text-xl text-center font-bold uppercase">Oil invoice / purchase</h2>
+
         <div>
           {/* {oilProductData} */}
-          <label className="uppercase font-bold">Invoice No :</label>
+          <label className="uppercase font-bold">Invoice Number :</label>
           <input
-            className="ml-6 w-48 mt-4 mb-1 border-4 border-blue-600"
+            className="ml-3 w-48 mt-4 mb-1 border-4 border-blue-600"
             type="number"
             value={(oilProductData.invoiceNo = invoiceNo)}
             onChange={(e) => setInvoiceNo(e.target.value)}
           />
-          <label className="uppercase font-bold ml-4">Total Amount :</label>
+          <br />
+          <label className="uppercase font-bold">Invoice Amount :</label>
           <input
-            className=" ml-7 w-48 border-4 border-blue-600"
+            className=" ml-2 w-48 border-4 border-blue-600"
             type="number"
             value={(oilProductData.totInvAmt = totInvAmt)}
             onChange={(e) => setTotInvAmt(e.target.value)}
@@ -1144,7 +1147,7 @@ const PurchaseOil = () => {
         <div className="flex gap-4">
           {/* Stock in Cases start */}
           <div className="overflow-x-auto">
-            <h2 className="mb-2 text-2xl text-green-500">Stock in Cases</h2>
+          <h2 className="mb-2 mt-4 text-xl font-bold uppercase text-center">stock in pieces</h2>
 
             <table className="bg-white border border-gray-700">
               <thead className="">
@@ -1260,7 +1263,7 @@ const PurchaseOil = () => {
                     </td>
                     <td className="px-2">
                       <input
-                        className="w-12"
+                        className="w-12 bg-green-500"
                         type="number"
                         value={item.totalPCS}
                         readOnly
@@ -1275,7 +1278,7 @@ const PurchaseOil = () => {
 
           {/* Stock in Liters start */}
           <div className="overflow-x-auto">
-            <h2 className="mb-2 text-2xl text-green-500">Stock in Litres</h2>
+            <h2 className="mb-2 text-xl mt-4 text-center font-bold uppercase">Stock in Litres</h2>
 
             <table className="bg-white border border-gray-700">
               <thead className="">
@@ -1364,7 +1367,7 @@ const PurchaseOil = () => {
                     </td>
                     <td className=" px-1">
                       <input
-                        className="w-20 text-center"
+                        className="w-20 text-center bg-green-500"
                         type="text"
                         value={item.taxableValue}
                         readOnly
@@ -1380,8 +1383,8 @@ const PurchaseOil = () => {
         </div>
 
         {/* Invoice start */}
-        <div className="overflow-x-auto">
-  <h2 className="mb-2 text-2xl text-green-500">Invoice Details</h2>
+        <div className="overflow-x-auto mt-6">
+  <h2 className="mb-2 mt-8 text-2xl text-center font-bold"></h2>
 
   <table className="bg-white border border-gray-700">
     <thead>
@@ -1480,7 +1483,7 @@ const PurchaseOil = () => {
           </td>
           <td className=" px-1">
             <input
-              className="w-24 text-center"
+              className="w-24 text-center bg-green-500"
               type="number"
               value={item.totalAmt}
               readOnly
@@ -1506,7 +1509,7 @@ const PurchaseOil = () => {
       ))}
       <tr>
         <td className="px-1 py-2 text-right" colSpan={4}>
-          <strong>Total CGST:</strong>
+          <strong></strong>
         </td>
         <td className="px-1">
           <input
@@ -1528,11 +1531,11 @@ const PurchaseOil = () => {
       </tr>
       <tr>
         <td className="px-1 py-2 text-right" colSpan={7}>
-          <strong>Total Amount2:</strong>
+          <strong>Purchase Amount:</strong>
         </td>
         <td className="px-1">
           <input
-            className="w-24 text-center"
+            className="w-24 text-center border-4 bg-green-500 border-green-500"
             type="number"
             value={totalAmt2}
             readOnly
@@ -1763,7 +1766,7 @@ const PurchaseOil = () => {
         {/*Commission start */}
 
         <div className="overflow-x-auto">
-          <h2 className="mb-2 text-2xl text-green-500">Difference</h2>
+          <h2 className="mb-2 text-xl font-bold uppercase ml-48">Difference</h2>
 
           <table className="bg-white border border-gray-700">
             <thead className="">
@@ -1846,9 +1849,9 @@ const PurchaseOil = () => {
                       readOnly
                     />
                   </td>
-                  <td className=" bg-green-700 px-1">
+                  <td className=" bg-green-500 px-1">
                     <input
-                      className="w-20 text-center font-bold text-white bg-green-700"
+                      className="w-20 text-center font-bold text-white bg-green-500"
                       type="number"
                       value={item.difference}
                     />
@@ -1866,22 +1869,22 @@ const PurchaseOil = () => {
       {/* invoice report start */}
       <div className="overflow-x-auto mt-12">
   <form action="">
-    <h2 className="mb-2 text-2xl text-green-500">AFTER FEEDING INVOICE REPORT</h2>
+    <h2 className="mb-2 text-xl font-bold ml-40">AFTER FEEDING INVOICE REPORT</h2>
     <div>
       <span className="font-bold text-lg">Date: {formattedDate}</span>
       <br />
 
-      <label className="uppercase font-bold">Invoice No:</label>
+      <label className="uppercase font-bold">Invoice Number : </label>
       <input
-        className="w-40 mb-1 border-4 border-blue-600"
+        className="w-40 ml-4 mb-1 border-4 border-blue-600"
         type="number"
         value={(oilProductData.invoiceNo = invoiceNo)}
         onChange={(e) => setInvoiceNo(e.target.value)}
       />
       <br />
-      <label className="uppercase font-bold">Invoice Amount:</label>
+      <label className="uppercase font-bold">Invoice Amount : </label>
       <input
-        className="w-28 border-4 border-blue-600"
+        className="w-40 ml-3 border-4 border-blue-600"
         type="number"
         value={totInvAmtAct}
         readOnly
@@ -1968,9 +1971,9 @@ const PurchaseOil = () => {
                 readOnly
               />
             </td>
-            <td className="px-2">
+            <td className="px-2 bg-green-500">
               <input
-                className="w-24 text-center"
+                className="w-24 text-center bg-green-500"
                 type="number"
                 value={(item.totStockAmt = item.totalPCS * item.mrp)}
                 readOnly
@@ -1982,9 +1985,9 @@ const PurchaseOil = () => {
           <td colSpan={7} className="text-right font-bold px-2">
             Total Stock Amount:
           </td>
-          <td className="px-2">
+          <td className="px-2 bg-green-500">
             <input
-              className="w-24 text-center font-bold"
+              className="w-24 text-center font-bold bg-green-500"
               type="number"
               value={oilProductData.reduce((sum, item) => sum + item.totStockAmt, 0)}
               readOnly
@@ -2124,7 +2127,7 @@ const PurchaseOil = () => {
         <button></button>
         <button
           onClick={handleSubmit}
-          className="px-5 py-2  bg-blue-500 font-bold rounded-lg"
+          className="px-5 py-2 text-white uppercase  bg-blue-500 font-bold rounded-lg"
         >
          Save  Stock to Godown
         </button>

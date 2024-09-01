@@ -265,7 +265,7 @@ export default function Handloans({ dbpath1 }) {
         </table>
         <br />
 
-        <h2 className="text-center text-green-500 text-xl p-2 font-bold">
+        <h2 className="text-center text-xl font-bold">
           Today's Transactions
         </h2>
         <br />
@@ -309,10 +309,11 @@ export default function Handloans({ dbpath1 }) {
         </table>
 
         <br />
-        <h2 className="text-center text-green-500 text-xl p-2 font-bold">
+        
+        <br />
+        <h2 className="text-center text-xl p-2 font-bold">
           Client's Transaction History
         </h2>
-        <br />
         <h1 className=" px-2 py-1 text-xl ">Party Name : {partyname}</h1>
         <br />
         <table className="w-[90%] border-2">

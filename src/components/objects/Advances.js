@@ -41,7 +41,7 @@ export default function Handloans({ dbpath1 }) {
 
   const fetchHandloan = () => {
     axios
-      .get("http://localhost:4000/handloan")
+      .get("http://localhost:4000/advances")
       .then((res) => {
         const formattedData = handleDateConversion(res.data);
         // setDependency(!dependency)
@@ -65,7 +65,7 @@ export default function Handloans({ dbpath1 }) {
     };
     // console.log("newTransaction", newTransaction);
     axios
-      .post("http://localhost:4000/handloan/create", { ...newTransaction })
+      .post("http://localhost:4000/advances/create", { ...newTransaction })
       .then((res) => {
         if (res.data.success) {
           alert(res.data.msg);
@@ -121,7 +121,7 @@ export default function Handloans({ dbpath1 }) {
   const fetchTodaysTransactions = () => {
     // const todayDate = new Date().toISOString().slice(0, 10);
     axios
-      .get("http://localhost:4000/handloan")
+      .get("http://localhost:4000/advances")
       .then((res) => {
         console.log(" today's transactions", res.data);
         // setDependency(!dependency)

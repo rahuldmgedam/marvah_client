@@ -783,8 +783,8 @@ const DayEndReport = () => {
             </tr>
             <tr>
               <td className="py-2 border-b border-gray-700 text-center">5.</td>
-              <td className="py-2 border-b border-gray-700  text-left">
-                ADVANCES
+              <td className="py-2 border-b border-gray-700  text-left uppercase">
+              Handloan (Credit In)
               </td>
               <td className="py-2 border-b border-gray-700 text-center">
                 <span>
@@ -803,7 +803,7 @@ const DayEndReport = () => {
             <tr>
               <td className="py-2 border-b border-gray-700 text-center">6.</td>
               <td className="py-2 border-b border-gray-700  text-left uppercase">
-                Handloan Recd.
+                Advances
               </td>
               <td className="py-2 border-b border-gray-700 text-center"></td>
               <td className="py-2 border-b border-gray-700 text-center"></td>{" "}
@@ -931,7 +931,7 @@ const DayEndReport = () => {
             <tr>
               <td className="py-2 border-b border-gray-700 text-center">5.</td>
               <td className="py-2 border-b border-gray-700  text-left uppercase">
-              Handloan Given
+              Handloan (Debit out)
               </td>
               <td className="py-2 border-b border-gray-700 text-center">
                 <span>
