@@ -74,6 +74,9 @@ export default function Sale_Fuels() {
       await axios.post("http://localhost:4000/fuelsales/create", {
         ms1Readings,
       });
+      setMachineReadings([]);
+      setTotals({});
+      setMs1Readings({})
       alert("Data saved successfully!");
     } catch (error) {
       console.error(error);
@@ -125,6 +128,7 @@ export default function Sale_Fuels() {
         ms2Readings,
       });
       alert("Data saved successfully!");
+      setMs2Readings([])
     } catch (error) {
       console.error(error);
       alert("Error saving data.");
@@ -214,9 +218,9 @@ export default function Sale_Fuels() {
       });
   };
 
-  useEffect(() => {
-    fetchAllDAyStartReading();
-  }, [ms1Readings,ms2Readings,hsdReadings]);
+    useEffect(() => {
+      fetchAllDAyStartReading();
+    }, [ms1Readings,ms2Readings,hsdReadings]);
 
   return (
     <main className="tankMainDiv shadow-lg p-1 mb-5 bg-body-tertiary rounded bigFontWeight">
@@ -695,7 +699,7 @@ export default function Sale_Fuels() {
           <button></button>
         <button
             className="bg-blue-600 px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold"
-            onClick={handleSave}
+            onClick={handleSave2}
           >
             Save 
           </button>
@@ -856,7 +860,7 @@ export default function Sale_Fuels() {
           <button></button>
         <button
             className="bg-blue-600 px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold"
-            onClick={handleSave}
+            onClick={handleSave3}
           >
             Save 
           </button>

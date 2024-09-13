@@ -266,7 +266,7 @@ export default function PetrolReport4({ dbpath1, date2 }) {
     <>
       <div className='tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded'>
         <h2 className='mt-3 text-center'>Petrol Report</h2>
-        <b style={{ fontSize: '22px' }}> Date: {convertDateFormat(datecache)}</b>
+        {/* <b style={{ fontSize: '22px' }}> Date: {convertDateFormat(datecache)}</b> */}
         <br /> <br /> <br />
         <div style={{ display: 'flex', width: '300px', gap: '20px', marginLeft: '410px' }}>
           <input

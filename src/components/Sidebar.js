@@ -25,6 +25,8 @@ import logo from './images/petrol.jpg'
             navigate('/');
         }
 
+        
+
     return (
         <>
             <div class='sideMainDiv'>
@@ -37,7 +39,6 @@ import logo from './images/petrol.jpg'
                     Last Entry Date : dd-mm-yy
                 </div>
                 <div class='sideBtn'>  
-                < i class="fa-solid fa-house"></i>
                 </div>
                 <div>   
                     <button class="btn sideDrop1 btn-secondary  " type="button" >
@@ -59,6 +60,8 @@ import logo from './images/petrol.jpg'
                             <li><Link class="dropdown-item" to="/CardsReport">Cards Report</Link></li> 
                             <li><Link class="dropdown-item" to="/AdvancesHandloanReport">Advances / Handloan Report</Link></li> 
                             <li><Link class="dropdown-item" to="/OilReports">Oil Report</Link></li> 
+                            <li><Link class="dropdown-item" to="">Fuel Sales Report</Link></li> 
+
                         </ul>
                     </div>
                 </div>

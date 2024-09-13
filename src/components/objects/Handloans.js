@@ -47,13 +47,14 @@ export default function Handloans({ dbpath1 }) {
         const formattedData = handleDateConversion(res.data);
         // setDependency(!dependency)
         setHandloan(formattedData);
-        console.log("resssss",res.data);
+        console.log("resssss",handloan);
       })
       .catch((error) => {
         console.log(error.message);
       });
   };
 
+  console.log("handloan",handloan)
 
   const handleSave = () => {
     const newTransaction = {

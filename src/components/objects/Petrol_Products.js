@@ -10,6 +10,8 @@ const init = {
   vat: "",
   cess: "",
   tcs: "",
+  lfrPerKl:"",
+  tds:""
 };
 
 export default function Client() {
@@ -98,21 +100,23 @@ export default function Client() {
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
         <h2 className="mt-3 text-center">
-          Add Index - Create Petrol / HSD Invoice
+          Add  Petrol / HSD Invoice
         </h2>
         <div>
           <br></br>
           <table className="table">
             <thead>
-              <tr className="table-secondary">
+              <tr className="table-secondary text-center">
                 <th className="">Product</th>
                 <th className="">Rate/PerUnit</th>
                 <th className="">Taxable Amount per unit</th>
                 <th className="">VAT/LST %</th>
                 <th className="">CESS per unit</th>
                 <th className="">TCS per unit</th>
+                <th className="">TDS</th>
+                <th className="">LFR per KL</th>
 
-                <th className="">Action</th>
+                {/* <th className="">Action</th> */}
               </tr>
             </thead>
             <tbody>
@@ -175,11 +179,41 @@ export default function Client() {
                     className="form-control editableInput "
                   />
                 </td>
-
                 <td>
+                  <input
+                    type="text"
+                    name="tds"
+                    value={formData.tds}
+                    onChange={handleChange}
+                    className="form-control editableInput "
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="lfrPerKl"
+                    value={formData.lfrPerKl}
+                    onChange={handleChange}
+                    className="form-control editableInput "
+                  />
+                </td>
+
+                {/* <td>
                   <button
                     type="button"
                     class="px-3 py-1.5 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-gradient-to-tr hover:bg-gradient-to-tl from-blue-700 to-blue-300"
+                    onClick={handleAdd}
+                  >
+                    ADD
+                  </button>
+                </td> */}
+              </tr>
+              <tr>
+                <td colSpan={7}> </td>
+                <td>
+                <button
+                    type="button"
+                    className="px-5 py-1.5 bg-blue-500 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-gradient-to-tr hover:bg-gradient-to-tl from-blue-700 to-blue-300"
                     onClick={handleAdd}
                   >
                     ADD
@@ -195,7 +229,7 @@ export default function Client() {
           <div class="overflow-x-auto font-[sans-serif]">
             <table class="min-w-full bg-white">
               <thead class=" whitespace-nowrap bg-slate-300">
-                <tr>
+                <tr className="p-2">
                   <th class="p-0 text-center text-sm border-2 border-black ">
                     PRODUCT
                   </th>
@@ -203,10 +237,11 @@ export default function Client() {
                     RATE/UNIT
                   </th>
                   <th class="p-0 text-center text-sm border-2 border-black ">
-                    TAXABLE AMOUNT
+                    TAXABLE AMOUNT <br />
+                    PER UNIT 
                   </th>
                   <th class="p-0 text-center text-sm border-2 border-black ">
-                    VAT/LST
+                    VAT/LST(%)
                   </th>
                   <th class="p-0 text-center text-sm border-2 border-black ">
                     CESS
@@ -214,7 +249,12 @@ export default function Client() {
                   <th class="p-0 text-center text-sm border-2 border-black ">
                     TCS
                   </th>
-
+                  <th class="p-0 text-center text-sm border-2 border-black uppercase ">
+                     TDS (%)
+                  </th>
+                  <th class="p-0 text-center text-sm border-2 border-black">
+                    LFR PER KL
+                  </th>
                   <th class="p-0 text-center text-sm border-2 border-black">
                     ACTION
                   </th>
@@ -242,7 +282,12 @@ export default function Client() {
                       <td class="border-2 text-sm text-center border-gray-500">
                         {item.tcs}
                       </td>
-
+                      <td class="border-2 text-sm text-center border-gray-500">
+                        {item.tds}
+                      </td>
+                      <td class="border-2 text-sm text-center border-gray-500">
+                        {item.lfrPerKl}
+                      </td>
                       <td class="border-2 text-center border-gray-500">
                         <button
                           type="button"
@@ -366,7 +411,7 @@ export default function Client() {
                 {!updateLoading ? (
                   <button
                     type="button"
-                    class="px-5 py-2 inline-flex items-center rounded-lg text-white text-base tracking-wider font-semibold border-none outline-none bg-black hover:bg-[#333] active:bg-black"
+                    class="px-5 py-2 inline-flex items-center bg-green-200 rounded-lg text-white text-base tracking-wider font-semibold border-none outline-none hover:bg-[#333] active:bg-black"
                     onClick={handleUpdatepetrol}
                   >
                     UPDATE

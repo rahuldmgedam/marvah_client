@@ -85,6 +85,10 @@ import MachineReadings from "./components/objects/MachineReadings";
 import ReadingComponent from "./components/objects/ReadingComponent";
 import NozzleProductWise from "./components/objects/NozzleProductWise";
 import Footer from "./components/Footer";
+import MonthlyDsr from "./components/Reports/MonthlyDsr";
+import MonthlySales from "./components/Reports/petrol reports/MontlySales";
+import PurchaseTds from "./components/Reports/purchaseReports/PurchaseTds";
+import PurchaseLfr from "./components/Reports/purchaseReports/PurchaseLfr";
 
 function App() {
 
@@ -890,6 +894,25 @@ function App() {
           }
         />
 
+<Route
+          path="/monthlydsr"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div>
+                  <Navbar />
+                  <MonthlyDsr
+                   
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+
         <Route
           path="/Day_End"
           element={
@@ -1581,6 +1604,67 @@ function App() {
             </>
           }
         />
+
+
+<Route
+          path="/monthlysales"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div>
+                  <Navbar />
+                  <MonthlySales
+                   
+                  
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+        <Route
+          path="/purchasetds"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div>
+                  {/* <Navbar /> */}
+                  <PurchaseTds
+                   
+                  
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+        
+        <Route
+          path="/purchaselfr"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div>
+                  {/* <Navbar /> */}
+                  <PurchaseLfr
+                   
+                  
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+
       </Routes>
       <Footer/>
     </Router>
