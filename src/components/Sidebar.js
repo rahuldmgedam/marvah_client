@@ -69,7 +69,7 @@ import logo from './images/petrol.jpg'
                 <div>
                     <div class="btn-group">
                         <button class="btn dropdown-to  sideDrop1 btn-secondary  " type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Add Menu
+                            Add Account
                         </button>
                         <ul class="dropdown-menu sideDrop1List">
                         <li><Link class="dropdown-item" to="/mainhome">Add Tank Record</Link></li> 
