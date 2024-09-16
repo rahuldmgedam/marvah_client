@@ -1555,7 +1555,7 @@ function App() {
                   <Sidebar />
                 </div>
                 <div>
-                  <Navbar />
+                  {/* <Navbar /> */}
                   <Petrol_Products
                    
                   

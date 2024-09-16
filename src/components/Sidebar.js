@@ -42,7 +42,10 @@ import logo from './images/petrol.jpg'
                 </div>
                 <div>   
                     <button class="btn sideDrop1 btn-secondary  " type="button" >
-                        Home
+                     <Link to={"/day_start"}>
+                     Home
+                     </Link>
+                      
                     </button>
                 </div>
                 <div>
