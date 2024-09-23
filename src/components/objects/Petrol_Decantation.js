@@ -22,7 +22,7 @@ export default function Client() {
   const [hsd, sethsd] = useState("");
   const [speed, setSpeed] = useState("");
   const [selectedInvoice, setSelectedInvoice] = useState("");
-  
+
   useEffect(() => {
     const totalkl =
       Number(decantation.mskl) +
@@ -49,8 +49,7 @@ export default function Client() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "invoice") {
-     
-      setSelectedInvoice(value); 
+      setSelectedInvoice(value);
     }
     setDecantation((prevFormData) => ({
       ...prevFormData,
@@ -70,20 +69,20 @@ export default function Client() {
       tank3: Number(decantation.tank3),
       tanktotalkl: Number(decantation.tanktotalkl),
     };
-    console.log("data",formattedData);
+    console.log("data", formattedData);
 
     axios
       .post("http://localhost:4000/petroldecantation/create", formattedData)
       .then((res) => {
         if (res.data.state) {
           alert(res.data.msg);
-          console.log("resss",res.data);
-          handleUpdateInvoice()
+          console.log("resss", res.data);
+          handleUpdateInvoice();
           fetchData();
           setDecantation(init);
-          setMs("")
-          sethsd("")
-      
+          setMs("");
+          sethsd("");
+          setSpeed("")
         }
       })
       .catch((error) => {
@@ -91,19 +90,20 @@ export default function Client() {
       });
   };
 
-  const handleUpdateInvoice = async()=> {
- try {
-  const res = axios.patch(`http://localhost:4000/petrolInvoiceFeeding/updateshow/${selectedInvoice}`)
-    if(res.data.success){
-      console.log(res.data.msg);
-      alert(res.data.message)
-      handleFetchData()
+  const handleUpdateInvoice = async () => {
+    try {
+      const res = axios.patch(
+        `http://localhost:4000/petrolInvoiceFeeding/updateshow/${selectedInvoice}`
+      );
+      if (res.data.success) {
+        console.log(res.data.msg);
+        alert(res.data.message);
+        handleFetchData();
+      }
+    } catch (error) {
+      console.log(error.message);
     }
- } catch (error) {
-  console.log(error.message);
- }
-  
-  }
+  };
 
   const fetchData = () => {
     axios
@@ -120,7 +120,6 @@ export default function Client() {
   };
 
   const handleDelete = async (id) => {
-   
     const response = await axios.delete(
       `http://localhost:4000/petroldecantation/delete/${id}`
     );
@@ -138,23 +137,21 @@ export default function Client() {
       .then((res) => {
         const allInvoices = res.data.petrolInvoice;
         console.log("All Invoices: ", allInvoices);
-  
+
         const filteredInvoices = allInvoices.filter((invoice) => !invoice.show);
         console.log("Filtered Invoices (show false): ", filteredInvoices);
-  
+
         const invoiceNumbers = [
           ...new Set(filteredInvoices.map((invoice) => invoice.invoiceNumber)),
         ];
         console.log("Filtered Invoice Numbers: ", invoiceNumbers);
-  
+
         setPetrolInvoice(invoiceNumbers); // Set the state with the unique invoice numbers
       })
       .catch((error) => {
         console.log(error.message);
       });
   };
-  
-  
 
   useEffect(() => {
     console.log("ms", ms);
@@ -194,34 +191,52 @@ export default function Client() {
     fetchData();
   }, []);
 
+  const getCurrentDate = () => {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, "0");
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = String(today.getFullYear()).slice(-2); // Get last two digits of the year
+
+    return `${day}-${month}-${year}`;
+  };
+
+  console.log(getCurrentDate()); // Output example: 19-09-24
+
   console.log("data", petrolInvoice);
   return (
     <>
       <div className="">
-        <span style={{ fontSize: "22px" }}> Date : </span>
-        <h2 className=" text-center text-blue-600 uppercase text-xl font-bold">Petrol Decantation</h2>
-        <div>
-        
-          <h6 className="text-md font-semibold">Purchase Record (Petrol/Diesel):</h6>
-        
-          <table className="table">
+        {/* <span className="text-2xl font-bold"> Date : {getCurrentDate()} </span> */}
+        <h2 className="text-center text-2xl uppercase pt-20 font-bold mb-4">
+           Decantation Record 
+        </h2>
+        <div className="mt-4">
+          <h1 className="text-md font-bold text-center mt-6 mb-6 uppercase text-xl">
+            Purchase Record (Petrol/Diesel):
+          </h1>
+          
+          <div>
+            <div>
+
+            </div>
+          </div>
+          <table className="ml-[26%] w-[50%]">
             <thead>
-              <tr className="table-secondary">
-                <th className="">Invoice No</th>
-                <th className="">MS (KL)</th>
-                <th className="">Speed (KL)</th>
-                <th className="">HSD (KL)</th>
-                <th className="">Total (KL)</th>
+              <tr className="text-center mb-2 bg-[#008b8b] text-white">
+                <th className="border-2 text-center border-gray-700">Invoice No</th>
+                <th className="border-2 text-center border-gray-700">MS-1 (KL)</th>
+                <th className="border-2 text-center border-gray-700">MS-2(SP) (KL)</th>
+                <th className="border-2 text-center border-gray-700">HSD (KL)</th>
+                <th className="border-2 text-center border-gray-700">Total (KL)</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                 
+              <tr className="border-2 text-center border-gray-700">
+                <td className="w-24 border-2 border-gray-700 text-cente">
                   <select
-                    style={{ width: "120px" }}
+         
                     name="invoice"
-                    className="form-select editableInput bigFontWeight"
+                    className="px-4 py-2  rounded-md"
                     aria-label="Default select example"
                     onChange={(e) => {
                       handleChange(e);
@@ -231,15 +246,15 @@ export default function Client() {
                     <option>- Invoice -</option>
                     {petrolInvoice &&
                       petrolInvoice.map((invoiceNumber, index) => (
-                        <option key={index} value={ invoiceNumber}>
+                        <option key={index} value={invoiceNumber}>
                           {invoiceNumber}
                         </option>
                       ))}
                   </select>
                 </td>
-                <td>
+                <td className=" w-24 border-2 border-gray-700 text-center">
                   <input
-                    className="form-control editableInput "
+                    className="p-2 w-24 text-center"
                     placeholder="MS"
                     type="text"
                     name="mskl"
@@ -249,10 +264,10 @@ export default function Client() {
                   />
                 </td>
 
-                <td>
+                <td className="w-24 border-2 border-gray-700 text-cente">
                   <input
                     type="text"
-                    className="form-control editableInput "
+                    className="p-2 w-24 text-center"
                     placeholder="Speed"
                     name="speedkl"
                     value={speed ? speed : 0}
@@ -260,10 +275,10 @@ export default function Client() {
                     disabled
                   />
                 </td>
-                <td>
+                <td className="w-24 border-2 border-gray-700 text-cente">
                   <input
                     type="text"
-                    className="form-control editableInput "
+                    className="p-2 w-24 text-center"
                     placeholder="HSD"
                     name="hsdkl"
                     value={hsd ? hsd : 0}
@@ -271,11 +286,11 @@ export default function Client() {
                     disabled
                   />
                 </td>
-                <td>
+                <td className="w-24 border-2 border-gray-700 text-cente">
                   <input
                     type="text"
                     id="total1"
-                    className="form-control "
+                    className="p-2 w-24 text-center"
                     value={ms + hsd + speed}
                     placeholder="Total"
                     name="totalkl"
@@ -287,184 +302,209 @@ export default function Client() {
           </table>
 
           <br></br>
-          <h6>Decantation Record:</h6>
-      
-          <table className="table">
+          <h6 className="font-bold  uppercase text-xl mb-1 text-center mt-4">Decantation</h6>
+
+          <table className="text ml-[25%]  w-[51%]">
             <thead>
-              <tr className="table-secondary">
-                <th className="">
+              <tr className="border-2 text-center border-gray-700 bg-[#008b8b] text-white">
+                <th 
+                className="border-2 text-center border-gray-700"
+                >
                   {/* Tank 1-15KL <br /> */}
-                  MS-1
+                  MS-1(KL)
                 </th>
-                <th className="">
+                <th className="border-2 text-center border-gray-700">
                   {/* Tank 2-10KL <br></br> */}
-                  Speed
+                  MS-2(KL)(SP)
                 </th>
-                <th className="">
+                <th className="border-2 text-center border-gray-700">
                   {/* Tank 3-9KL <br></br> */}
-                  HSD
+                  HSD(KL)
                 </th>
-                <th className="" id="">
+                <th className="border-2 text-center border-gray-700" id="">
                   Total (KL)
                 </th>
-                <th className="">Action</th>
+                <th className="border-2 text-center border-gray-700">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td scope="row">
+              <tr className="border-2 text-center border-gray-700">
+                <td className="border-8 border-blue-600 rounded-xl" scope="row">
                   <input
                     type="text"
                     id="tank1"
-                    className="form-control editableInput "
-                    placeholder="Tank1"
+                    className="w-20"
                     name="tank1"
                     value={decantation.tank1}
                     onChange={handleChange}
                   />
                 </td>
-                <td>
+                <td className="border-8 border-blue-600 rounded-xl" scope="row">
                   <input
                     type="text"
+                    className="w-20"
+
                     id="tank2"
-                    className="form-control editableInput "
-                    placeholder="Tank2"
                     name="tank2"
                     value={decantation.tank2}
                     onChange={handleChange}
                   />
                 </td>
-                <td>
+                <td className="border-8 border-blue-600 rounded-xl">
                   <input
                     type="text"
+                    className="w-20"
+
                     id="tank3"
-                    className="form-control editableInput "
-                    placeholder="Tank3"
                     name="tank3"
                     value={decantation.tank3}
                     onChange={handleChange}
                   />
                 </td>
-                <td>
+                <td className="border-8 border-blue-600 rounded-xl" scope="row">
                   <input
                     type="text"
-                    className="form-control "
+                    className="w-20"
+
                     name="tanktotalkl"
                     value={decantation.tanktotalkl}
                     placeholder="Total"
                     disabled
                   />
                 </td>
-                <td>
+                <td className="bg-blue-600 border-8 border-blue-700 p-2 rounded-lg text-white">
                   <button
                     type="button"
-                    style={{ width: "120px" }}
-                    className="btn btn-primary"
+                    className=""
                     onClick={handleSubmit}
                   >
-                    ADD
+                    SAVE
                   </button>
                 </td>
               </tr>
             </tbody>
           </table>
-
         </div>
-        
-        
+
         <br></br>
-        <div>
-          <h6 className="text-lg font-bold mb-1 text-center ">Purchase Record (Petrol/Diesel):</h6>
-         
+        <div className="mt-6">
+          {/* <h6 className="text-lg font-bold mb-1 text-center uppercase ">
+            Purchase Record (Petrol/Diesel):
+          </h6>
+
           <div class="font-[sans-serif] overflow-x-auto">
-      <table class="min-w-full bg-white">
-        <thead class="bg-gray-600 whitespace-nowrap">
-          <tr>
-            <th class=" text-center text-sm  border-2 border-black text-white">
-             Sr.
-            </th>
-            <th class=" text-center text-sm  border-2 border-black text-white">
-            Invoice No
-            </th>
-            <th class=" text-center text-sm border-2 border-black text-white">
-            MS
-            </th>
-            <th class=" text-center text-sm  border-2 border-black text-white">
-             SPEED
-            </th>
-            <th class=" text-center text-sm  border-2 border-black text-white">
-              TOTAL
-            </th>
-          </tr>
-        </thead>
+            <table class="min-w-full bg-white">
+              <thead class="bg-gray-600 whitespace-nowrap">
+                <tr>
+                  <th class=" text-center text-md  border-2 border-black text-white">
+                    Sr.
+                  </th>
+                  <th class=" text-center text-md  border-2 border-black text-white">
+                    Invoice No
+                  </th>
+                  <th class=" text-center text-md border-2 border-black text-white">
+                    MS-1
+                  </th>
+                  <th class=" text-center text-md  border-2 border-black text-white">
+                    MS-2(SP)
+                  </th>
+                  <th class=" text-center text-md  border-2 border-black text-white">
+                    HSD
+                  </th>
+                  <th class=" text-center text-md  border-2 border-black text-white">
+                    TOTAL
+                  </th>
+                </tr>
+              </thead>
 
-        <tbody>
-              {data &&
-                data.map((res, index) => (
-                  <tr className="" key={index}>
-                    <td className="border-2 text-center border-gray-700">{index + 1}</td>
-                    <td className="border-2 border-gray-700 text-center">{res.invoice}</td>
-                    <td className="border-2 text-center border-gray-700">{res.mskl}</td>
-                    <td className="border-2 text-center border-gray-700">{res.hsdkl}</td>
-                    <td className="border-2 text-center border-gray-700">{res.totalkl} </td>
-                  </tr>
-                ))}
-            </tbody>
-      </table>
-
-    </div>
+              <tbody>
+                {data &&
+                  data.map((res, index) => (
+                    <tr className="" key={index}>
+                      <td className="border-2 text-center border-gray-700">
+                        {index + 1}
+                      </td>
+                      <td className="border-2 border-gray-700 text-center">
+                        {res.invoice}
+                      </td>
+                      <td className="border-2 text-center border-gray-700">
+                        {res.mskl}
+                      </td>
+                      <td className="border-2 text-center border-gray-700">
+                        {res.speedkl}
+                      </td>
+                      <td className="border-2 text-center border-gray-700">
+                        {res.hsdkl}
+                      </td>
+                      <td className="border-2 text-center border-gray-700">
+                        {res.totalkl}{" "}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div> */}
           <br></br>
-          <h3 className="mt-3 text-center text-xl font-semibold mb-1">Decantation Records</h3>
-       
+          <h3 className="mt-3 text-center text-xl font-bold mb-1 uppercase">
+            Report
+          </h3>
 
+          <table class="w-[51%] bg-white ml-[25%]">
+            <thead class="bg-gray-600 whitespace-nowrap">
+              <tr className="bg-[#008b8b] text-white">
+                <th class=" text-center text-md  border-2 border-black text-white">
+                  Sr.
+                </th>
+                <th class=" text-center text-md  border-2 border-black text-white">
+                  MS-1(KL)
+                </th>
+                <th class=" text-center text-md border-2 border-black text-white">
+                MS-2(KL)(SP)
+                </th>
+                <th class=" text-center text-md  border-2 border-black text-white">
+                  HSD(KL)
+                </th>
+                <th class=" text-center text-md  border-2 border-black text-white">
+                  TOTAL(KL)
+                </th>
+                <th class=" text-center text-md  border-2 border-black text-white">
+                  ACTION
+                </th>
+              </tr>
+            </thead>
 
-
-
-          <table class="min-w-full bg-white">
-        <thead class="bg-gray-600 whitespace-nowrap">
-          <tr>
-            <th class=" text-center text-sm  border-2 border-black text-white">
-             Sr.
-            </th>
-            <th class=" text-center text-sm  border-2 border-black text-white">
-            MS
-            </th>
-            <th class=" text-center text-sm border-2 border-black text-white">
-            SPEED
-            </th>
-            <th class=" text-center text-sm  border-2 border-black text-white">
-             HSD
-            </th>
-            <th class=" text-center text-sm  border-2 border-black text-white">
-              TOTAL
-            </th>
-            <th class=" text-center text-sm  border-2 border-black text-white">
-             ACTION 
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
+            <tbody>
               {data &&
                 data.map((res, index) => (
                   <tr className="" key={index}>
-                    <td className="border-2 text-center border-gray-700">{index + 1}</td>
-                    <td className="border-2 border-gray-700 text-center">{res.tank1}</td>
-                    <td className="border-2 text-center border-gray-700">{res.tank2}</td>
-                    <td className="border-2 text-center border-gray-700">{res.tank3}</td>
-                    <td className="border-2 text-center border-gray-700">{res.tanktotalkl} </td>
-                    <td className="border-2 text-center border-gray-700"><button
-                      type="button"
-                      className="btn btn-danger"
-                      onClick={() => handleDelete(res._id)}
-                    >
-                      Delete
-                    </button></td>
+                    <td className="border-2 text-center border-gray-700">
+                      {index + 1}
+                    </td>
+                    <td className="border-2 border-gray-700 text-center">
+                      {res.tank1}
+                    </td>
+                    <td className="border-2 text-center border-gray-700">
+                      {res.tank2}
+                    </td>
+                    <td className="border-2 text-center border-gray-700">
+                      {res.tank3}
+                    </td>
+                    <td className="border-2 text-center border-gray-700">
+                      {res.tanktotalkl}{" "}
+                    </td>
+                    <td className="border-2 text-center border-gray-700">
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={() => handleDelete(res._id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))}
             </tbody>
-      </table>
-          
+          </table>
         </div>
       </div>
     </>

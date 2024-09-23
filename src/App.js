@@ -89,6 +89,7 @@ import MonthlyDsr from "./components/Reports/MonthlyDsr";
 import MonthlySales from "./components/Reports/petrol reports/MontlySales";
 import PurchaseTds from "./components/Reports/purchaseReports/PurchaseTds";
 import PurchaseLfr from "./components/Reports/purchaseReports/PurchaseLfr";
+import PurchaseDecantation from "./components/Reports/purchaseReports/PurchaseDecantation";
 
 function App() {
 
@@ -1633,7 +1634,7 @@ function App() {
                 <div>
                   <Sidebar />
                 </div>
-                <div>
+                <div className="w-[100%]">
                   {/* <Navbar /> */}
                   <PurchaseTds
                    
@@ -1653,9 +1654,29 @@ function App() {
                 <div>
                   <Sidebar />
                 </div>
-                <div>
+                <div className="w-[100%]">
                   {/* <Navbar /> */}
                   <PurchaseLfr
+                   
+                  
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+
+<Route
+          path="/purchasedecantation"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div className="w-[100%]">
+                  {/* <Navbar /> */}
+                  <PurchaseDecantation
                    
                   
                   />

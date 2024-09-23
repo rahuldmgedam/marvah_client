@@ -1,12 +1,4 @@
-// import React from 'react'
 
-// const PurchaseLfr = () => {
-//   return (
-//     <div>PurchaseLfr</div>
-//   )
-// }
-
-// export default PurchaseLfr
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
@@ -130,7 +122,7 @@ const PurchaseLfr = () => {
 
   
   const handleShowClick = () => {
-    const filtered = fuelData.filter((item) => {
+    const filtered = petrolInvoice.filter((item) => {
       const itemDate = new Date(item.date);
       const selected = new Date(selectedDate);
       
@@ -168,12 +160,16 @@ const PurchaseLfr = () => {
 
   return (
     <div className="p-6">
+            <h1 className="text-3xl text-white bg-[#3A1078] p-3 uppercase font-bold text-center mb-3">
+        Reports
+      </h1>
+
       <h1 className="text-2xl uppercase font-bold text-center mb-3">
         LFR FEEDING FOR TDS (194 I)
       </h1>
 
 
-      <table className=" mb-4 w-[80%]">
+      <table className=" mb-4 w-[100%]">
   <tbody>
     <tr className="bg-[#008b8b] ">
       {/* Select Product */}
@@ -260,7 +256,7 @@ const PurchaseLfr = () => {
 
 
       {/* Report Table */}
-      <div className="bg-gray-100 p-4 rounded shadow-md">
+      <div className=" p-4 rounded shadow-md">
         <table className="">
           <thead>
             <tr className="bg-gray-600 uppercase text-white">
@@ -268,11 +264,12 @@ const PurchaseLfr = () => {
                 SR. <br />
                 NO.
               </th>
+              <th className="p-2 border-2 border-gray-300 text-center">DATE</th>
+
               <th className="p-2 border-2 border-gray-300 text-center">
                 Product
               </th>
 
-              <th className="p-2 border-2 border-gray-300 text-center">DATE</th>
               <th className="p-2 border">
                 Invoice <br /> No.
               </th>
@@ -284,14 +281,15 @@ const PurchaseLfr = () => {
               LFR TAXABLE  <br />
                AMOUNT
               </th>
-              <th className="p-2 border">
-                TOT. LFR <br /> AMOUNT
-              </th>
+         
               <th className="p-2 border-2 border-gray-300 text-center">
                 CGST(9%)
               </th>
               <th className="p-2 border-2 border-gray-300 text-center">
                 SGST(9%)
+              </th>
+              <th className="p-2 border">
+                TOT. LFR <br /> AMOUNT
               </th>
               <th className="p-2 border-2 border-gray-300 text-center">
                 TOTAL
@@ -341,16 +339,17 @@ const PurchaseLfr = () => {
   ) : (
     // Map through filteredData and display rows
     filteredData.map((item, index) => (
-      <tr key={index}>
+      <tr key={index} className="hovereffect">
         <td className="border-2 border-gray-300 text-center p-2 w-[8]">
-          {index + 1}
-        </td>
-        <td className="border-2 border-gray-300 text-center p-2 w-[12]">
-          {item.ProductName || "--"}
+        {item.serialNumber || "--"}
         </td>
         <td className="border-2 border-gray-300 text-center p-2 w-[20]">
           {formatDate(item.date) || "--"}
         </td>
+        <td className="border-2 border-gray-300 text-center p-2 w-[12]">
+          {item.ProductName || "--"}
+        </td>
+      
         <td className="border-2 border-gray-300 text-center p-2 w-[20]">
           {item.invoiceNumber || "--"}
         </td>
@@ -358,21 +357,21 @@ const PurchaseLfr = () => {
           {item.klQty || "--"}
         </td>
         <td className="border-2 border-gray-300 text-center p-2 w-[20]">
-          {item.productAmount || "--"}
+          {item.lfrPerKl || "--"}
         </td>
         <td className="border-2 border-gray-300 text-center p-2 w-[20]">
-          {item.totalProductAmt || "--"}
+          {(item.lfrPerKl*item.klQty).toFixed(2) || "--"}
         </td>
         <td className="border-2 border-gray-300 text-center p-2 w-[20]">
-          {item.tdsAmount || "--"}
+        {((item.lfrPerKl*item.klQty)*(item.cgst)).toFixed(2) || "--"}
         </td>
         <td className="border-2 border-gray-300 text-center p-2 w-[20]">
-          {item.tdsAmount || "--"}
+        {((item.lfrPerKl*item.klQty)*(item.sgst)).toFixed(2) || "--"}
         </td>
         <td className="border-2 border-gray-300 text-center p-2 w-[20]">
-          {item.tdsAmount || "--"}
+          {(((item.lfrPerKl*item.klQty)*item.sgst)*2)+(item.lfrPerKl*item.klQty) || "--"}
         </td>
-        <td className="border-2 border-gray-300 text-center p-2 w-[20]">
+        <td className="border-2  border-gray-300 text-center p-2 w-[20] border-separate">
           {item.tdsAmount || "--"}
         </td>
         

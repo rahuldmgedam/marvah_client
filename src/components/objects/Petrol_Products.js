@@ -103,7 +103,7 @@ export default function Client() {
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
         <h2 className="mt-3 text-center">
-         INDEX FORMAT INVOICE/TDS/LFR 
+         INDEX FORM INVOICE/TDS/LFR 
         </h2>
         <div>
           <br></br>
@@ -135,8 +135,8 @@ export default function Client() {
                     className="form-control editableInput w-[90px]"
                   >
                     <option value="">product</option>
-                    <option value="MS">MS</option>
-                    <option value="SPEED">SPEED</option>
+                    <option value="MS">MS-1</option>
+                    <option value="SPEED">MS-2(SP)</option>
                     <option value="HSD">HSD</option>
                   </select>
                 </td>
@@ -189,9 +189,10 @@ export default function Client() {
                   <input
                     type="text"
                     name="tds"
+                    
                     value={formData.tds}
                     onChange={handleChange}
-                    className="form-control editableInput "
+                    className="form-control editableInput  "
                   />
                 </td>
                 <td>
@@ -296,20 +297,20 @@ export default function Client() {
                       <td class="border-2 text-center text-sm  border-gray-500">
                         {item.ProductName}
                       </td>
-                      <td class="border-2 text-sm text-center border-gray-500">
-                        {item.rate}
+                      <td class="text-center text-sm border-8 border-blue-500">
+                      {item.rate}
                       </td>
-                      <td class="border-2 text-center text-sm border-gray-500">
-                        {item.taxamount}
+                      <td class="text-center text-sm border-8 border-blue-500">
+                      {item.taxamount}
                       </td>
-                      <td class="border-2 text-sm text-center border-gray-500">
-                        {item.vat}
+                      <td class="text-center text-sm border-8 border-blue-500">
+                      {item.vat}
                       </td>
-                      <td class="border-2 text-sm text-center border-gray-500">
-                        {item.cess}
+                      <td class="text-center text-sm border-8 border-blue-500">
+                      {item.cess}
                       </td>
-                      <td class="border-2 text-sm text-center border-gray-500">
-                        {item.tcs}
+                      <td class="text-center text-sm border-8 border-blue-500">
+                      {item.tcs}
                       </td>
                     
                       <td class="border-2 text-center border-gray-500 ">
@@ -369,16 +370,16 @@ export default function Client() {
             {item.ProductName}
           </td>
          
-          <td class="border-2 text-sm text-center border-gray-500">
+          <td class="text-center text-sm border-8 border-blue-500">
             {item.lfrPerKl}
           </td>
-          <td class="border-2 text-sm text-center border-gray-500">
+          <td class="text-center text-sm border-8 border-blue-500">
             {item.cgst}
           </td>
-          <td class="border-2 text-sm text-center border-gray-500">
+          <td class="text-center text-sm border-8 border-blue-500">
             {item.sgst}
           </td>
-          <td class="border-2 text-sm text-center border-gray-500">
+          <td class="text-center text-sm border-8 border-blue-500">
             {item.tdsLfr}
           </td>
           <td class="border-2 text-center border-gray-500">
@@ -425,7 +426,7 @@ export default function Client() {
             <td class="border-2 text-center text-sm  border-gray-500">
             {item.ProductName}
           </td>
-          <td class="border-2 text-sm text-center border-gray-500">
+          <td class="text-center text-sm border-8 border-blue-500">
             {item.tds}
           </td>
           <td class="border-2 text-center border-gray-500">
