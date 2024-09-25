@@ -4,7 +4,7 @@ import Petrol_Decantation from "../objects/Petrol_Decantation";
 import axios from "axios";
 import "../css/Tank.css";
 import { MdAdd, MdDelete, MdEdit } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 const initValue = {
   serialNumber: "",
   invoiceNumber: "",
@@ -24,8 +24,8 @@ const initValue = {
   cgst: "",
   sgst: "",
   tdsLfr: "",
-  lfrTotal: "", //indiv prod
-  lfrPerKlSumTds: "", //lfrTotal + cgst + sgst of both ms,hsd
+  lfrTaxAmt: "", //indiv prod
+  lfrPerKlSumTds: "", //lfrTaxAmt + cgst + sgst of both ms,hsd
   totInvoiceAmt: "",
   total: "",
   totCgst: "",
@@ -42,6 +42,50 @@ export default function Petrol_Invoice_Feeding() {
   const [productAmtSum, setProductAmtSum] = useState(0);
   const [invFeedingData, setInvFeedingData] = useState([]);
   const [productAmtSumTds, setProductAmtSumTds] = useState(0);
+
+  const location = useLocation();
+  const values = location.state?.data || null;
+  console.log("values", values);
+
+  useEffect(() => {
+    if (values) {
+      setSaveData((prev) => ({
+        ...prev,
+        _id: values._id,
+        serialNumber: values?.serialNumber,
+        invoiceNumber: values?.invoiceNumber,
+        ProductName: values?.ProductName,
+        klQty: values?.klQty,
+        Value: values?.Value,
+        taxamount: values?.taxamount,
+        rate: values?.rate,
+        productAmount: parseInt(values?.productAmount),
+        vat: values?.vat,
+        vatlst: values?.vatlst,
+        cess: values?.cess,
+        tcs: values?.tcs,
+        totalAmount: values?.totalAmount,
+        tds: values?.tds,
+        lfrPerKl: values?.lfrPerKl,
+        cgst: values?.cgst,
+        tdsLfr: values?.tdsLfr,
+        sgst: values?.sgst,
+      }));
+      // setFilterData((prev)=>({
+      //   ...prev,
+      //   rate:parseInt(values?.rate),
+
+      // }))
+      // setData((prev)=>({
+      //   ...prev,
+      //   ProductName:values?.ProductName,
+
+      // }))
+    }
+  }, []);
+
+  console.log("saveData new", saveData);
+
   const handleSelect = (e) => {
     const finalProduct = data?.filter(
       (item) => item.ProductName === e.target.value
@@ -116,7 +160,7 @@ export default function Petrol_Invoice_Feeding() {
 
   // console.log("tds", saveData.tds);
   const calculateValues = (formData, filterData) => {
-    const { klQty, vatPercent, vat } = formData;
+    const { klQty, vat, lfrPerKl, tdsLfr, cgst, sgst } = formData;
     const { rate, taxamount, cess, tcs } = filterData;
 
     const Value = (klQty * rate).toFixed(1);
@@ -145,8 +189,17 @@ export default function Petrol_Invoice_Feeding() {
         parseFloat(cess * klQty),
       taxamount: parseFloat(taxamount * klQty),
       cess: parseFloat(cess * klQty),
+      lfrTaxAmt: parseFloat(lfrPerKl * klQty),
+      totCgst: parseFloat(lfrPerKl * klQty * cgst),
+      totSgst: parseFloat(lfrPerKl * klQty * sgst),
+      totalLfrValue:
+        parseFloat(lfrPerKl * klQty) +
+        parseFloat(lfrPerKl * klQty * cgst) +
+        parseFloat(lfrPerKl * klQty * sgst),
     };
   };
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (saveData.klQty && filterData.rate) {
@@ -181,7 +234,7 @@ export default function Petrol_Invoice_Feeding() {
       productAmountSumTds: parseFloat(productAmountSumTds), // Add Total Product Amount here
       totInvoiceAmt: parseFloat(totInvoiceAmt),
       TotPayableTds: parseFloat(TotPayableTds),
-      lfrTotal: parseFloat(saveData.lfrTotal),
+      lfrTaxAmt: parseFloat(saveData.lfrTaxAmt),
       InvTotSum: parseFloat(InvTotSum),
     };
 
@@ -194,7 +247,9 @@ export default function Petrol_Invoice_Feeding() {
         alert(res.data.msg);
         handleFetchData();
         setSaveData(initValue); // Reset the form
-        setShowDecantation(true);
+        // setShowDecantation(true);
+        navigate("/invLfrTds")
+
       })
       .catch((error) => {
         console.log(error.message);
@@ -579,20 +634,24 @@ export default function Petrol_Invoice_Feeding() {
               </tbody>
             </table>
             <div className="text-right">
-              {/* <button
-              type="submit"
-              className="px-5 py-2.5 bg-green-500 rounded-lg text-white text-sm tracking-wider font-medium border border-current outline-none bg-gradient-to-tr hover:bg-gradient-to-tl from-blue-700 to-blue-300"
-              onClick={handleUpdate}
-            >
-              Edit
-            </button> */}
-              <button
-                type="submit"
-                className="px-5 py-2.5 bg-blue-500 rounded-lg text-white text-sm tracking-wider font-medium border border-current outline-none bg-gradient-to-tr hover:bg-gradient-to-tl from-blue-700 to-blue-300"
-                onClick={handleSubmit}
-              >
-                ADD
-              </button>
+              {values ? (
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 bg-green-500 rounded-lg text-white text-sm tracking-wider font-medium border border-current outline-none bg-gradient-to-tr hover:bg-gradient-to-tl from-blue-700 to-blue-300"
+                  onClick={handleUpdate}
+                >
+                  Edit
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 bg-blue-500 rounded-lg text-white text-sm tracking-wider font-medium border border-current outline-none bg-gradient-to-tr hover:bg-gradient-to-tl from-blue-700 to-blue-300"
+                  onClick={handleSubmit}
+                >
+                  
+                  SAVE
+                </button>
+              )}
             </div>
           </form>
         </div>
@@ -606,468 +665,504 @@ export default function Petrol_Invoice_Feeding() {
 
         {/* 1. invoice feed start  */}
 
-      
-          <h2 className=" text-xl font-bold mb-1 text-center uppercase">
-            Invoice entry{" "}
-          </h2>
+        {showDecantation && (
+          <>
+            <div className="lfr-tds-inv">
+              <h2 className=" text-xl font-bold mb-1 text-center uppercase">
+                Invoice entry{" "}
+              </h2>
 
-          <div className="relative">
-            <div
-              className="overflow-x-auto scroll-mx-5"
-              ref={topScrollRef}
-              onScroll={() => handleScroll(topScrollRef, tableScrollRef)}
-              style={{ height: "1.5rem" }}
-            >
-              <div style={{ width: "200%" }}></div>
-            </div>
+              <div className="relative">
+                <div
+                  className="overflow-x-auto scroll-mx-5"
+                  ref={topScrollRef}
+                  onScroll={() => handleScroll(topScrollRef, tableScrollRef)}
+                  style={{ height: "1.5rem" }}
+                >
+                  <div style={{ width: "200%" }}></div>
+                </div>
 
-            <table className="">
-              <thead className="px-2">
-                <tr className="text-center uppercase px-2">
-                  <th className="border-2 px-2 border-gray-900">S.No.</th>
-                  <th className="border-2 border-gray-900">Invoice No.</th>
-                  <th className="border-2 border-gray-900">Product</th>
-                  <th className="border-2 border-gray-900">KL/Qty</th>
-                  <th className="border-2 border-gray-900">x</th>
+                <table className="">
+                  <thead className="px-2">
+                    <tr className="text-center uppercase px-2">
+                      <th className="border-2 px-2 border-gray-900">S.No.</th>
+                      <th className="border-2 border-gray-900">Invoice No.</th>
+                      <th className="border-2 border-gray-900">Product</th>
+                      <th className="border-2 border-gray-900">KL/Qty</th>
+                      <th className="border-2 border-gray-900">x</th>
 
-                  <th className="border-2 px-2 border-gray-900">Rate/Unit</th>
-                  <th className="border-2 border-gray-900">=</th>
+                      <th className="border-2 px-2 border-gray-900">
+                        Rate/Unit
+                      </th>
+                      <th className="border-2 border-gray-900">=</th>
 
-                  <th className="border-2 px-2 border-gray-900">Value</th>
-                  <th className="border-2 border-gray-900">+</th>
+                      <th className="border-2 px-2 border-gray-900">Value</th>
+                      <th className="border-2 border-gray-900">+</th>
 
-                  <th className="border-2 border-gray-900 w-16">
-                    Taxable Amount
-                  </th>
-                  <th className="border-2 border-gray-900">=</th>
+                      <th className="border-2 border-gray-900 w-16">
+                        Taxable Amount
+                      </th>
+                      <th className="border-2 border-gray-900">=</th>
 
-                  <th className="border-2 border-gray-900">Product Amount</th>
-                  <th className="border-2 border-gray-900">x</th>
+                      <th className="border-2 border-gray-900">
+                        Product Amount
+                      </th>
+                      <th className="border-2 border-gray-900">x</th>
 
-                  <th className="border-2 border-gray-900">VAT %</th>
-                  <th className="border-2 border-gray-900">=</th>
+                      <th className="border-2 border-gray-900">VAT %</th>
+                      <th className="border-2 border-gray-900">=</th>
 
-                  <th className="border-2 border-gray-900">VAT/LST</th>
-                  <th className="border-2 border-gray-900">+</th>
+                      <th className="border-2 border-gray-900">VAT/LST</th>
+                      <th className="border-2 border-gray-900">+</th>
 
-                  <th className="border-2 border-gray-900">CESS</th>
-                  <th className="border-2 border-gray-900">+</th>
+                      <th className="border-2 border-gray-900">CESS</th>
+                      <th className="border-2 border-gray-900">+</th>
 
-                  <th className="border-2 border-gray-900">TCS</th>
-                  <th className="border-2 border-gray-900">=</th>
+                      <th className="border-2 border-gray-900">TCS</th>
+                      <th className="border-2 border-gray-900">=</th>
 
-                  <th className="border-2 border-gray-900">T Amount</th>
-                  <th className="border-2 border-gray-900">T inv Amount</th>
-                  <th className="border-2 border-gray-900">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {petrolInvoice.length > 0 &&
-                  petrolInvoice.map((item, index) => (
-                    <tr key={index} className="text-center">
-                      <td className="border-2 border-gray-900 ">
-                        {item.serialNumber}
+                      <th className="border-2 border-gray-900">T Amount</th>
+                      <th className="border-2 border-gray-900">T inv Amount</th>
+                      <th className="border-2 border-gray-900">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {petrolInvoice.length > 0 &&
+                      petrolInvoice.map((item, index) => (
+                        <tr key={index} className="text-center">
+                          <td className="border-2 border-gray-900 ">
+                            {item.serialNumber}
+                          </td>
+
+                          <td className="border-2 border-gray-900">
+                            {item.invoiceNumber}
+                          </td>
+                          <td className="border-2 border-gray-900">
+                            {item.ProductName}
+                          </td>
+                          <td className="border-2 border-gray-900">
+                            {item.klQty}
+                          </td>
+                          <td className="border-2 border-gray-900 w-[1%]">x</td>
+
+                          <td className="border-2 border-gray-900">
+                            {item.rate}
+                          </td>
+                          <td className="border-2 border-gray-900 w-[1%]">=</td>
+                          <td className="border-2 border-gray-900">
+                            {item.Value}
+                          </td>
+                          <td className="border-2 border-gray-900 w-[1%]">+</td>
+
+                          <td className="border-2 border-gray-900 w-16">
+                            {item.taxamount}
+                          </td>
+                          <td className="border-2 border-gray-900 w-[1%]">=</td>
+
+                          <td className="border-2 border-gray-900">
+                            {item.productAmount}
+                          </td>
+                          <td className="border-2 border-gray-900 w-[1%]">x</td>
+
+                          <td className="border-2 border-gray-900 w-[12]">
+                            {item.vat}
+                          </td>
+                          <td className="border-2 border-gray-900 w-[1%]">=</td>
+
+                          <td className="border-2 border-gray-900">
+                            {item.vatlst.toFixed()}
+                          </td>
+                          <td className="border-2 border-gray-900 w-[1%]">+</td>
+
+                          <td className="border-2 border-gray-900">
+                            {item.cess}
+                          </td>
+                          <td className="border-2 border-gray-900 w-[1%]">+</td>
+
+                          <td className="border-2 border-gray-900">
+                            {item.tcs}
+                          </td>
+                          <td className="border-2 border-gray-900 w-[1%]">=</td>
+
+                          <td className="border-2 border-gray-900">
+                            {item.totalAmount}
+                          </td>
+
+                          <td className="border-2 border-gray-900">
+                            {InvTotSum.toFixed(2)}
+                          </td>
+                          <td className="border-2 border-gray-900">
+                            <button
+                              onClick={() => handleDelete(item._id)}
+                              type="button"
+                              class="w-10 h-10 inline-flex items-center justify-center rounded border-none outline-none shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] bg-white"
+                            >
+                              <MdDelete color="red" size={25} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+                <div className="flex justify-between mt-2">
+                  <div></div>
+
+                  <div
+                    className="text-center mr-16 font-bold border-gray-900"
+                    colSpan={4}
+                  >
+                    T. Invoice Amt:{" "}
+                    <span className="border-2 p-2 border-gray-900">
+                      {" "}
+                      {totInvoiceAmt.toFixed(2)}{" "}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              {/* 1. invoice feed end  */}
+
+              {/* 2. tds start  */}
+              <h2 className=" text-xl font-bold mb-1 text-center uppercase">
+                tds 194Q entry{" "}
+              </h2>
+              <div className="relative">
+                <div
+                  className="overflow-x-auto scroll-mx-5"
+                  ref={topScrollRef}
+                  onScroll={() => handleScroll(topScrollRef, tableScrollRef)}
+                  style={{ height: "1.5rem" }}
+                >
+                  {/* <div style={{ width: "200%" }}></div> */}
+                </div>
+
+                <table className="">
+                  <thead className="">
+                    <tr className="text-center uppercase">
+                      <th className="border-2 border-gray-900">S.No.</th>
+
+                      <th className="border-2 border-gray-900">Invoice No.</th>
+                      <th className="border-2 border-gray-900">Product</th>
+                      <th className="border-2 border-gray-900">KL/Qty</th>
+
+                      <th className="border-2 border-gray-900">
+                        Value <br />
+                        (A)
+                      </th>
+                      <th className="border-2 border-gray-900 w-[1%] text">
+                        +
+                      </th>
+
+                      <th className="border-2 border-gray-900">
+                        Taxable Amt. <br />
+                        (B)
+                      </th>
+                      <th className="border-2 border-gray-900 w-[1%] text">
+                        =
+                      </th>
+
+                      <th className="border-2 border-gray-900">
+                        Product amt. <br />
+                        (C)
+                      </th>
+                      <th className="border-2 border-gray-900">x</th>
+                      <th className="border-2 border-gray-900">tds(%)</th>
+                      <th className="border-2 border-gray-900">
+                        Act. tds payable
+                      </th>
+
+                      <th className="border-2 border-gray-900">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {petrolInvoice.length > 0 &&
+                      petrolInvoice.map((item, index) => (
+                        <tr key={index} className="text-center">
+                          <td className="border-2 border-gray-900">
+                            {item.serialNumber}
+                          </td>
+
+                          <td className="border-2 border-gray-900">
+                            {item.invoiceNumber}
+                          </td>
+                          <td className="border-2 border-gray-900">
+                            {item.ProductName}
+                          </td>
+                          <td className="border-2 border-gray-900">
+                            {item.klQty}
+                          </td>
+                          {/* <td className="border-2 border-gray-900">{item.rate}</td> */}
+                          <td className="border-2 border-gray-900">
+                            {item.Value}
+                          </td>
+                          <td className="border-2 border-gray-900 w-[1%]">+</td>
+
+                          <td className="border-2 border-gray-900 w-[16]">
+                            {item.taxamount}
+                          </td>
+                          <td className="border-2 border-gray-900 w-[1%]">=</td>
+
+                          <td className="border-2 border-gray-900">
+                            {item.productAmount}
+                          </td>
+                          <td className="border-2 border-gray-900">x</td>
+
+                          <td className="border-2 border-gray-900">
+                            {item.tds}
+                          </td>
+                          <td className="border-2 border-gray-900">
+                            {(item.productAmount * item.tds).toFixed(2)}
+                          </td>
+
+                          <td className="border-2 border-gray-900">
+                            <button
+                              onClick={() => handleDelete(item._id)}
+                              type="button"
+                              class="w-10 h-10 inline-flex items-center justify-center rounded border-none outline-none shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] bg-white"
+                            >
+                              <MdDelete color="red" size={25} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    <tr>
+                      <td colSpan={7}></td>
+                      <td className="text-center font-bold border-2 border-gray-900">
+                        Tot. <br /> Amt:
                       </td>
-
-                      <td className="border-2 border-gray-900">
-                        {item.invoiceNumber}
-                      </td>
-                      <td className="border-2 border-gray-900">
-                        {item.ProductName}
-                      </td>
-                      <td className="border-2 border-gray-900">{item.klQty}</td>
-                      <td className="border-2 border-gray-900 w-[1%]">x</td>
-
-                      <td className="border-2 border-gray-900">{item.rate}</td>
-                      <td className="border-2 border-gray-900 w-[1%]">=</td>
-                      <td className="border-2 border-gray-900">{item.Value}</td>
-                      <td className="border-2 border-gray-900 w-[1%]">+</td>
-
-                      <td className="border-2 border-gray-900 w-16">
-                        {item.taxamount}
-                      </td>
-                      <td className="border-2 border-gray-900 w-[1%]">=</td>
-
-                      <td className="border-2 border-gray-900">
-                        {item.productAmount}
-                      </td>
-                      <td className="border-2 border-gray-900 w-[1%]">x</td>
-
-                      <td className="border-2 border-gray-900 w-[12]">
-                        {item.vat}
-                      </td>
-                      <td className="border-2 border-gray-900 w-[1%]">=</td>
-
-                      <td className="border-2 border-gray-900">
-                        {(item.vatlst).toFixed()}
-                      </td>
-                      <td className="border-2 border-gray-900 w-[1%]">+</td>
-
-                      <td className="border-2 border-gray-900">{item.cess}</td>
-                      <td className="border-2 border-gray-900 w-[1%]">+</td>
-
-                      <td className="border-2 border-gray-900">{item.tcs}</td>
-                      <td className="border-2 border-gray-900 w-[1%]">=</td>
-
-                      <td className="border-2 border-gray-900">
-                        {item.totalAmount}
-                      </td>
-
-                      <td className="border-2 border-gray-900">
-                        {InvTotSum.toFixed(2)}
-                      </td>
-                      <td className="border-2 border-gray-900">
-                        <button
-                          onClick={() => handleDelete(item._id)}
-                          type="button"
-                          class="w-10 h-10 inline-flex items-center justify-center rounded border-none outline-none shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] bg-white"
-                        >
-                          <MdDelete color="red" size={25} />
-                        </button>
+                      <td className="border-2 border-gray-900 text-center w-[2%]">
+                        {(saveData.productAmountSumTds =
+                          productAmountSumTds).toFixed(2)}
                       </td>
                     </tr>
-                  ))}
-              </tbody>
-            </table>
-            <div className="flex justify-between mt-2">
-              <div></div>
+                    <tr>
+                      <td colSpan={7}></td>
+                      <td className="text-center font-bold border-2 border-gray-900">
+                        TDS <br />
+                        (194Q)
+                      </td>
+                      <td className="border-2">
+                        <input
+                          type="text"
+                          name="tds"
+                          className="p-2 rounded-md text-center"
+                          // value={petrolInvoice[0].tds}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan={7}></td>
+                      <td className="font-bold border-2 border-gray-900">
+                        tds payable
+                      </td>
+                      <td className="border-2 border-gray-900">
+                        <input
+                          type="text"
+                          name="tds"
+                          className="p-2 rounded-md text-center"
+                          value={(productAmountSumTds * 0.001).toFixed(2)}
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              {/* 2. tds end */}
+              <br />
+              {/* 3. lfr feeding Start */}
+              <h2 className=" text-xl font-bold mb-1 text-center uppercase">
+                lfr 194i entry{" "}
+              </h2>
+              <div className="relative">
+                <div
+                  className="overflow-x-auto scroll-mx-5"
+                  ref={topScrollRef}
+                  onScroll={() => handleScroll(topScrollRef, tableScrollRef)}
+                  style={{ height: "1.5rem" }}
+                >
+                  <div style={{ width: "200%" }}></div>
+                </div>
 
-              <div
-                className="text-center mr-16 font-bold border-gray-900"
-                colSpan={4}
-              >
-                T. Invoice Amt:{" "}
-                <span className="border-2 p-2 border-gray-900">
-                  {" "}
-                  {totInvoiceAmt.toFixed(2)}{" "}
-                </span>
+                <table className="">
+                  <thead className="">
+                    <tr className="text-center uppercase px-2 py-1">
+                      <th className="border-2 border-gray-900 px-2 py-1">
+                        SR.No.
+                      </th>
+                      <th className="border-2 border-gray-900 px-2 py-1">
+                        Invoice No.
+                      </th>
+                      <th className="border-2 border-gray-900 px-2 py-1">
+                        Product
+                      </th>
+                      <th className="border-2 border-gray-900 px-2 py-1">
+                        KL/Qty
+                      </th>
+                      <th className="border-2 border-gray-900 w-[1%]">x</th>
+
+                      <th className="border-2 border-gray-900">LFR Per Kl</th>
+                      <th className="border-2 border-gray-900 w-8">=</th>
+                      <th className="border-2 border-gray-900">Total</th>
+                      <th className="border-2 border-gray-900 w-[1%]">+</th>
+
+                      <th className="border-2 border-gray-900">CGST</th>
+                      <th className="border-2 border-gray-900 w-8">%</th>
+
+                      <th className="border-2 border-gray-900">Tot CGST</th>
+                      <th className="border-2 border-gray-900 w-8">+</th>
+                      <th className="border-2 border-gray-900">SGST</th>
+                      <th className="border-2 border-gray-900 w-8">%</th>
+
+                      <th className="border-2 border-gray-900">Tot SGST</th>
+                      <th className="border-2 border-gray-900">
+                        Total LFR value
+                      </th>
+                      <th className="border-2 border-gray-900">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {petrolInvoice.length > 0 &&
+                      petrolInvoice.map((item, index) => {
+                        const total = item.klQty * item.lfrPerKl;
+                        const totCgst = total * item.cgst;
+                        const totSgst = total * item.sgst;
+                        const totalLfrValue = total + totCgst + totSgst;
+
+                        return (
+                          <tr key={index} className="text-center">
+                            <td className="border-2 border-gray-900">
+                              {item.serialNumber}
+                            </td>
+
+                            <td className="border-2 border-gray-900">
+                              {item.invoiceNumber}
+                            </td>
+                            <td className="border-2 border-gray-900">
+                              {item.ProductName}
+                            </td>
+                            <td className="border-2 border-gray-900 w-[4%]">
+                              {item.klQty}
+                            </td>
+                            <td className="border-2 border-gray-900 font-bold w-[1%]">
+                              x
+                            </td>
+                            <td className="border-2 border-gray-900">
+                              {item.lfrPerKl}
+                            </td>
+                            <td className="border-2 border-gray-900 font-bold w-[1%]">
+                              =
+                            </td>
+                            <td className="border-2 border-gray-900">
+                              {total.toFixed(2)}
+                            </td>
+                            <td className="border-2 border-gray-900 w-[1%] font-bold">
+                              +
+                            </td>
+                            <td className="border-2 border-gray-900">
+                              {item.cgst}
+                            </td>
+                            <th className="border-2 border-gray-900 w-8">%</th>
+
+                            <td className="border-2 border-gray-900">
+                              {totCgst.toFixed(2)}
+                            </td>
+                            <th className="border-2 border-gray-900 w-8">+</th>
+
+                            <td className="border-2 border-gray-900">
+                              {item.sgst}
+                            </td>
+                            <th className="border-2 border-gray-900 w-8">%</th>
+
+                            <td className="border-2 border-gray-900">
+                              {totSgst.toFixed(2)}
+                            </td>
+                            <td className="border-2 border-gray-900">
+                              {totalLfrValue.toFixed(2)}
+                            </td>
+                            <td className="border-2 border-gray-900">
+                              <button
+                                onClick={() => handleDelete(item._id)}
+                                type="button"
+                                className="w-10 h-10 inline-flex items-center justify-center rounded border-none outline-none shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] bg-white"
+                              >
+                                <MdDelete color="red" size={25} />
+                              </button>
+
+                              {/* <button
+                  // onClick={() => addHandler(item)}
+                  type="button"
+                  className="ml-2 w-10 h-10 inline-flex items-center justify-center rounded border-none outline-none shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] bg-green-500"
+                >
+                  <MdAdd color="white" size={25} />
+                </button> */}
+                            </td>
+                          </tr>
+                        );
+                      })}
+
+                    {petrolInvoice.length > 0 && (
+                      <tr>
+                        <td colSpan={7} className="text-right font-bold">
+                          Total:
+                        </td>
+
+                        <td className="border-2 border-gray-900">
+                          {petrolInvoice
+                            .reduce(
+                              (sum, item) => sum + item.klQty * item.lfrPerKl,
+                              0
+                            )
+                            .toFixed(2)}
+                        </td>
+
+                        <td
+                          colSpan={3}
+                          className="border-2 border-gray-900"
+                        ></td>
+                        <td className="border-2 text-center border-gray-900">
+                          {petrolInvoice
+                            .reduce(
+                              (sum, item) =>
+                                sum + item.klQty * item.lfrPerKl * item.cgst,
+                              0
+                            )
+                            .toFixed(2)}
+                        </td>
+
+                        <td
+                          colSpan={3}
+                          className="border-2 border-gray-900"
+                        ></td>
+                        <td className="border-2 text-center border-gray-900">
+                          {petrolInvoice
+                            .reduce(
+                              (sum, item) =>
+                                sum + item.klQty * item.lfrPerKl * item.sgst,
+                              0
+                            )
+                            .toFixed(2)}
+                        </td>
+
+                        <td className="border-2 text-center border-gray-900">
+                          {petrolInvoice
+                            .reduce((sum, item) => {
+                              const total = item.klQty * item.lfrPerKl;
+                              const totCgst = total * item.cgst;
+                              const totSgst = total * item.sgst;
+                              return sum + total + totCgst + totSgst;
+                            }, 0)
+                            .toFixed(2)}
+                        </td>
+
+                        <td className="border-2 border-gray-900"></td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
-          </div>
-          {/* 1. invoice feed end  */}
+          </>
+        )}
 
-          {/* 2. tds start  */}
-          <h2 className=" text-xl font-bold mb-1 text-center uppercase">
-            tds 194Q entry{" "}
-          </h2>
-          <div className="relative">
-            <div
-              className="overflow-x-auto scroll-mx-5"
-              ref={topScrollRef}
-              onScroll={() => handleScroll(topScrollRef, tableScrollRef)}
-              style={{ height: "1.5rem" }}
-            >
-              {/* <div style={{ width: "200%" }}></div> */}
-            </div>
-
-            <table className="">
-              <thead className="">
-                <tr className="text-center uppercase">
-                  <th className="border-2 border-gray-900">S.No.</th>
-
-                  <th className="border-2 border-gray-900">Invoice No.</th>
-                  <th className="border-2 border-gray-900">Product</th>
-                  <th className="border-2 border-gray-900">KL/Qty</th>
-
-                  <th className="border-2 border-gray-900">Value <br />(A)</th>
-                  <th className="border-2 border-gray-900 w-[1%] text">+</th>
-
-                  <th className="border-2 border-gray-900">Taxable Amt. <br />(B)</th>
-                  <th className="border-2 border-gray-900 w-[1%] text">=</th>
-
-                  <th className="border-2 border-gray-900">Product amt. <br />(C)</th>
-                  <th className="border-2 border-gray-900">x</th>
-                  <th className="border-2 border-gray-900">tds(%)</th>
-                  <th className="border-2 border-gray-900">Act. tds payable</th>
-
-                  <th className="border-2 border-gray-900">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {petrolInvoice.length > 0 &&
-                  petrolInvoice.map((item, index) => (
-                    <tr key={index} className="text-center">
-                      <td className="border-2 border-gray-900">
-                        {item.serialNumber}
-                      </td>
-
-                      <td className="border-2 border-gray-900">
-                        {item.invoiceNumber}
-                      </td>
-                      <td className="border-2 border-gray-900">
-                        {item.ProductName}
-                      </td>
-                      <td className="border-2 border-gray-900">{item.klQty}</td>
-                      {/* <td className="border-2 border-gray-900">{item.rate}</td> */}
-                      <td className="border-2 border-gray-900">{item.Value}</td>
-                      <td className="border-2 border-gray-900 w-[1%]">+</td>
-
-                      <td className="border-2 border-gray-900 w-[16]">
-                        {item.taxamount}
-                      </td>
-                      <td className="border-2 border-gray-900 w-[1%]">=</td>
-
-                      <td className="border-2 border-gray-900">
-                        {item.productAmount}
-                      </td>
-                      <td className="border-2 border-gray-900">x</td>
-
-                      <td className="border-2 border-gray-900">{item.tds}</td>
-                      <td className="border-2 border-gray-900">
-                        {(item.productAmount * item.tds).toFixed(2)}
-                      </td>
-
-                      <td className="border-2 border-gray-900">
-                        <button
-                          onClick={() => handleDelete(item._id)}
-                          type="button"
-                          class="w-10 h-10 inline-flex items-center justify-center rounded border-none outline-none shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] bg-white"
-                        >
-                          <MdDelete color="red" size={25} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                <tr>
-                  <td colSpan={7}></td>
-                  <td className="text-center font-bold border-2 border-gray-900">
-                    Tot. <br /> Amt:
-                  </td>
-                  <td className="border-2 border-gray-900 text-center w-[2%]">
-                    {(saveData.productAmountSumTds =
-                      productAmountSumTds).toFixed(2)}
-                    {/* <input
-                    type="text"
-                    className="p-2 rounded-md text-center"
-                    value={(saveData.productAmountSumTds =
-                      productAmountSumTds).toFixed(2)}
-                  /> */}
-                  </td>
-
-                  {/* <td colSpan={4}></td> */}
-                  {/* <td colSpan={2} className="text-center font-bold border-2 border-gray-900">
-                    Total Payable Amount:
-                  </td>
-                  <td className="border-2 border-gray-900 text-center">
-                    {(productAmountSumTds * 0.001).toFixed(2)}
-            
-                  </td> */}
-                </tr>
-                <tr>
-                <td colSpan={7}></td>
-                <td className="text-center font-bold border-2 border-gray-900">
-                  TDS <br />(194Q)
-                </td>
-                <td className="border-2">
-                  <input
-                    type="text"
-                    name="tds"
-                    className="p-2 rounded-md text-center"
-                    // value={petrolInvoice[0].tds}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td colSpan={7}></td>
-                <td className="font-bold border-2 border-gray-900">
-                 tds payable
-                </td>
-                <td className="border-2 border-gray-900">
-                  <input
-                    type="text"
-                    name="tds"
-                    className="p-2 rounded-md text-center"
-                    value={(productAmountSumTds * 0.001).toFixed(2)}
-
-                  />
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          {/* 2. tds end */}
-          <br />
-          {/* 3. lfr feeding Start */}
-          <h2 className=" text-xl font-bold mb-1 text-center uppercase">
-            lfr 194i entry{" "}
-          </h2>
-          <div className="relative">
-            <div
-              className="overflow-x-auto scroll-mx-5"
-              ref={topScrollRef}
-              onScroll={() => handleScroll(topScrollRef, tableScrollRef)}
-              style={{ height: "1.5rem" }}
-            >
-              <div style={{ width: "200%" }}></div>
-            </div>
-
-            <table className="">
-              <thead className="">
-                <tr className="text-center uppercase px-2 py-1">
-                  <th className="border-2 border-gray-900 px-2 py-1">SR.No.</th>
-                  <th className="border-2 border-gray-900 px-2 py-1">
-                    Invoice No.
-                  </th>
-                  <th className="border-2 border-gray-900 px-2 py-1">
-                    Product
-                  </th>
-                  <th className="border-2 border-gray-900 px-2 py-1">KL/Qty</th>
-                  <th className="border-2 border-gray-900 w-[1%]">x</th>
-
-                  <th className="border-2 border-gray-900">LFR Per Kl</th>
-                  <th className="border-2 border-gray-900 w-8">=</th>
-                  <th className="border-2 border-gray-900">Total</th>
-                  <th className="border-2 border-gray-900 w-[1%]">+</th>
-
-                  <th className="border-2 border-gray-900">CGST</th>
-                  <th className="border-2 border-gray-900 w-8">%</th>
-
-                  <th className="border-2 border-gray-900">Tot CGST</th>
-                  <th className="border-2 border-gray-900 w-8">+</th>
-                  <th className="border-2 border-gray-900">SGST</th>
-                  <th className="border-2 border-gray-900 w-8">%</th>
-
-                  <th className="border-2 border-gray-900">Tot SGST</th>
-                  <th className="border-2 border-gray-900">Total LFR value</th>
-                  <th className="border-2 border-gray-900">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {petrolInvoice.length > 0 &&
-                  petrolInvoice.map((item, index) => {
-                    const total = item.klQty * item.lfrPerKl;
-                    const totCgst = total * item.cgst;
-                    const totSgst = total * item.sgst;
-                    const totalLfrValue = total + totCgst + totSgst;
-
-                    return (
-                      <tr key={index} className="text-center">
-                        <td className="border-2 border-gray-900">
-                          {item.serialNumber}
-                        </td>
-
-                        <td className="border-2 border-gray-900">
-                          {item.invoiceNumber}
-                        </td>
-                        <td className="border-2 border-gray-900">
-                          {item.ProductName}
-                        </td>
-                        <td className="border-2 border-gray-900 w-[4%]">
-                          {item.klQty}
-                        </td>
-                        <td className="border-2 border-gray-900 font-bold w-[1%]">
-                          x
-                        </td>
-                        <td className="border-2 border-gray-900">
-                          {item.lfrPerKl}
-                        </td>
-                        <td className="border-2 border-gray-900 font-bold w-[1%]">
-                          =
-                        </td>
-                        <td className="border-2 border-gray-900">
-                          {total.toFixed(2)}
-                        </td>
-                        <td className="border-2 border-gray-900 w-[1%] font-bold">
-                          +
-                        </td>
-                        <td className="border-2 border-gray-900">
-                          {item.cgst}
-                        </td>
-                        <th className="border-2 border-gray-900 w-8">%</th>
-
-                        <td className="border-2 border-gray-900">
-                          {totCgst.toFixed(2)}
-                        </td>
-                        <th className="border-2 border-gray-900 w-8">+</th>
-
-                        <td className="border-2 border-gray-900">
-                          {item.sgst}
-                        </td>
-                        <th className="border-2 border-gray-900 w-8">%</th>
-
-                        <td className="border-2 border-gray-900">
-                          {totSgst.toFixed(2)}
-                        </td>
-                        <td className="border-2 border-gray-900">
-                          {totalLfrValue.toFixed(2)}
-                        </td>
-                        <td className="border-2 border-gray-900">
-                          <button
-                            onClick={() => handleDelete(item._id)}
-                            type="button"
-                            className="w-10 h-10 inline-flex items-center justify-center rounded border-none outline-none shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] bg-white"
-                          >
-                            <MdDelete color="red" size={25} />
-                          </button>
-
-                          {/* <button
-                            // onClick={() => addHandler(item)}
-                            type="button"
-                            className="ml-2 w-10 h-10 inline-flex items-center justify-center rounded border-none outline-none shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] bg-green-500"
-                          >
-                            <MdAdd color="white" size={25} />
-                          </button> */}
-                        </td>
-                      </tr>
-                    );
-                  })}
-
-                {petrolInvoice.length > 0 && (
-                  <tr>
-                    <td colSpan={6} className="text-right font-bold">
-                      Total:
-                    </td>
-
-                    <td className="border-2 border-gray-900">
-                      {petrolInvoice
-                        .reduce(
-                          (sum, item) => sum + item.klQty * item.lfrPerKl,
-                          0
-                        )
-                        .toFixed(2)}
-                    </td>
-
-                    <td className="border-2 border-gray-900"></td>
-                    <td className="border-2 border-gray-900">
-                      {petrolInvoice
-                        .reduce(
-                          (sum, item) =>
-                            sum + item.klQty * item.lfrPerKl * item.cgst,
-                          0
-                        )
-                        .toFixed(2)}
-                    </td>
-
-                    <td className="border-2 border-gray-900"></td>
-                    <td className="border-2 border-gray-900">
-                      {petrolInvoice
-                        .reduce(
-                          (sum, item) =>
-                            sum + item.klQty * item.lfrPerKl * item.sgst,
-                          0
-                        )
-                        .toFixed(2)}
-                    </td>
-
-                    <td className="border-2 border-gray-900">
-                      {petrolInvoice
-                        .reduce((sum, item) => {
-                          const total = item.klQty * item.lfrPerKl;
-                          const totCgst = total * item.cgst;
-                          const totSgst = total * item.sgst;
-                          return sum + total + totCgst + totSgst;
-                        }, 0)
-                        .toFixed(2)}
-                    </td>
-
-                    <td className="border-2 border-gray-900"></td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        
-        
         {/* 3. lfr end */}
       </div>
     </>

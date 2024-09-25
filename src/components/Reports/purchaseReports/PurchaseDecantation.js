@@ -201,7 +201,7 @@ const PurchaseDecantation = () => {
       <th className="p-2 border">Tank1</th>
       <th className="p-2 border">Tank2</th>
       <th className="p-2 border">Tank3</th>
-      <th className="p-2 border">Total</th>
+      <th className="p-2 border bg-[#008b8b] text-white">Total</th>
     </tr>
   </thead>
 
@@ -233,7 +233,7 @@ const PurchaseDecantation = () => {
           <td className="border-2 border-gray-300 text-center p-2 w-[20]">
             {item.tank3 || "--"}
           </td>
-          <td className="border-2 border-gray-300 text-center p-2 w-[20]">
+          <td className="border-2 border-gray-300 text-center p-2 w-[20] bg-[#008b8b] text-whit">
             {item.tanktotalkl || "--"}
           </td>
         </tr>
@@ -243,7 +243,7 @@ const PurchaseDecantation = () => {
     {/* Total Row */}
     {filteredData.length > 0 && (
       <>
-        <tr className="font-semibold">
+        <tr className="font-semibold bg-[#008b8b] text-white">
           <td className="border-2 border-gray-300 text-center p-2" colSpan="3">
             TOTAL
           </td>
@@ -259,14 +259,14 @@ const PurchaseDecantation = () => {
         </tr>
 
         {/* Grand Total Row */}
-        <tr className="font-semibold bg-gray-200">
+        {/* <tr className="font-semibold bg-gray-200">
           <td
             className="border-2 border-gray-300 text-center p-2"
-            colSpan="5"
+            colSpan="3"
           >
             GRAND TOTAL
           </td>
-          <td className="border-2 border-gray-300 text-center p-2">
+          <td colSpan={3} className="border-2 border-gray-300 text-center p-2">
             {filteredData.reduce(
               (sum, item) =>
                 sum +
@@ -276,7 +276,7 @@ const PurchaseDecantation = () => {
               0
             )}
           </td>
-        </tr>
+        </tr> */}
       </>
     )}
   </tbody>

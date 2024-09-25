@@ -39,6 +39,7 @@ export default function Navbar() {
                             <li><Link class="dropdown-item" to="/Petrol_Decantation">Decantation</Link></li> 
                             <li><Link class="dropdown-item" to="/Fuel_Sales">Fuel Sales</Link></li>
                             <li><Link class="dropdown-item" to="/Variation">Variation</Link></li>
+                            <li><Link class="dropdown-item" to="/invLfrTds">Invoice/LFR/TDS Report</Link></li>
                         </ul>
                     </div>
             </div>

@@ -458,9 +458,9 @@ export default function Client() {
 
       {model && (
         <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
-          <div class="w-full max-w-lg bg-white shadow-lg rounded-lg p-8 relative">
-            <div class="flex items-center">
-              <h3 class="text-blue-600 text-xl font-bold flex-1">Update</h3>
+          <div class="w-full max-w-lg font-bold bg-white shadow-lg rounded-lg p-8 relative">
+            <div class="flex items-center font-bold">
+              <h3 class="text-blue-600 text-xl font-bold flex-1"> Invoice Update</h3>
               <svg
                 onClick={() => setModel(false)}
                 xmlns="http://www.w3.org/2000/svg"
@@ -478,11 +478,11 @@ export default function Client() {
               </svg>
             </div>
 
-            <form class="space-y-4 mt-8">
-              <div className="flex gap-2">
+            <form class="space-y-4 mt-8 font-bold">
+              <div className="flex gap-2 font-bold">
                 {" "}
                 <div>
-                  <labe class="mb-2 text-sm block">Product</labe>
+                  <labe class="mb-2 text-md block">Product</labe>
                   <input
                     type="text"
                     name="ProductName"
@@ -492,7 +492,7 @@ export default function Client() {
                   />
                 </div>
                 <div>
-                  <labe class="mb-2 text-sm block">Rate/PerUnit</labe>
+                  <labe class="mb-2 text-md block">Rate/PerUnit</labe>
                   <input
                     type="text"
                     name="rate"
@@ -506,7 +506,7 @@ export default function Client() {
               <div className="flex gap-2">
                 {" "}
                 <div>
-                  <labe class="mb-2 text-sm block">Taxable Amount</labe>
+                  <labe class="mb-2 text-md block">Taxable Amount</labe>
                   <input
                     type="text"
                     value={edit.taxamount}
@@ -516,7 +516,7 @@ export default function Client() {
                   />
                 </div>
                 <div>
-                  <labe class="mb-2 text-sm block">VAT/LST</labe>
+                  <labe class="mb-2 text-md block">VAT/LST</labe>
                   <input
                     type="text"
                     value={edit.vat}
@@ -529,7 +529,7 @@ export default function Client() {
               <div className="flex gap-2">
                 {" "}
                 <div>
-                  <labe class="mb-2 text-sm block">CESS</labe>
+                  <labe class="mb-2 text-md block">CESS</labe>
                   <input
                     type="text"
                     value={edit.cess}
@@ -539,7 +539,7 @@ export default function Client() {
                   />
                 </div>
                 <div>
-                  <labe class="mb-2 text-sm block">TCS</labe>
+                  <labe class="mb-2 text-md block">TCS</labe>
                   <input
                     type="text"
                     value={edit.tcs}
@@ -548,13 +548,76 @@ export default function Client() {
                     class="px-4 py-1.5 text-sm rounded-md bg-white border border-gray-400 w-full outline-blue-500"
                   />
                 </div>
+                
               </div>
-              <div className="flex gap-2"></div>
+                <h1 className="text-blue-500">LFR UPDATE</h1>
+              <div className="flex gap-2">
+                {" "}
+                <div>
+                  <labe class="mb-2 text-md block">LFR PER KL</labe>
+                  <input
+                    type="text"
+                    value={edit.lfrPerKl}
+                    name="lfrPerKl"
+                    onChange={handleChangeUpdate}
+                    class="px-4 py-1.5 text-sm rounded-md bg-white border border-gray-400 w-full outline-blue-500"
+                  />
+                </div>
+                <div>
+                  <labe class="mb-2 text-md block uppercase">cgst</labe>
+                  <input
+                    type="text"
+                    value={edit.cgst}
+                    name="cgst"
+                    onChange={handleChangeUpdate}
+                    class="px-4 py-1.5 text-sm rounded-md bg-white border border-gray-400 w-full outline-blue-500"
+                  />
+                </div>
+                
+              </div>
+
+              <div className="flex gap-2">
+                {" "}
+                <div>
+                  <labe class="mb-2 text-md block">sgst</labe>
+                  <input
+                    type="text"
+                    value={edit.sgst}
+                    name="sgst"
+                    onChange={handleChangeUpdate}
+                    class="px-4 py-1.5 text-sm rounded-md bg-white border border-gray-400 w-full outline-blue-500"
+                  />
+                </div>
+                <div>
+                  <labe class="mb-2 text-md block uppercase">TDS (LFR)%</labe>
+                  <input
+                    type="text"
+                    value={edit.tdsLfr}
+                    name="tdsLfr"
+                    onChange={handleChangeUpdate}
+                    class="px-4 py-1.5 text-sm rounded-md bg-white border border-gray-400 w-full outline-blue-500"
+                  />
+                </div>
+                
+              </div>
+              <h1 className="text-blue-500">TDS UPDATE</h1>
+
+              <div className="flex flex-col w-[24%]">
+                  <labe class="mb-2 text-md block text-center">tds</labe>
+                  <input
+                    type="text"
+                    value={edit.tds}
+                    name="tds"
+                    onChange={handleChangeUpdate}
+                    class="px-4 py-1.5 text-sm w-24 rounded-md bg-white border border-gray-400 w-full outline-blue-500"
+                  />
+                </div>
+              
               <div className="text-center  ">
                 {!updateLoading ? (
                   <button
                     type="button"
-                    class="px-5 py-2 inline-flex items-center bg-green-200 rounded-lg text-white text-base tracking-wider font-semibold border-none outline-none hover:bg-[#333] active:bg-black"
+                    class="px-5 py-2 inline-flex items-center bg-green-600 rounded-lg text-white text-base tracking-wider font-semibold border-none outline-none hover:bg-[#333] active:bg-black"
                     onClick={handleUpdatepetrol}
                   >
                     UPDATE
