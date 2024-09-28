@@ -86,6 +86,15 @@ import ReadingComponent from "./components/objects/ReadingComponent";
 import NozzleProductWise from "./components/objects/NozzleProductWise";
 import Footer from "./components/Footer";
 import Add_Credit from "./components/objects/Add_Credit";
+import MonthlyDsr from "./components/Reports/MonthlyDsr";
+import MonthlySales from "./components/Reports/petrol reports/MontlySales";
+import PurchaseTds from "./components/Reports/purchaseReports/PurchaseTds";
+import PurchaseLfr from "./components/Reports/purchaseReports/PurchaseLfr";
+import PurchaseDecantation from "./components/Reports/purchaseReports/PurchaseDecantation";
+import InvLfrTds from "./components/objects/InvLfrTds";
+import DayStartReport from "./components/Reports/DayStart Reports/DayStartReport";
+import ConsolidatedReport from "./components/Reports/DayStart Reports/ConsolidatedReport";
+
 
 function App() {
 
@@ -891,6 +900,25 @@ function App() {
           }
         />
 
+<Route
+          path="/monthlydsr"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div>
+                  <Navbar />
+                  <MonthlyDsr
+                   
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+
         <Route
           path="/Day_End"
           element={
@@ -1549,7 +1577,7 @@ function App() {
                   <Sidebar />
                 </div>
                 <div>
-                  <Navbar />
+                  {/* <Navbar /> */}
                   <Petrol_Products
 
 
@@ -1598,6 +1626,147 @@ function App() {
             </>
           }
         />
+
+
+<Route
+          path="/monthlysales"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div>
+                  <Navbar />
+                  <MonthlySales
+                   
+                  
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+        <Route
+          path="/purchasetds"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div className="w-[100%]">
+                  {/* <Navbar /> */}
+                  <PurchaseTds
+                   
+                  
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+        
+        <Route
+          path="/purchaselfr"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div className="w-[100%]">
+                  {/* <Navbar /> */}
+                  <PurchaseLfr
+                   
+                  
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+
+<Route
+          path="/purchasedecantation"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div className="w-[100%]">
+                  {/* <Navbar /> */}
+                  <PurchaseDecantation
+                   
+                  
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+
+<Route
+          path="/invLfrTds"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div className="w-[100%]">
+                  <Navbar />
+                  <InvLfrTds
+                   
+                  
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+
+<Route
+          path="/dayStartReport"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div className="w-[100%]">
+                  {/* <Navbar /> */}
+                  <DayStartReport
+                   
+                  
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+
+<Route
+          path="/consolidatedReport"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div className="w-[100%]">
+                  {/* <Navbar /> */}
+                  <ConsolidatedReport
+                   
+                  
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+
       </Routes>
       <Footer />
     </Router>

@@ -171,12 +171,14 @@ export default function Tankd({ dbpath1, setDate }) {
       <center>
         <b>
           <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-            <h1 className="mt-3 mb-7 mb-5 p-2 font-bold text-center bg-blue-400 text-white text-2xl uppercase  border-violet-600 ">
+            <h1 className="mt-1 mb-3 p-2 font-bold text-center text-3xl uppercase  border-violet-600 ">
               {" "}
               Day Start
             </h1>
             <br></br>
-            <div style={{ display: "flex" }}>
+
+            <div className="flex justify-center gap-4">
+            {/* <div style={{ display: "flex" }}>
               <h5 style={{ marginLeft: "36%" }} className="mt-2">
                 <span style={{ fontSize: "26px" }}> Reading Day : </span>
               </h5>
@@ -199,13 +201,19 @@ export default function Tankd({ dbpath1, setDate }) {
                 // }}
                 pattern="\d{4}-\d{2}-\d{2}"
               ></input>
+            </div> */}
+            <div>
+             <span className="text-2xl">Reading Day :  </span>   <span>
+                <input type="date" className="px-2 py-2 border-3 border-red-600 rounded-md" />
+                 </span>
             </div>
-
-            <div className="text-2xl mt-4">
+            <div className="text-2xl mr-6">
               <button className=" px-4 cursor-none rounded-md text-white py-2 text-2xl uppercase bg-violet-700 border-b-4">
-                Rate
+                Rates
               </button>
             </div>
+            </div>
+           
 
             <div className="form-input">
               <div
@@ -214,7 +222,7 @@ export default function Tankd({ dbpath1, setDate }) {
               >
                 <div className="row">
                   <div className="col-4">
-                    <h4 style={{ color: "red" }}>A-MS</h4>
+                    <h4 className="font-bold text-red-600 text-2xl">1-MS</h4>
                     <br></br>
                     Reading Day
                     <input

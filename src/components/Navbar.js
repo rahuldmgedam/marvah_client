@@ -7,7 +7,7 @@ export default function Navbar() {
     
   return (
     <>
-        <div className='position-sticky navMainDiv shadow-lg rounded' style={{position: '-webkit-sticky', position: 'sticky', top: '0', zIndex:'2'}}>
+        <div className='position-sticky font-bold  navMainDiv shadow-lg rounded' style={{position: '-webkit-sticky', position: 'sticky', top: '0', zIndex:'2'}}>
             <div>
                 <button class="btn navDrop1 btn-secondary" type="button" >
                    <Link class="dropdown-item" to="/Day_Start">Day Start</Link>
@@ -15,9 +15,17 @@ export default function Navbar() {
             </div>
             <div>
             <div>
-                    <button class="btn navDrop1 btn-secondary" type="button" >
-                        <Link class="dropdown-item" to="/handloans">Handloans</Link>
-                    </button>
+            <div class="btn-group">
+                        <button class="btn dropdown-to  navDrop1 btn-secondary  " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Loans
+                        </button>
+                        <ul class="dropdown-menu navDrop1List">
+                        <li><Link class="dropdown-item" to="/handloans">Handloans  </Link></li>
+
+                            <li><Link class="dropdown-item" to="/advances">Advances</Link></li> 
+                     
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div>
@@ -31,6 +39,7 @@ export default function Navbar() {
                             <li><Link class="dropdown-item" to="/Petrol_Decantation">Decantation</Link></li> 
                             <li><Link class="dropdown-item" to="/Fuel_Sales">Fuel Sales</Link></li>
                             <li><Link class="dropdown-item" to="/Variation">Variation</Link></li>
+                            <li><Link class="dropdown-item" to="/invLfrTds">Invoice/LFR/TDS Report</Link></li>
                         </ul>
                     </div>
             </div>

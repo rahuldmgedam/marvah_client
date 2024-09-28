@@ -523,181 +523,196 @@ const Oil_Godown = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
     const year = date.getFullYear();
-  
+
     return `${day}-${month}-${year}`;
   };
-  
+
+  const handleSaveStock = async () => {
+    try {
+      await axios.post("http://localhost:4000/godownoil/create", oilProductData);
+      alert("Stock record saved successfully!");
+    } catch (error) {
+      console.error("Error saving stock record:", error);
+      alert("Failed to save stock record.");
+    }
+  };
 
   return (
     <>
-    <div>
-      <div className="">
-        <h2 className="mb-2 text-2xl text-green-500 uppercase text-center">
-          Godown stock
-        </h2>
-        <div className="mb-4">
-          <label className="font-bold">Date :{localDate}
-             {/* {formatDate(oilProductData[0].purchaseOilDate)} */}
-             </label> <br />
-        </div>
-        <table className="bg-white border border-gray-700">
-          <thead className="">
-            <tr className="bg-[#3A1078] text-white  uppercase text-sm">
-              <th className="py-1 px-2 text-center">
-                Sr. <br /> No
-              </th>
-              <th className="py-1 px-2 text-center">
-                Product <br /> Name
-              </th>
-              <th className="py-1 px-2 text-center">Grade</th>
-              <th className="py-1 px-2 text-center">Colour</th>
-              <th className="py-1 px-2 text-center">
-                Volume. <br /> per PCS
-              </th>
-              <th className="py-1 px-2 text-center border-r">MRP </th>
-              <th className="py-1 px-2 text-center border-r">
-                Opening <br />
-                Stock <br />
-                (+)
-              </th>
-              <th className="py-1 px-2 text-center">
-                Invoice <br />
-                Stock <br />
-                (+)
-              </th>
-              <th className="py-1 px-2 text-center">
-                Total
-                <br /> Opening <br />
-                stock (=)
-              </th>
-              <th className="py-1 px-2 text-center">
-                outward <br /> Retail <br />
-                (-)
-              </th>
-              <th className="py-1 px-2 text-center">
-                balance <br /> stock <br />
-                (=)
-              </th>{" "}
-              <th className="py-1 px-2 text-center">
-                balance <br /> stock <br />
-                amt(=)
-              </th>
-            </tr>
-          </thead>
-          <tbody className="text-md">
-            {oilProductData.map((item, index) => (
-              <tr key={index} className="border-b border-gray-300">
-                <td className="px-1 border-r">
-                  <input
-                    className="w-8 text-center"
-                    type="number"
-                    value={item.srNo}
-                    readOnly
-                  />
-                </td>
-                <td className="px-1 border-r">
-                  <input
-                    className="w-32 text-center"
-                    type="text"
-                    value={item.productName}
-                    readOnly
-                  />
-                </td>
-                <td className=" px-1 border-r">
-                  <input
-                    className="w-24 text-center"
-                    type="text"
-                    value={item.grade}
-                    readOnly
-                  />
-                </td>
-                <td className=" px-1 border-r">
-                  <input
-                    className="w-20 text-center"
-                    type="text"
-                    value={item.colour}
-                    readOnly
-                  />
-                </td>
-                <td className="text-center">
-                  <input
-                    className="w-16 text-center"
-                    type="number"
-                    value={item.volumePerPieces}
-                    readOnly
-                  />
-                </td>
-                <td className=" px-2 border-r">
-                  <input
-                    className="w-16 text-center"
-                    type="number"
-                    value={item.mrp}
-                    readOnly
-                  />
-                </td>
-
-                <td className="text-center">
-                  <input
-                    className="w-12 text-center border-4 border-blue-600"
-                    type="number"
-                    value={item.opStock}
-                    onChange={(e) =>
-                      handleInputChange(index, "opStock", e.target.value)
-                    }
-                  />
-                </td>
-                <td className="px-2 text-center">
-                  <input
-                    className="w-12 text-center"
-                    type="number"
-                    value={item.invStock = item.totalPCS}
-                    readOnly
-                  />
-                </td>
-                <td className="text-center px-2">
-                  <input
-                    className="w-12 text-center "
-                    type="number"
-                    value={item.totOpStock}
-                    readOnly
-                  />
-                </td>
-                <td className="px-2 text-center">
-                  <input
-                    className="w-12  border-4 border-blue-600"
-                    type="number"
-                    value={item.outRetail}
-                    onChange={(e) =>
-                      handleInputChange(index, "outRetail", e.target.value)
-                    }
-                  />
-                </td>
-                <td className="px-2 text-center">
-                  <input
-                    className="w-12"
-                    type="number"
-                    value={item.balStock}
-                    readOnly
-                  />
-                </td>
-                <td className="px-2 text-center">
-                  <input
-                    className="w-24"
-                    type="number"
-                    value={item.balStockAmt}
-                    readOnly
-                  />
-                </td>
+      <div>
+        <div className="">
+          <h2 className="mb-2 text-2xl font-bold uppercase text-center">
+            Godown stock
+          </h2>
+          <div className="mb-4">
+            <label className="font-bold text-2xl">
+              Date :{localDate}
+              {/* {formatDate(oilProductData[0].purchaseOilDate)} */}
+            </label>{" "}
+            <br />
+          </div>
+          <table className="bg-white border border-gray-700">
+            <thead className="">
+              <tr className="bg-[#3A1078] text-white  uppercase text-sm">
+                <th className="py-1 px-2 text-center">
+                  Sr. <br /> No
+                </th>
+                <th className="py-1 px-2 text-center">
+                  Product <br /> Name
+                </th>
+                <th className="py-1 px-2 text-center">Grade</th>
+                <th className="py-1 px-2 text-center">Colour</th>
+                <th className="py-1 px-2 text-center">
+                  Volume. <br /> per PCS
+                </th>
+                <th className="py-1 px-2 text-center border-r">MRP </th>
+                <th className="py-1 px-2 text-center border-r">
+                  Opening <br />
+                  Stk (Pcs) <br />
+                  (+)
+                </th>
+                <th className="py-1 px-2 text-center">
+                  Invoice <br />
+                  Stk   (Pcs)<br />
+                 (+)
+                </th>
+                <th className="py-1 px-2 text-center">
+                  Tot. Open
+                  <br /> stk (Pcs) <br />
+                 (=)
+                </th>
+                <th className="py-1 px-2 text-center">
+                  outward <br />to Retail <br />
+                  (-)
+                </th>
+                <th className="py-1 px-2 text-center">
+                  balance <br /> stock <br />
+                  (=)
+                </th>{" "}
+                <th className="py-1 px-2 text-center">
+                  balance <br /> stock <br />
+                  amt(=)
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="text-md">
+              {oilProductData.map((item, index) => (
+                <tr key={index} className="border-b border-gray-300">
+                  <td className="px-1 border-r">
+                    <input
+                      className="w-8 text-center"
+                      type="number"
+                      value={item.srNo}
+                      readOnly
+                    />
+                  </td>
+                  <td className="px-1 border-r">
+                    <input
+                      className="w-32 text-center"
+                      type="text"
+                      value={item.productName}
+                      readOnly
+                    />
+                  </td>
+                  <td className=" px-1 border-r">
+                    <input
+                      className="w-24 text-center"
+                      type="text"
+                      value={item.grade}
+                      readOnly
+                    />
+                  </td>
+                  <td className=" px-1 border-r">
+                    <input
+                      className="w-20 text-center"
+                      type="text"
+                      value={item.colour}
+                      readOnly
+                    />
+                  </td>
+                  <td className="text-center">
+                    <input
+                      className="w-16 text-center"
+                      type="number"
+                      value={item.volumePerPieces}
+                      readOnly
+                    />
+                  </td>
+                  <td className=" px-2 border-r">
+                    <input
+                      className="w-16 text-center"
+                      type="number"
+                      value={item.mrp}
+                      readOnly
+                    />
+                  </td>
+
+                  <td className="text-center">
+                    <input
+                      className="w-12 text-center"
+                      type="number"
+                      value={item.opStock}
+                      readOnly
+                    />
+                  </td>
+                  <td className="px-2 text-center">
+                    <input
+                      className="w-12 text-center"
+                      type="number"
+                      value={(item.invStock = item.totalPCS)}
+                      readOnly
+                    />
+                  </td>
+                  <td className="text-center px-2">
+                    <input
+                      className="w-12 text-center "
+                      type="number"
+                      value={item.totOpStock}
+                      readOnly
+                    />
+                  </td>
+                  <td className="px-2 text-center">
+                    <input
+                      className="w-12  border-4 border-blue-600"
+                      type="number"
+                      value={item.outRetail}
+                      onChange={(e) =>
+                        handleInputChange(index, "outRetail", e.target.value)
+                      }
+                    />
+                  </td>
+                  <td className="px-2 text-center">
+                    <input
+                      className="w-12"
+                      type="number"
+                      value={item.balStock}
+                      readOnly
+                    />
+                  </td>
+                  <td className="px-2 text-center">
+                    <input
+                      className="w-24"
+                      type="number"
+                      value={item.balStockAmt}
+                      readOnly
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-        
+
+      <div className="flex justify-around">
+        <button></button>
+        <button onClick={handleSaveStock} className="px-4 py-2 bg-blue-500 rounded-lg mt-3 font-bold">
+          Save Stock to Retail
+        </button>
+      </div>
     </>
   );
 };

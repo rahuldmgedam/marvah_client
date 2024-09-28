@@ -57,42 +57,6 @@ export default function PetrolReport({
 
   const report7 = () => {};
 
-  // const loadOilProducts = async () => {
-
-  //   let query="select * from rwt_oil_pouches";
-  //   /*    alert(query); */
-  //   const url = dbpath1 + 'getDynamic.php';
-  //   let fData = new FormData();
-  //   fData.append('query', query);
-
-  //   const response = await axios.post(url, fData);
-
-  //          if (response && response.data) {
-
-  //              if (response.data.phpresult) {
-  //                  setOilproduct(response.data.phpresult);
-  //                  console.log(response.data.phpresult);
-  //              }
-  //          }
-
-  //   let i=0;
-  //  /*  var elements = document.getElementsByClassName("ratehsd");
-  //   for ( i = 0; i < elements.length; i++) {
-  //       elements[i].value = dayStartRate[0]['hsd'];
-  //   } */
-  //   for(i=0;i<response.data.phpresult.length;i++)
-  //   {
-  //     try
-  //     {
-  //       console.log(i);
-  //     document.getElementById('mrp'+response.data.phpresult[i]['id']).value = response.data.phpresult[i]['amount'];
-  //     document.getElementById('pcs'+response.data.phpresult[i]['id']).value = response.data.phpresult[i]['pcs_per_box'];
-  //     }
-  //     catch{
-  //       console.log('catched expection');
-  //     }
-  //   }
-  // }
 
   const navigate = useNavigate();
 
@@ -212,29 +176,24 @@ export default function PetrolReport({
               </tr>
             </thead>
             <tbody>
+              {/* 1 */}
               <tr>
                 <td>
                   {" "}
-                  {/* <select class="form-select" value={value}  aria-label="Default select example" onChange={(e) => {settype(e.target.value);  }}>
-                                <option selected>- Select -</option>
-                                
-                                        <option value='date'>Day Wise Sales Report </option>
-                                        <option value='month'>Month </option>
-                                        
-                                        
-                            </select> */}
+           
                   Day Wise Sales Report
                 </td>
                 <td>
                   <button
                     type="button"
                     class="btn btn-primary"
-                    // onClick={report1}
+                     onClick={report1}
                   >
                     Generate Report
                   </button>
                 </td>
               </tr>
+              {/* 2 */}
               <tr>
                 <td>Company Register Wise DSR Sales Report</td>
                 <td>
@@ -247,6 +206,7 @@ export default function PetrolReport({
                   </button>
                 </td>
               </tr>
+                    {/* 3 */}
               <tr>
                 <td>Meter Wise Report</td>
                 <td>
@@ -259,18 +219,23 @@ export default function PetrolReport({
                   </button>
                 </td>
               </tr>
+                    {/* 4 */}
               <tr>
                 <td>Monthly DSR/ Meter Wise/ Variation Report</td>
                 <td>
                   <button
                     type="button"
                     class="btn btn-primary"
-                    // onClick={report4}
+                     onClick={report4}
                   >
                     Generate Report
                   </button>
                 </td>
+                <Link to={"/monthlyDsr"}>
+                Dsr 
+                </Link>
               </tr>
+                    {/* 5 */}
               <tr>
                 <td>Actual Sales Report With Rate & Amount</td>
                 <td>
@@ -283,8 +248,24 @@ export default function PetrolReport({
                   </button>
                 </td>
               </tr>
+                    {/* 6 */}
               <tr>
-                <td>Product Wise Detail Report (Monthly)</td>
+              <td>Product Wise Detail Report (Monthly)</td>
+
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    // onClick={report6}
+                  >
+                    Generate Report
+                  </button>
+                </td>
+              </tr>
+                    {/* 7 new */}
+              <tr>
+                <td>Monthly sales Report (New)</td>
+
                 <td>
                   <button
                     type="button"
@@ -306,26 +287,7 @@ export default function PetrolReport({
         </div>
         <br></br>
         <br></br>
-        {/*  <div>
-                <br></br>
-                <table>
-                    <th>
-                        <td>SrNo</td>
-                        <td>Date</td>
-                        <td>Rate</td>
-                        <td>MS-1</td>
-                        <td>MS-2</td>
-                        <td>Total Sales</td>
-                        <td>Total Amount</td>
-                    </th>
-                    {oilproduct.map((res)=> 
-                        <tr>
-                            <td>{res.name}</td>
-                            <td>{res.size}</td>
-                        </tr>   
-                    )}
-                </table>
-            </div> */}
+    
       </div>
     </>
   );

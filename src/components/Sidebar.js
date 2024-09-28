@@ -25,6 +25,8 @@ import logo from './images/petrol.jpg'
             navigate('/');
         }
 
+        
+
     return (
         <>
             <div class='sideMainDiv'>
@@ -37,11 +39,13 @@ import logo from './images/petrol.jpg'
                     Last Entry Date : dd-mm-yy
                 </div>
                 <div class='sideBtn'>  
-                < i class="fa-solid fa-house"></i>
                 </div>
                 <div>   
                     <button class="btn sideDrop1 btn-secondary  " type="button" >
-                        Home
+                     <Link to={"/day_start"}>
+                     Home
+                     </Link>
+                      
                     </button>
                 </div>
                 <div>
@@ -59,6 +63,8 @@ import logo from './images/petrol.jpg'
                             <li><Link class="dropdown-item" to="/CardsReport">Cards Report</Link></li> 
                             <li><Link class="dropdown-item" to="/AdvancesHandloanReport">Advances / Handloan Report</Link></li> 
                             <li><Link class="dropdown-item" to="/OilReports">Oil Report</Link></li> 
+                            <li><Link class="dropdown-item" to="">Fuel Sales Report</Link></li> 
+
                         </ul>
                     </div>
                 </div>
@@ -66,7 +72,7 @@ import logo from './images/petrol.jpg'
                 <div>
                     <div class="btn-group">
                         <button class="btn dropdown-to  sideDrop1 btn-secondary  " type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Add Menu
+                            Add Account
                         </button>
                         <ul class="dropdown-menu sideDrop1List">
                         <li><Link class="dropdown-item" to="/mainhome">Add Tank Record</Link></li> 
@@ -96,6 +102,11 @@ import logo from './images/petrol.jpg'
                     <button className='bg-green-600 px-4 py-2 rounded-lg ml-16 text-center text-white font-bold uppercase' type="button" onClick={onLogout} >
                      admin login
                     </button>
+                </div>
+
+                <div>
+                <h2 className='mt-6 ml-10 text-md text-white font-bold'>Designed & Developed  by </h2>
+                 <h2 className=' ml-6 p-1 text-white  text-md font-bold '> Royals Webtech Pvt. Ltd. ©️2024</h2>
                 </div>
                 <br>
                 </br>

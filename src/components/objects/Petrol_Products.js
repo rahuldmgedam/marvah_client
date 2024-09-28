@@ -10,6 +10,11 @@ const init = {
   vat: "",
   cess: "",
   tcs: "",
+  lfrPerKl:"",
+  tds:"",
+  cgst:"",
+  sgst:"",
+  tdsLfr:"",
 };
 
 export default function Client() {
@@ -98,21 +103,26 @@ export default function Client() {
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
         <h2 className="mt-3 text-center">
-          Add Index - Create Petrol / HSD Invoice
+         INDEX FORM INVOICE/TDS/LFR 
         </h2>
         <div>
           <br></br>
           <table className="table">
             <thead>
-              <tr className="table-secondary">
+              <tr className="table-secondary text-center uppercase">
                 <th className="">Product</th>
                 <th className="">Rate/PerUnit</th>
                 <th className="">Taxable Amount per unit</th>
                 <th className="">VAT/LST %</th>
                 <th className="">CESS per unit</th>
-                <th className="">TCS per unit</th>
+                <th className="">TCS per unit</th> 
+                <th className="">(194Q) <br /> TDS(%)</th>
+                <th className="">LFR per KL</th>
+                <th className="">cgst(%)</th>
+                <th className="">sgst(%)</th>
+                <th className="">(194I) <br /> tds(Lfr)(%)</th>
 
-                <th className="">Action</th>
+                {/* <th className="">Action</th> */}
               </tr>
             </thead>
             <tbody>
@@ -125,8 +135,8 @@ export default function Client() {
                     className="form-control editableInput w-[90px]"
                   >
                     <option value="">product</option>
-                    <option value="MS">MS</option>
-                    <option value="SPEED">SPEED</option>
+                    <option value="MS">MS-1</option>
+                    <option value="SPEED">MS-2(SP)</option>
                     <option value="HSD">HSD</option>
                   </select>
                 </td>
@@ -175,11 +185,68 @@ export default function Client() {
                     className="form-control editableInput "
                   />
                 </td>
-
                 <td>
+                  <input
+                    type="text"
+                    name="tds"
+                    
+                    value={formData.tds}
+                    onChange={handleChange}
+                    className="form-control editableInput  "
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="lfrPerKl"
+                    value={formData.lfrPerKl}
+                    onChange={handleChange}
+                    className="form-control editableInput "
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="cgst"
+                    value={formData.cgst}
+                    onChange={handleChange}
+                    className="form-control editableInput "
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="sgst"
+                    value={formData.sgst}
+                    onChange={handleChange}
+                    className="form-control editableInput "
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="tdsLfr"
+                    value={formData.tdsLfr}
+                    onChange={handleChange}
+                    className="form-control editableInput "
+                  />
+                </td>
+                {/* <td>
                   <button
                     type="button"
                     class="px-3 py-1.5 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-gradient-to-tr hover:bg-gradient-to-tl from-blue-700 to-blue-300"
+                    onClick={handleAdd}
+                  >
+                    ADD
+                  </button>
+                </td> */}
+              </tr>
+              <tr>
+                <td colSpan={10}> </td>
+                <td>
+                <button
+                    type="button"
+                    className="px-5 py-1.5 bg-blue-500 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-gradient-to-tr hover:bg-gradient-to-tl from-blue-700 to-blue-300"
                     onClick={handleAdd}
                   >
                     ADD
@@ -193,9 +260,11 @@ export default function Client() {
         <div>
           <br></br>
           <div class="overflow-x-auto font-[sans-serif]">
+          <h1 className="uppercase mb-2 font-bold">invoice index</h1>
+
             <table class="min-w-full bg-white">
               <thead class=" whitespace-nowrap bg-slate-300">
-                <tr>
+                <tr className="p-2">
                   <th class="p-0 text-center text-sm border-2 border-black ">
                     PRODUCT
                   </th>
@@ -203,10 +272,11 @@ export default function Client() {
                     RATE/UNIT
                   </th>
                   <th class="p-0 text-center text-sm border-2 border-black ">
-                    TAXABLE AMOUNT
+                    TAX. AMT <br />
+                    PER UNIT 
                   </th>
                   <th class="p-0 text-center text-sm border-2 border-black ">
-                    VAT/LST
+                    VAT/ <br />LST(%)
                   </th>
                   <th class="p-0 text-center text-sm border-2 border-black ">
                     CESS
@@ -214,7 +284,7 @@ export default function Client() {
                   <th class="p-0 text-center text-sm border-2 border-black ">
                     TCS
                   </th>
-
+                
                   <th class="p-0 text-center text-sm border-2 border-black">
                     ACTION
                   </th>
@@ -227,23 +297,23 @@ export default function Client() {
                       <td class="border-2 text-center text-sm  border-gray-500">
                         {item.ProductName}
                       </td>
-                      <td class="border-2 text-sm text-center border-gray-500">
-                        {item.rate}
+                      <td class="text-center text-sm border-8 border-blue-500">
+                      {item.rate}
                       </td>
-                      <td class="border-2 text-center text-sm border-gray-500">
-                        {item.taxamount}
+                      <td class="text-center text-sm border-8 border-blue-500">
+                      {item.taxamount}
                       </td>
-                      <td class="border-2 text-sm text-center border-gray-500">
-                        {item.vat}
+                      <td class="text-center text-sm border-8 border-blue-500">
+                      {item.vat}
                       </td>
-                      <td class="border-2 text-sm text-center border-gray-500">
-                        {item.cess}
+                      <td class="text-center text-sm border-8 border-blue-500">
+                      {item.cess}
                       </td>
-                      <td class="border-2 text-sm text-center border-gray-500">
-                        {item.tcs}
+                      <td class="text-center text-sm border-8 border-blue-500">
+                      {item.tcs}
                       </td>
-
-                      <td class="border-2 text-center border-gray-500">
+                    
+                      <td class="border-2 text-center border-gray-500 ">
                         <button
                           type="button"
                           class="px-1 py-1 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-green-700 hover:bg-green-800 active:bg-green-700"
@@ -254,7 +324,7 @@ export default function Client() {
 
                         <button
                           type="button"
-                          class="px-1 py-1 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-red-700 hover:bg-red-800 active:bg-red-700"
+                          class="px-1 py-1 ml-4 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-red-700 hover:bg-red-800 active:bg-red-700"
                           onClick={() => handleDelete(item._id)}
                         >
                           Delete
@@ -264,15 +334,133 @@ export default function Client() {
                   ))}
               </tbody>
             </table>
+
+      
+<h1 className="uppercase mb-2 mt-4 font-bold">LFR index</h1>
+
+<table class="min-w-full bg-white">
+  <thead class=" whitespace-nowrap bg-slate-300">
+    <tr className="p-2">
+      <th class="p-0 text-center text-sm border-2 border-black ">
+        PRODUCT
+      </th>
+    
+      <th class="p-0 text-center text-sm border-2 border-black">
+        LFR PER KL
+      </th>
+      <th class="p-0 text-center text-sm border-2 border-black">
+        CGST(%)
+      </th>
+      <th class="p-0 text-center text-sm border-2 border-black">
+        SGST(%)
+      </th>
+      <th class="p-0 text-center text-sm border-2 border-black">
+        TDS(LFR)(%)
+      </th>
+      <th class="p-0 text-center text-sm border-2 border-black">
+        ACTION
+      </th>
+    </tr>
+  </thead>
+  <tbody class="whitespace-nowrap">
+    {data &&
+      data.map((item) => (
+        <tr class="">
+          <td class="border-2 text-center text-sm  border-gray-500">
+            {item.ProductName}
+          </td>
+         
+          <td class="text-center text-sm border-8 border-blue-500">
+            {item.lfrPerKl}
+          </td>
+          <td class="text-center text-sm border-8 border-blue-500">
+            {item.cgst}
+          </td>
+          <td class="text-center text-sm border-8 border-blue-500">
+            {item.sgst}
+          </td>
+          <td class="text-center text-sm border-8 border-blue-500">
+            {item.tdsLfr}
+          </td>
+          <td class="border-2 text-center border-gray-500">
+            <button
+              type="button"
+              class="px-1 py-1 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-green-700 hover:bg-green-800 active:bg-green-700"
+              onClick={() => handleUpdate(item)}
+            >
+              EDIT
+            </button>
+
+            <button
+              type="button"
+              class="px-1 py-1 ml-4 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-red-700 hover:bg-red-800 active:bg-red-700"
+              onClick={() => handleDelete(item._id)}
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      ))}
+  </tbody>
+</table>
+<h1 className="uppercase mb-2 font-bold mt-4">TDS index</h1>
+
+<table class="bg-white w-[50%]">
+  <thead class=" whitespace-nowrap bg-slate-300">
+    <tr className="p-2">
+    <th class="p-0 text-center text-sm border-2 border-black ">
+                    PRODUCT
+                  </th>
+      <th class="p-0 text-center text-sm border-2 border-black uppercase ">
+         TDS (%)
+      </th>
+      <th class="p-0 text-center text-sm border-2 border-black">
+        ACTION
+      </th>
+    </tr>
+  </thead>
+  <tbody class="whitespace-nowrap">
+    {data &&
+      data.map((item) => (
+        <tr class="">
+            <td class="border-2 text-center text-sm  border-gray-500">
+            {item.ProductName}
+          </td>
+          <td class="text-center text-sm border-8 border-blue-500">
+            {item.tds}
+          </td>
+          <td class="border-2 text-center border-gray-500">
+            <button
+              type="button"
+              class="px-1 py-1 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-green-700 hover:bg-green-800 active:bg-green-700"
+              onClick={() => handleUpdate(item)}
+            >
+              EDIT
+            </button>
+
+            <button
+              type="button"
+              class="px-1 py-1 ml-4 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-red-700 hover:bg-red-800 active:bg-red-700"
+              onClick={() => handleDelete(item._id)}
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      ))}
+  </tbody>
+</table>
+
+{/* lfr end */}
           </div>
         </div>
       </div>
 
       {model && (
         <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
-          <div class="w-full max-w-lg bg-white shadow-lg rounded-lg p-8 relative">
-            <div class="flex items-center">
-              <h3 class="text-blue-600 text-xl font-bold flex-1">Update</h3>
+          <div class="w-full max-w-lg font-bold bg-white shadow-lg rounded-lg p-8 relative">
+            <div class="flex items-center font-bold">
+              <h3 class="text-blue-600 text-xl font-bold flex-1"> Invoice Update</h3>
               <svg
                 onClick={() => setModel(false)}
                 xmlns="http://www.w3.org/2000/svg"
@@ -290,11 +478,11 @@ export default function Client() {
               </svg>
             </div>
 
-            <form class="space-y-4 mt-8">
-              <div className="flex gap-2">
+            <form class="space-y-4 mt-8 font-bold">
+              <div className="flex gap-2 font-bold">
                 {" "}
                 <div>
-                  <labe class="mb-2 text-sm block">Product</labe>
+                  <labe class="mb-2 text-md block">Product</labe>
                   <input
                     type="text"
                     name="ProductName"
@@ -304,7 +492,7 @@ export default function Client() {
                   />
                 </div>
                 <div>
-                  <labe class="mb-2 text-sm block">Rate/PerUnit</labe>
+                  <labe class="mb-2 text-md block">Rate/PerUnit</labe>
                   <input
                     type="text"
                     name="rate"
@@ -318,7 +506,7 @@ export default function Client() {
               <div className="flex gap-2">
                 {" "}
                 <div>
-                  <labe class="mb-2 text-sm block">Taxable Amount</labe>
+                  <labe class="mb-2 text-md block">Taxable Amount</labe>
                   <input
                     type="text"
                     value={edit.taxamount}
@@ -328,7 +516,7 @@ export default function Client() {
                   />
                 </div>
                 <div>
-                  <labe class="mb-2 text-sm block">VAT/LST</labe>
+                  <labe class="mb-2 text-md block">VAT/LST</labe>
                   <input
                     type="text"
                     value={edit.vat}
@@ -341,7 +529,7 @@ export default function Client() {
               <div className="flex gap-2">
                 {" "}
                 <div>
-                  <labe class="mb-2 text-sm block">CESS</labe>
+                  <labe class="mb-2 text-md block">CESS</labe>
                   <input
                     type="text"
                     value={edit.cess}
@@ -351,7 +539,7 @@ export default function Client() {
                   />
                 </div>
                 <div>
-                  <labe class="mb-2 text-sm block">TCS</labe>
+                  <labe class="mb-2 text-md block">TCS</labe>
                   <input
                     type="text"
                     value={edit.tcs}
@@ -360,13 +548,76 @@ export default function Client() {
                     class="px-4 py-1.5 text-sm rounded-md bg-white border border-gray-400 w-full outline-blue-500"
                   />
                 </div>
+                
               </div>
-              <div className="flex gap-2"></div>
+                <h1 className="text-blue-500">LFR UPDATE</h1>
+              <div className="flex gap-2">
+                {" "}
+                <div>
+                  <labe class="mb-2 text-md block">LFR PER KL</labe>
+                  <input
+                    type="text"
+                    value={edit.lfrPerKl}
+                    name="lfrPerKl"
+                    onChange={handleChangeUpdate}
+                    class="px-4 py-1.5 text-sm rounded-md bg-white border border-gray-400 w-full outline-blue-500"
+                  />
+                </div>
+                <div>
+                  <labe class="mb-2 text-md block uppercase">cgst</labe>
+                  <input
+                    type="text"
+                    value={edit.cgst}
+                    name="cgst"
+                    onChange={handleChangeUpdate}
+                    class="px-4 py-1.5 text-sm rounded-md bg-white border border-gray-400 w-full outline-blue-500"
+                  />
+                </div>
+                
+              </div>
+
+              <div className="flex gap-2">
+                {" "}
+                <div>
+                  <labe class="mb-2 text-md block">sgst</labe>
+                  <input
+                    type="text"
+                    value={edit.sgst}
+                    name="sgst"
+                    onChange={handleChangeUpdate}
+                    class="px-4 py-1.5 text-sm rounded-md bg-white border border-gray-400 w-full outline-blue-500"
+                  />
+                </div>
+                <div>
+                  <labe class="mb-2 text-md block uppercase">TDS (LFR)%</labe>
+                  <input
+                    type="text"
+                    value={edit.tdsLfr}
+                    name="tdsLfr"
+                    onChange={handleChangeUpdate}
+                    class="px-4 py-1.5 text-sm rounded-md bg-white border border-gray-400 w-full outline-blue-500"
+                  />
+                </div>
+                
+              </div>
+              <h1 className="text-blue-500">TDS UPDATE</h1>
+
+              <div className="flex flex-col w-[24%]">
+                  <labe class="mb-2 text-md block text-center">tds</labe>
+                  <input
+                    type="text"
+                    value={edit.tds}
+                    name="tds"
+                    onChange={handleChangeUpdate}
+                    class="px-4 py-1.5 text-sm w-24 rounded-md bg-white border border-gray-400 w-full outline-blue-500"
+                  />
+                </div>
+              
               <div className="text-center  ">
                 {!updateLoading ? (
                   <button
                     type="button"
-                    class="px-5 py-2 inline-flex items-center rounded-lg text-white text-base tracking-wider font-semibold border-none outline-none bg-black hover:bg-[#333] active:bg-black"
+                    class="px-5 py-2 inline-flex items-center bg-green-600 rounded-lg text-white text-base tracking-wider font-semibold border-none outline-none hover:bg-[#333] active:bg-black"
                     onClick={handleUpdatepetrol}
                   >
                     UPDATE

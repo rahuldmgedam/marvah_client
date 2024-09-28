@@ -71,7 +71,12 @@ export default function Sale_Fuels() {
 
   const handleSave = async () => {
     try {
-      await axios.post("http://localhost:4000/fuelsales/create", ms1Readings);
+      await axios.post("http://localhost:4000/fuelsales/create", {
+        ms1Readings,
+      });
+      setMachineReadings([]);
+      setTotals({});
+      setMs1Readings({})
       alert("Data saved successfully!");
     } catch (error) {
       console.error(error);
@@ -123,6 +128,7 @@ export default function Sale_Fuels() {
         ms2Readings,
       });
       alert("Data saved successfully!");
+      setMs2Readings([])
     } catch (error) {
       console.error(error);
       alert("Error saving data.");
@@ -212,28 +218,179 @@ export default function Sale_Fuels() {
       });
   };
 
-  useEffect(() => {
-    fetchAllDAyStartReading();
-  }, [ms1Readings,ms2Readings,hsdReadings]);
+    useEffect(() => {
+      fetchAllDAyStartReading();
+    }, [ms1Readings,ms2Readings,hsdReadings]);
 
   return (
     <main className="tankMainDiv shadow-lg p-1 mb-5 bg-body-tertiary rounded bigFontWeight">
       <div className="relative">
-        <h1 className="tracking-wide uppercase font-bold text-center text-3xl text-blue-800 px-3 py-1">
+        <h1 className="tracking-wide uppercase font-bold text-center text-3xl px-3 py-1">
           Fuel Sales
         </h1>
-        <h1 className="flex items-start font-bold font-sm text-black">
+        <h1 className="flex items-start font-bold font-2xl text-black">
           Date: {new Date().toLocaleDateString()}
         </h1>
       </div>
       {/* ms1 start */}
       <section className="ms-1">
-        <div className="flex">
-          <h1 className="block text-2xl tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
+        <div className="flex justify-center">
+          <div className="block text-2xl justify-center tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
             ms-1
-          </h1>
+          </div>
         </div>
         <table className="w-[100%]">
+  <thead className="tablebg py-2">
+    <tr className="text-center font-bold py-2">
+      <th>Nozzle ID</th>
+      <th>Side</th>
+      <th>Opening</th>
+      <th>Closing</th>
+      <th>Sale</th>
+      <th>Testing</th>
+      <th>Actual Sale</th>
+      <th>Rate</th>
+      <th></th>
+      <th>T Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    {ms1Readings.map((item, index) => (
+      <tr
+        key={item._id}
+        className="font-bold border-2 border-slate-300"
+      >
+        <td>
+          <input
+            className="text-center w-32"
+            value={item.nozzleProduct}
+            readOnly
+          />
+        </td>
+        <td>
+          <input
+            className="text-center w-20"
+            value={item.sideNo}
+            readOnly
+          />
+        </td>
+        <td>
+          <input
+            className="text-center w-32"
+            value={item.opMeterReading}
+            readOnly
+          />
+        </td>
+        <td>
+          <input
+            type="number"
+            value={item.closing || ""}
+            className="text-center bg-blue-600 w-32"
+            onChange={(e) => {
+              const newClosing = parseFloat(e.target.value) || 0;
+              const updatedReadings = [...ms1Readings];
+              updatedReadings[index].closing = newClosing;
+
+              // Calculate the sale if both closing and opMeterReading are present
+              if (newClosing && item.opMeterReading !== undefined) {
+                updatedReadings[index].sale =
+                  newClosing - item.opMeterReading;
+              } else {
+                updatedReadings[index].sale = ""; // Set sale as empty string initially
+              }
+
+              setMs1Readings(updatedReadings);
+            }}
+          />
+        </td>
+        <td>
+          <input
+            value={item.sale !== undefined ? item.sale : ""}
+            className="text-center w-32"
+            readOnly
+          />
+        </td>
+
+        <td>
+          <input
+            className="bg-blue-700 text-center text-white w-32"
+            value={item.testing || ""}
+            type="number"
+            onChange={(e) => {
+              const newTesting = parseFloat(e.target.value) || 0;
+              const updatedReadings = [...ms1Readings];
+              updatedReadings[index].testing = newTesting;
+              setMs1Readings(updatedReadings);
+            }}
+          />
+        </td>
+
+        <td>
+          <input
+            value={
+              item.closing == null ||
+              item.opMeterReading == null ||
+              item.testing == null
+                ? ""
+                : (item.closing || 0) -
+                  (item.opMeterReading || 0) -
+                  (item.testing || 0)
+            }
+            className="text-center w-32"
+            readOnly
+          />
+        </td>
+
+        <td>
+          <input
+            disabled
+            style={{ display: "none" }}
+            value={(item.rate = ms1Rate)}
+            className="text-center w-32 bg-rose-500"
+            readOnly
+          />
+        </td>
+        <td>
+          <input
+            style={{ display: "none" }}
+            className="text-center w-40"
+            value={(item.saleActTotal = totals.saleActTotal)}
+            readOnly
+          />
+        </td>
+        <td>
+          <input
+            hidden
+            className="text-center w-40"
+            value={(item.totalAmount = totals.saleActTotal * ms1Rate)}
+            readOnly
+          />
+        </td>
+      </tr>
+    ))}
+    <tr className="tablebg">
+      <th className="text-center" colSpan="4">
+        Total
+      </th>
+      <th className="text-center">
+        {totals.saleTotal === 0 ? "" : totals.saleTotal}
+      </th>
+      <th className="text-center">
+        {totals.testingTotal === 0 ? "" : totals.testingTotal}
+      </th>
+      <th className="text-center">
+        {totals.saleActTotal === 0 ? "" : totals.saleActTotal}
+      </th>
+      <th className="text-center">{ms1Rate}</th>
+      <th className="text-center"></th>
+      <th className="text-center">
+        {totals.saleActTotal === 0 ? "" : totals.saleActTotal * ms1Rate}
+      </th>
+    </tr>
+  </tbody>
+</table>
+
+        {/* <table className="w-[100%]">
           <thead className="tablebg py-2">
             <tr className="text-center font-bold py-2">
               <th>Nozzle ID</th>
@@ -374,7 +531,7 @@ export default function Sale_Fuels() {
               <th className="text-center">{totals.saleActTotal * ms1Rate}</th>
             </tr>
           </tbody>
-        </table>
+        </table> */}
         <div className="flex justify-between">
           <button>
 
@@ -391,10 +548,10 @@ export default function Sale_Fuels() {
 
                {/* ms2 start */}
       <section className="ms-2">
-        <div className="flex">
-          <h1 className="block text-2xl tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
+        <div className="flex justify-center mb-2">
+          <div className="block text-2xl justify-center tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
             ms-2
-          </h1>
+          </div>
         </div>
         <table className="w-[100%]">
           <thead className="tablebg py-2">
@@ -542,7 +699,7 @@ export default function Sale_Fuels() {
           <button></button>
         <button
             className="bg-blue-600 px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold"
-            onClick={handleSave}
+            onClick={handleSave2}
           >
             Save 
           </button>
@@ -552,10 +709,10 @@ export default function Sale_Fuels() {
 
                    {/* hsd start */}
       <section className="ms-2">
-        <div className="flex">
-          <h1 className="block text-2xl tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
+          <div className="flex justify-center">
+          <div className="block text-2xl justify-center tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
             HSD
-          </h1>
+          </div>
         </div>
         <table className="w-[100%]">
           <thead className="tablebg py-2">
@@ -703,7 +860,7 @@ export default function Sale_Fuels() {
           <button></button>
         <button
             className="bg-blue-600 px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold"
-            onClick={handleSave}
+            onClick={handleSave3}
           >
             Save 
           </button>
