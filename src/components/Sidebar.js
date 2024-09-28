@@ -82,6 +82,7 @@ import logo from './images/petrol.jpg'
                             <li><Link class="dropdown-item" to="/Nozzles">Add Nozzles</Link></li>
                             <li><Link class="dropdown-item" to="/Add_Bank">Add Banks</Link></li>
                             <li><Link class="dropdown-item" to="/add_client2" >Add Client</Link></li>
+                            <li><Link class="dropdown-item" to="/add_Credit" >Add Credit</Link></li>
                             <li><Link class="dropdown-item" to="/add_client" >Add Handloan Client</Link></li>
                             <li><Link class="dropdown-item" to="/add_staff" >Add Staff</Link></li>
                             <li><Link class="dropdown-item" to="/Oil_Products" >Add Oil Product</Link></li>

@@ -6,18 +6,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { createPetroCard, editHandler, getPetroCard, statusPetroCard } from '../../servises/opretions/card';
 import toast from 'react-hot-toast';
+import {createCredit, getCreditData}  from '../../servises/opretions/credit';
 
 
+export default function Add_Credit() {
 
-export default function Add_Petro_Card() {
-
-    const [petrocard, setpetrocard] = useState([]);
+    const [credit, setCredit] = useState([]);
     const [showEditBtn, setShowEditBtn] = useState(false)
     const [banks, setBanks] = useState([]);
     const [formData, setFormData] = useState({
-        machineNo: '',
-        cardId: '',
-        lastBatchNo: '',
+        clientName: '',
+        mobileNo: '',
+        bankAccNo: '',
+        bankName : '',
     })
 
     const changeHandler = (e) => {
@@ -33,9 +34,9 @@ export default function Add_Petro_Card() {
         console.log("data : ", data)
         setFormData((pre) => ({
             ...pre,
-            machineNo: data.machineNo,
-            cardId: data.cardId,
-            lastBatchNo: data.lastBatchNo,
+            clientName: data.clientName,
+            mobileNo: data.mobileNo,
+            bankAccNo: data.bankAccNo,
             id : data?._id
         }))
 
@@ -47,9 +48,10 @@ export default function Add_Petro_Card() {
         setShowEditBtn(false)
         setFormData((pre) => ({
             ...pre,
-            machineNo: '',
-            cardId: '',
-            lastBatchNo: '',
+            clientName: '',
+            mobileNo: '',
+            bankAccNo: '',
+            bankName : '',
             id : '',
         }))
     }
@@ -61,14 +63,14 @@ export default function Add_Petro_Card() {
     }
 
     const getCardData = async () => {
-        const data = await getPetroCard();
+        const data = await getCreditData();
         if (data.length) {
-            setpetrocard(data);
+            setCredit(data);
         }
     }
 
     useEffect(() => {
-        if (!petrocard.length) {
+        if (!credit.length) {
             getCardData()
         }
     }, [])
@@ -77,14 +79,14 @@ export default function Add_Petro_Card() {
         // e.preventDefault();
 
         console.log("FormData : ", formData);
-        const res = await createPetroCard(formData);
-        console.log("dddddddddddddd");
+        const res = await createCredit(formData);
         console.log("res : ", res);
-        setpetrocard(res?.Carddata);
+        setCredit(res?.creditData);
         setFormData({
-            machineNo: '',
-            cardId: '',
-            lastBatchNo: '',
+            clientName: '',
+            mobileNo: '',
+            bankAccNo: '',
+            bankName : '',
         })
     }
 
@@ -97,7 +99,7 @@ export default function Add_Petro_Card() {
         <>
             <div className='tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight'>
 
-                <h2 className='mt-3 text-center'>Add Petro Card</h2>
+                <h2 className='mt-3 text-center'>Add Credit</h2>
                 <span style={{ fontSize: '22px' }}> Date :
                     {new Date().toLocaleDateString()}
                     {/* {convertDateFormat(datecache)} */}
@@ -108,26 +110,28 @@ export default function Add_Petro_Card() {
                         <thead>
                             <tr className='table-secondary'>
                                 {/* <th className='tablebg'>Category</th> */}
-                                <th className='tablebg'>PETRO CARD MACHINE NUMBER/ID</th>
-                                <th className='tablebg'>PETRO CARD ID NUMBER</th>
-                                <th className='tablebg'>PETRO BATCH NUMBER</th>
-                                <th className='tablebg'>ACTION</th>
-                                {/* <th className='tablebg'>Batch Number</th>
-                                <th className='tablebg'>Linked to bank</th>
-                                <th className='tablebg'>Action</th> */}
+                                <th className='tablebg'>Client Name</th>
+                                <th className='tablebg'>Mobile No.</th>
+                                <th className='tablebg'>Bank Name</th>
+                                <th className='tablebg'>Accout No.</th>
+                                <th className='tablebg'>Action</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
                             {/* <form onSubmit={submitHandler}> */}
                             <tr>
                                 <td scope="row">
-                                    <input name='machineNo' value={formData?.machineNo} type="text" class="form-control editableInput bigFontWeight" onChange={changeHandler} />
+                                    <input name='clientName' value={formData?.clientName} type="text" class="form-control editableInput bigFontWeight" onChange={changeHandler} />
                                 </td>
                                 <td scope="row">
-                                    <input name='cardId' value={formData?.cardId} type="text" class="form-control editableInput bigFontWeight" onChange={changeHandler} />
+                                    <input name='mobileNo' value={formData?.mobileNo} type="number" class="form-control editableInput bigFontWeight" onChange={changeHandler} />
                                 </td>
                                 <td scope="row">
-                                    <input name='lastBatchNo' value={formData?.lastBatchNo} type="text" class="form-control editableInput bigFontWeight" onChange={changeHandler} />
+                                    <input name='bankName' value={formData?.bankName} type="text" class="form-control editableInput bigFontWeight" onChange={changeHandler} />
+                                </td>
+                                <td scope="row">
+                                    <input name='bankAccNo' value={formData?.bankAccNo} type="number" class="form-control editableInput bigFontWeight" onChange={changeHandler} />
                                 </td>
                                 <td scope="row">
                                     {showEditBtn ?
@@ -151,16 +155,17 @@ export default function Add_Petro_Card() {
                             <tr className='table-secondary'>
                                 <th className='tablebg text-center' style={{ width: '50px' }} >Sr. No.</th>
                                 <th className='tablebg text-center'>Date</th>
-                                <th className='tablebg text-center'>Pertro Card Name</th>
-                                <th className='tablebg text-center'>Pertro Card Id Number</th>
-                                <th className='tablebg text-center'>Batch Number</th>
+                                <th className='tablebg text-center'>Client Name</th>
+                                <th className='tablebg text-center'>Mobile Number</th>
+                                <th className='tablebg text-center'>Bank Name</th>
+                                <th className='tablebg text-center'>Bank Accout Number</th>
                                 <th className='tablebg text-center'>Action</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            {petrocard?.map((res, index) =>
-                                <tr className='hovereffect'>
+                            {credit?.map((res, index) =>
+                                <tr key={index} className='hovereffect'>
                                     <td scope="row" className=' text-center'>
                                         {index + 1}
                                     </td>
@@ -168,13 +173,17 @@ export default function Add_Petro_Card() {
                                         {new Date(res?.date).toLocaleDateString()}
                                     </td>
                                     <td scope="row" className=' text-center'>
-                                        {res?.machineNo}-{res?.cardId}
+                                        {res?.clientName}
                                     </td>
                                     <td scope="row" className=' text-center'>
-                                        {res?.cardId}
+                                        {res?.mobileNo}
                                     </td>
                                     <td scope="row" className=' text-center'>
-                                        {res?.lastBatchNo}
+                                        {res?.bankName}
+                                    </td>
+                                    
+                                    <td scope="row" className=' text-center'>
+                                        {res?.bankAccNo}
                                     </td>
                                     <td className=' flex text-center gap-3 justify-center'>
                                         <button onClick={() => {res?.status !== "Open" ? (statusPetroCardData(res._id, "Open")) : (toast.error("Alredy Open")) }} className=' text-white rounded bg-blue-600 hover:bg-blue-500 px-3 py-2'>Open</button>

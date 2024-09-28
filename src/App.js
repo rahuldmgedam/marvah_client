@@ -85,6 +85,7 @@ import MachineReadings from "./components/objects/MachineReadings";
 import ReadingComponent from "./components/objects/ReadingComponent";
 import NozzleProductWise from "./components/objects/NozzleProductWise";
 import Footer from "./components/Footer";
+import Add_Credit from "./components/objects/Add_Credit";
 import MonthlyDsr from "./components/Reports/MonthlyDsr";
 import MonthlySales from "./components/Reports/petrol reports/MontlySales";
 import PurchaseTds from "./components/Reports/purchaseReports/PurchaseTds";
@@ -93,6 +94,7 @@ import PurchaseDecantation from "./components/Reports/purchaseReports/PurchaseDe
 import InvLfrTds from "./components/objects/InvLfrTds";
 import DayStartReport from "./components/Reports/DayStart Reports/DayStartReport";
 import ConsolidatedReport from "./components/Reports/DayStart Reports/ConsolidatedReport";
+
 
 function App() {
 
@@ -105,7 +107,7 @@ function App() {
           path="/"
           element={
             <>
-              <Login  />
+              <Login />
             </>
           }
         />
@@ -127,7 +129,7 @@ function App() {
           }
         />
 
-<Route
+        <Route
           path="/new"
           element={
             <>
@@ -137,14 +139,14 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-             <New  />
+                  <New />
                 </div>
               </div>
             </>
           }
         />
 
-<Route
+        <Route
           path="/machinelayout"
           element={
             <>
@@ -154,7 +156,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <MachineLayout   />
+                  <MachineLayout />
                 </div>
               </div>
             </>
@@ -162,7 +164,7 @@ function App() {
         />
 
 
-<Route
+        <Route
           path="/machineReadings"
           element={
             <>
@@ -180,7 +182,7 @@ function App() {
         />
 
 
-<Route
+        <Route
           path="/readingcomponent"
           element={
             <>
@@ -197,7 +199,7 @@ function App() {
           }
         />
 
-<Route
+        <Route
           path="/nozzleproductwise"
           element={
             <>
@@ -207,14 +209,14 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                <NozzleProductWise/>
+                  <NozzleProductWise />
                 </div>
               </div>
             </>
           }
         />
 
-<Route
+        <Route
           path="/new"
           element={
             <>
@@ -224,14 +226,14 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-             <New  />
+                  <New />
                 </div>
               </div>
             </>
           }
         />
 
-<Route
+        <Route
           path="/machinelayout"
           element={
             <>
@@ -241,7 +243,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <MachineLayout   />
+                  <MachineLayout />
                 </div>
               </div>
             </>
@@ -249,7 +251,7 @@ function App() {
         />
 
 
-<Route
+        <Route
           path="/machineReadings"
           element={
             <>
@@ -267,7 +269,7 @@ function App() {
         />
 
 
-<Route
+        <Route
           path="/readingcomponent"
           element={
             <>
@@ -284,7 +286,7 @@ function App() {
           }
         />
 
-<Route
+        <Route
           path="/nozzleproductwise"
           element={
             <>
@@ -294,7 +296,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                <NozzleProductWise/>
+                  <NozzleProductWise />
                 </div>
               </div>
             </>
@@ -328,7 +330,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <ExpensesReport  />
+                  <ExpensesReport />
                 </div>
               </div>
             </>
@@ -345,7 +347,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <ExpensesReport/>
+                  <ExpensesReport />
                 </div>
               </div>
             </>
@@ -872,7 +874,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Dashboard  />
+                  <Dashboard />
                 </div>
               </div>
             </>
@@ -890,7 +892,7 @@ function App() {
                 <div>
                   <Navbar />
                   <PetrolReport
-                   
+
                   />
                 </div>
               </div>
@@ -927,7 +929,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Day_End  />
+                  <Day_End />
                 </div>
               </div>
             </>
@@ -944,7 +946,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Nozzles  />
+                  <Nozzles />
                 </div>
               </div>
             </>
@@ -962,7 +964,7 @@ function App() {
                 <div>
                   <Navbar />
                   <pouches_godown
-        
+
                   />
                 </div>
               </div>
@@ -981,7 +983,7 @@ function App() {
                 <div>
                   <Navbar />
                   <pouches_purchase
-                  
+
                   />
                 </div>
               </div>
@@ -999,7 +1001,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Petro_Card  />
+                  <Petro_Card />
                 </div>
               </div>
             </>
@@ -1017,8 +1019,8 @@ function App() {
                 <div>
                   <Navbar />
                   <Wallet_Payment
-                   
-                  
+
+
                   />
                 </div>
               </div>
@@ -1036,7 +1038,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Add_Wallet  />
+                  <Add_Wallet />
                 </div>
               </div>
             </>
@@ -1054,8 +1056,8 @@ function App() {
                 <div>
                   <Navbar />
                   <Add_Petro_Card
-                   
-                  
+
+
                   />
                 </div>
               </div>
@@ -1073,7 +1075,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Staff_Salary  />
+                  <Staff_Salary />
                 </div>
               </div>
             </>
@@ -1090,7 +1092,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Variation  />
+                  <Variation />
                 </div>
               </div>
             </>
@@ -1108,8 +1110,8 @@ function App() {
                 <div>
                   <Navbar />
                   <Statement_Entry
-                   
-                  
+
+
                   />
                 </div>
               </div>
@@ -1128,8 +1130,8 @@ function App() {
                 <div>
                   <Navbar />
                   <Bank_Deposits
-                   
-                  
+
+
                   />
                 </div>
               </div>
@@ -1147,7 +1149,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Tank  />
+                  <Tank />
                 </div>
               </div>
             </>
@@ -1165,9 +1167,9 @@ function App() {
                 <div>
                   <Navbar />
                   <Day_Start
-                   
-                  
-               
+
+
+
                   />
                 </div>
               </div>
@@ -1186,8 +1188,8 @@ function App() {
                 <div>
                   <Navbar />
                   <Bank_Statement
-                   
-                  
+
+
                   />
                 </div>
               </div>
@@ -1205,7 +1207,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Add_Staff  />
+                  <Add_Staff />
                 </div>
               </div>
             </>
@@ -1222,7 +1224,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Machine  />
+                  <Machine />
                 </div>
               </div>
             </>
@@ -1240,8 +1242,8 @@ function App() {
                 <div>
                   <Navbar />
                   <Client_Cheque
-                   
-                  
+
+
                   />
                 </div>
               </div>
@@ -1259,7 +1261,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Oil_Pouches  />
+                  <Oil_Pouches />
                 </div>
               </div>
             </>
@@ -1276,7 +1278,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Add_Mode  />
+                  <Add_Mode />
                 </div>
               </div>
             </>
@@ -1293,7 +1295,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Sale_Fuels  />
+                  <Sale_Fuels />
                 </div>
               </div>
             </>
@@ -1310,7 +1312,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Oil_Purchase  />
+                  <Oil_Purchase />
                 </div>
               </div>
             </>
@@ -1328,8 +1330,8 @@ function App() {
                 <div>
                   <Navbar />
                   <Generate_Bills
-                   
-                  
+
+
                   />
                 </div>
               </div>
@@ -1347,7 +1349,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Add_Bank  />
+                  <Add_Bank />
                 </div>
               </div>
             </>
@@ -1365,8 +1367,8 @@ function App() {
                 <div>
                   <Navbar />
                   <Petrol_Decantation
-                   
-                  
+
+
                   />
                 </div>
               </div>
@@ -1385,8 +1387,8 @@ function App() {
                 <div>
                   <Navbar />
                   <Petrol_Invoice_Feeding
-                   
-                  
+
+
                   />
                 </div>
               </div>
@@ -1404,7 +1406,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Oil_Godown  />
+                  <Oil_Godown />
                 </div>
               </div>
             </>
@@ -1421,7 +1423,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Client  />
+                  <Client />
                 </div>
               </div>
             </>
@@ -1438,7 +1440,23 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Client2  />
+                  <Client2 />
+                </div>
+              </div>
+            </>
+          }
+        />
+        <Route
+          path="/add_Credit"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <Sidebar />
+                </div>
+                <div>
+                  <Navbar />
+                  <Add_Credit />
                 </div>
               </div>
             </>
@@ -1456,8 +1474,8 @@ function App() {
                 <div>
                   <Navbar />
                   <Credit_Client
-                   
-                  
+
+
                   />
                 </div>
               </div>
@@ -1475,7 +1493,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Handloans  />
+                  <Handloans />
                 </div>
               </div>
             </>
@@ -1492,7 +1510,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Advances  />
+                  <Advances />
                 </div>
               </div>
             </>
@@ -1509,7 +1527,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Expenses  />
+                  <Expenses />
                 </div>
               </div>
             </>
@@ -1526,7 +1544,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Oil_Retail  />
+                  <Oil_Retail />
                 </div>
               </div>
             </>
@@ -1543,7 +1561,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Oil_Products  />
+                  <Oil_Products />
                 </div>
               </div>
             </>
@@ -1561,8 +1579,8 @@ function App() {
                 <div>
                   {/* <Navbar /> */}
                   <Petrol_Products
-                   
-                  
+
+
                   />
                 </div>
               </div>
@@ -1581,8 +1599,8 @@ function App() {
                 <div>
                   <Navbar />
                   <Add_Oil_Pouches
-                   
-                  
+
+
                   />
                 </div>
               </div>
@@ -1600,8 +1618,8 @@ function App() {
                 <div>
                   <Navbar />
                   <Add_Expenses_Topic
-                   
-                  
+
+
                   />
                 </div>
               </div>
@@ -1750,7 +1768,7 @@ function App() {
         />
 
       </Routes>
-      <Footer/>
+      <Footer />
     </Router>
   );
 }
