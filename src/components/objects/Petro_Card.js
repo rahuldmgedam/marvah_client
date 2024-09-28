@@ -109,7 +109,7 @@ export default function Wallet_Payment({ dbpath1 }) {
 
   const getCardData = async () => {
     const data = await getOpenPetroCardData();
-    if (data.length) {
+    if (data?.length) {
       setpetrocard(data);
     }
   }

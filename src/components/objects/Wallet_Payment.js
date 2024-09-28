@@ -155,7 +155,7 @@ export default function Wallet_Payment({ dbpath1 }) {
                                         [e.target.name]: e.target.value
                                     }))}>
                                         <option selected>- select -</option>
-                                        {wallet.map((rest) => (
+                                        {wallet?.map((rest) => (
                                             <option value={rest._id}>{rest.bankName}</option>
                                         ))}
                                     </select>
@@ -201,7 +201,7 @@ export default function Wallet_Payment({ dbpath1 }) {
                         </thead>
                         <tbody>
 
-                            {tHistory.map((res, index) =>
+                            {tHistory?.map((res, index) =>
                                 <tr className='hovereffect' key={index}>
                                     <td>{index + 1}</td>
                                     <td>

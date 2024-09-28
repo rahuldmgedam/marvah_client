@@ -17,6 +17,7 @@ const {CREATE_WALLET_API,
 export const CreateWallet = async (data) => {
     const toastId = toast.loading("Loading...")
     try{
+        console.log("CREATE_WALLET_API ", CREATE_WALLET_API)
         const res = await apiConnector("POST" , CREATE_WALLET_API, {bankName : data});
 
         console.log("res ", res);
@@ -31,9 +32,10 @@ export const getWalletData = async () => {
     const toastId = toast.loading("Loading...")
     let response = {};
     try{
+        console.log("GET_WALLET_DATA_API ", GET_WALLET_DATA_API)
         const res = await apiConnector("GET",GET_WALLET_DATA_API);
 
-        console.log("res ", res?.data?.walletData);
+        console.log("res GET_WALLET_DATA_API", res?.data?.walletData);
         response = res?.data?.walletData;
     }
     catch(error) {

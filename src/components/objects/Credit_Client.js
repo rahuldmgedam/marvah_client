@@ -303,7 +303,7 @@ export default function Handloans({ dbpath1 }) {
                         </thead>
                         <tbody>
 
-                            {thistory.map((res, index) =>
+                            {thistory?.map((res, index) =>
                                 <tr className='hovereffect' key={index}>
                                     <td>{index + 1}</td>
                                     <td>{res?.client?.clientName}</td>
