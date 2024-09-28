@@ -71,9 +71,7 @@ export default function Sale_Fuels() {
 
   const handleSave = async () => {
     try {
-      await axios.post("http://localhost:4000/fuelsales/create", {
-        ms1Readings,
-      });
+      await axios.post("http://localhost:4000/fuelsales/create", ms1Readings);
       alert("Data saved successfully!");
     } catch (error) {
       console.error(error);

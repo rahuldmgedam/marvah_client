@@ -4,226 +4,157 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { createPetroCardTran, editPetroCardTran, getOpenPetroCardData, getPetroCard, getPetroCardTran } from "../../servises/opretions/card";
+
+
 export default function Wallet_Payment({ dbpath1 }) {
   const [THistory, setTHistory] = useState([]);
   const [petrocard, setpetrocard] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [showEditBtn, setShowEditBtn] = useState(false);
+  // const [amount, setAmount] = useState("");
+  const [machineNoId, setMachineNoId] = useState("");
+  const [formData, setFormData] = useState({
+    machineNo: '',
+    cardId: '',
+    lastBatchNo: '',
+    currentBatchNo: '',
+    amount: '',
+  })
 
-  const [dispensing_unit_no, setdispensing_unit_no] = useState("");
-  const [make, setmake] = useState("");
-  const [serial_no, setserial_no] = useState("");
-  const [connected_tanks, setconnected_tanks] = useState("");
-  const [nozzles_in_mpd, setnozzles_in_mpd] = useState("");
-  const [product, setProduct] = useState("");
-  const [sr, setSr] = useState("");
-  const [grdae, setGrdae] = useState("");
-  const [color, setColor] = useState("");
-  const [mrp, setMrp] = useState("");
-  const [amount, setAmount] = useState("");
-  const [volume, setPVolume] = useState("");
-  const [volume1, setPVolume1] = useState("");
-  const [volume2, setPVolume2] = useState("");
-  const [PCSPerCase, setPCSPerCase] = useState("");
-  const [icrad, setICard] = useState("");
+  const changeHandler = (e) => {
+    const { name, value } = e.target
 
-  //     const loadPetroCard = async () => {
+    setFormData((pre) => ({
+      ...pre,
+      [name]: value
+    }))
+  }
 
-  //       let query="select * from rwt_petro_card where status = 'Active' ORDER BY category ";
+  const formDataHandler = (data) => {
+    console.log("data", data);
+    const batchNo = Number(data?.lastBatchNo);
+    setFormData((pre) => ({
+      ...pre,
+      machineNo: data?.machineNo,
+      cardId: data?.cardId,
+      lastBatchNo: batchNo,
+      id: data?._id,
+      currentBatchNo: (batchNo + 1),
+    }))
+  }
 
-  //       /*    alert(query); */
-  //          const url = dbpath1 + 'getDynamic.php';
-  //          let fData = new FormData();
+  const AddHandler = async () => {
+    await createPetroCardTran(formData)
+    getPetroCardTranData();
+    getCardData();
+    setFormData((pre) => ({
+      ...pre,
+      machineNo: '',
+      cardId: '',
+      lastBatchNo: '',
+      currentBatchNo: '',
+      amount: '',
+      id: '',
+    }))
+  }
 
-  //          fData.append('query', query);
+  const editTranHandler = (data) => {
+    console.log("data : nnn ", data);
 
-  //              const response = await axios.post(url, fData);
+    // Find the corresponding card in the petrocard array
+    const selectedCard = petrocard.find(card => card._id === data.PetroCard._id);
 
-  //              if (response && response.data) {
+    if (selectedCard) {
+      setShowEditBtn(true);
+      // Set the machineNoId and update formData
+      setMachineNoId(selectedCard._id);
+      // formDataHandler(selectedCard);
 
-  //                  if (response.data.phpresult) {
-  //                      setpetrocard(response.data.phpresult);
-  //                      console.log(response.data.phpresult);
+      // Update other form fields
+      setFormData((pre) => ({
+        ...pre,
+        amount: data.amount,
+        lastBatchNo : data.lastBatchNo,
+        currentBatchNo: data?.currentBatchNo,
+        cardId: data?.PetroCard?.cardId,
+        machineNo: data?.PetroCard?.machineNo,
+        id: data._id,
+      }));
+    }
+  }
+  const canselTranHandler = () => {
+    setShowEditBtn(false);
+    setMachineNoId("");
+    setFormData((pre) => ({
+      ...pre,
+      machineNo: '',
+      cardId: '',
+      lastBatchNo: '',
+      currentBatchNo: '',
+      amount: '',
+      id: '',
+    }))
+  }
+  const editTransaction = async () => {
+    console.log("FomrData for Edit Tran : ", formData);
+    await editPetroCardTran(formData);
+    canselTranHandler();
+    getPetroCardTranData()
+  }
 
-  //                  }
-  //              }}
+  console.log("machineNoId : ", machineNoId)
+  console.log("formData : ", formData)
 
-  //     const loadTHistory = async () => {
 
-  //       let query="select * from petro_card_transaction where date = '"+datecache+"';";
+  const getCardData = async () => {
+    const data = await getOpenPetroCardData();
+    if (data.length) {
+      setpetrocard(data);
+    }
+  }
 
-  //          /* alert(query); */
-  //          const url = dbpath1 + 'getDynamic.php';
-  //          let fData = new FormData();
 
-  //          fData.append('query', query);
+  const getPetroCardTranData = async () => {
+    const data = await getPetroCardTran();
+    if (data?.length) {
+      setTHistory(data);
 
-  //              const response = await axios.post(url, fData);
+      const amount = data.reduce((acc, curr) => acc + curr.amount, 0);
 
-  //              if (response && response.data) {
+      setTotalAmount(amount);
+      console.log("Tamount ", amount)
+    } else {
+      setTotalAmount(0);
+    }
+  }
 
-  //                  if (response.data.phpresult) {
-  //                      setTHistory(response.data.phpresult);
-  //                      console.log(response.data.phpresult);
-  //                  }
-  //              }
+  console.log("totalAmount ", totalAmount)
 
-  //     }
+  useEffect(() => {
+    if (!petrocard.length) {
+      getCardData()
+    }
+    if (!THistory?.length) {
+      getPetroCardTranData();
+    }
+  }, [])
 
-  //     const loadPetroCardValue = async () => {
-
-  //         let query="select sum(amount) as asum from petro_card_transaction where date = '"+datecache+"';";
-
-  //            /* alert(query); */
-  //            const url = dbpath1 + 'getDynamic.php';
-  //            let fData = new FormData();
-
-  //            fData.append('query', query);
-
-  //                const response = await axios.post(url, fData);
-
-  //                if (response && response.data) {
-
-  //                    if (response.data.phpresult) {
-  //                        document.getElementById('petrocard').innerHTML = response.data.phpresult[0]['asum'];
-  //                        console.log(response.data.phpresult);
-  //                    }
-  //                }
-
-  //       }
-
-  //     const navigate = useNavigate();
-
-  //     const onAdd = () =>{
-
-  //       let ftid1 = document.getElementById('tid1').value;
-  //       let ftid2 = document.getElementById('tid2').value;
-  //       let ftid3 = document.getElementById('tid3').value;
-  //       let currentb = document.getElementById('currentb').value;
-  //       if (icrad.length === 0) {
-  //         alert("Petro Card has been left blank!");
-  //       }   else if (ftid1.length === 0) {
-  //         alert("TID 1 has been left blank!");
-  //       }   else if (currentb.length === 0) {
-  //         alert("Current Batch hads been left blank!");
-  //       } else if (amount.length === 0) {
-  //         alert("Amount has been left blank!");
-  //       } else {
-
-  //         let query="INSERT INTO `petro_card_transaction` (`id`, `machine_name`, `batch`, `tid1`, `tid2`, `tid3`, `date`, `amount`) VALUES (NULL, '"+icrad+"', '"+currentb+"', '"+ftid1+"', '"+ftid2+"', '"+ftid3+"', '"+datecache+"', '"+amount+"');";
-  //          /*  alert(query); */
-  //          const url = dbpath1+'delTank.php';
-  //          let fData = new FormData();
-  //          fData.append('query', query);
-
-  //          axios.post(url, fData)
-  //          .then(response => {alert(response.data);  window.location.reload(); upDateBatchNo(icrad)})
-  //              .catch(error => {
-  //              console.log(error.toJSON());
-
-  //       });
-
-  //     }
-  //     }
-
-  //     const upDateBatchNo = async (index) => {
-  //         var temp = parseInt(document.getElementById('currentb').value)+1;
-  //         let query="UPDATE `rwt_petro_card` SET `batch` = '"+temp+"' WHERE id = "+index+";";
-
-  //         alert(query);
-  //         const url = dbpath1+'delTank.php';
-  //         let fData = new FormData();
-  //         fData.append('query', query);
-
-  //         axios.post(url, fData)
-  //             .then(response =>{ alert(response.data); window.location.reload();})
-  //             .catch(error => {
-  //             console.log(error.toJSON());
-  //         });
-  //     }
-
-  //     const setICardInfo = async (index) => {
-  //       const selectedProduct = petrocard.find(product => product.id === index);
-  //       document.getElementById('tid1').value = selectedProduct.tid1;
-  //       document.getElementById('tid2').value = selectedProduct.tid2;
-  //       document.getElementById('tid3').value = selectedProduct.tid3;
-  //       document.getElementById('lastb').value = selectedProduct.batch-1;
-  //       document.getElementById('currentb').value = selectedProduct.batch;
-  //     }
-
-  //     const onDelete = async (index) => {
-  //       let query="DELETE FROM `petro_card_transaction` WHERE id = "+index+";";
-
-  //       alert(query);
-  //       const url = dbpath1+'delTank.php';
-  //       let fData = new FormData();
-  //       fData.append('query', query);
-
-  //       axios.post(url, fData)
-  //           .then(response =>{ alert(response.data); window.location.reload();})
-  //           .catch(error => {
-  //           console.log(error.toJSON());
-  //           });
-  //   }
-
-  //   const getPCData = (index) =>{
-  //     try
-  //     {
-  //         const selectedProduct = petrocard.find(product => product.id === index);
-  //         //console.log("dwdwd"+selectedProduct);
-  //         return(selectedProduct.machinename);
-  //     }
-  //     catch
-  //     {
-
-  //     }
-  //   }
-
-  //   const onSave = async (index) => {
-  //     let query="UPDATE `rwt_oil_pouches` SET `pcs_per_box` = '"+ document.getElementById('pcs'+index).value+"', `amount` = '"+document.getElementById('mrp'+index).value+"' WHERE `id` = '"+index+"';";
-
-  //     //alert(query);
-  //     const url = dbpath1+'delTank.php';
-  //     let fData = new FormData();
-  //     fData.append('query', query);
-
-  //     axios.post(url, fData)
-  //         .then(response =>{ alert(response.data);/*  window.location.reload(); */})
-  //         .catch(error => {
-  //         console.log(error.toJSON());
-  //         });
-  // }
-
-  //     useEffect(() => {
-  //        loadTHistory();
-  //        loadPetroCard();
-  //        loadPetroCardValue();
-  //       }, []);
-  //       const datecache = Cookies.get('dateCookies');
-
-  //       function convertDateFormat(inputDate) {
-  //         // Split the string into an array [yyyy, mm, dd]
-  //         let parts = inputDate.split('-');
-
-  //         // Rearrange the array and join it back to a string
-  //         return parts[2] + '-' + parts[1] + '-' + parts[0];
-  //     }
   return (
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
         <h2 className="mt-3 text-center">Petro Card</h2>
         <span style={{ fontSize: "22px" }}>
           {" "}
-          Date : 
-          {/* {convertDateFormat(datecache)} */}
+          Date : {new Date().toLocaleDateString()}
         </span>
         <div>
           <br></br>
-          <table class="table">
+          <table className="table">
             <thead>
               <tr className="table-secondary">
-                <th className="tablebg">PC Machine</th>
-                <th className="tablebg">TID-1</th>
-                <th className="tablebg">TID-2</th>
-                <th className="tablebg">TID-3</th>
+                <th className="tablebg">PC Machine No. / Id</th>
+                <th className="tablebg">PC ID No.</th>
                 <th className="tablebg">Last Bth</th>
                 <th className="tablebg">Current Bth</th>
                 <th className="tablebg">Amount</th>
@@ -235,22 +166,21 @@ export default function Wallet_Payment({ dbpath1 }) {
                 <td scope="row">
                   <select
                     style={{ width: "270px" }}
-                    class="form-select editableInput bigFontWeight"
+                    className="form-select editableInput bigFontWeight"
                     aria-label="Default select example"
-                    value={icrad}
-                    // onChange={(e) => {
-                    //   setICard(e.target.value);
-                    //   setICardInfo(
-                    //     e.target.value
-                    //   ); /*  getTotalAmount1(e.target.value); */ /*  setSelectedValues(e.target.value); */
-                    // }}
+                    value={machineNoId}
+                    onChange={(e) => {
+                      const selectedCard = petrocard.find(res => res._id === e.target.value);
+                      setMachineNoId(e.target.value);
+                      if (selectedCard) {
+                        formDataHandler(selectedCard);
+                      }
+                    }}
                   >
-                    <option selected>- select -</option>
-
-                    {petrocard.map((rest) => (
-                      <option value={rest.id}>
-                        {rest.batch - 1} - {rest.machinename} - {rest.tid1} -{" "}
-                        {rest.tid2} - {rest.tid3}{" "}
+                    <option value="" disabled>Select Petro Card -</option>
+                    {petrocard.map((res) => (
+                      <option key={res._id} value={res._id}>
+                        {res.machineNo}-{res.cardId} -- {res.cardId}
                       </option>
                     ))}
                   </select>
@@ -258,26 +188,10 @@ export default function Wallet_Payment({ dbpath1 }) {
                 <td scope="row">
                   <input
                     type="text"
-                    id="tid1"
-                    class="form-control bigFontWeight"
-                    placeholder=""
-                    disabled
-                  />
-                </td>
-                <td scope="row">
-                  <input
-                    type="text"
-                    id="tid2"
-                    class="form-control bigFontWeight"
-                    placeholder=""
-                    disabled
-                  />
-                </td>
-                <td scope="row">
-                  <input
-                    type="text"
-                    id="tid3"
-                    class="form-control bigFontWeight"
+                    id="lastb"
+                    name="cardId"
+                    value={formData?.cardId}
+                    className="form-control bigFontWeight"
                     placeholder=""
                     disabled
                   />
@@ -286,7 +200,9 @@ export default function Wallet_Payment({ dbpath1 }) {
                   <input
                     type="text"
                     id="lastb"
-                    class="form-control bigFontWeight"
+                    name="lastBatchNo"
+                    value={formData?.lastBatchNo}
+                    className="form-control bigFontWeight"
                     placeholder=""
                     disabled
                   />
@@ -295,7 +211,9 @@ export default function Wallet_Payment({ dbpath1 }) {
                   <input
                     type="text"
                     id="currentb"
-                    class="form-control bigFontWeight"
+                    name="currentBatchNo"
+                    value={formData?.currentBatchNo}
+                    className="form-control bigFontWeight"
                     placeholder=""
                     disabled
                   />
@@ -303,17 +221,31 @@ export default function Wallet_Payment({ dbpath1 }) {
                 <td scope="row">
                   <input
                     type="text"
-                    class="form-control editableInput bigFontWeight"
+                    className="form-control editableInput bigFontWeight"
+                    name="amount"
+                    value={formData?.amount}
                     placeholder="Amount"
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={changeHandler}
                   />
                 </td>
                 <td>
-                  <button type="button" class="btn btn-primary" 
-                //   onClick={onAdd}
-                  >
-                    ADD
-                  </button>
+                  {
+                    showEditBtn ?
+                      (
+                        <div className=" flex gap-2">
+                          <button type="button" className="btn btn-primary" onClick={editTransaction}>
+                            Edit
+                          </button><button type="button" className="btn btn-primary" onClick={canselTranHandler}>
+                            Cancel
+                          </button>
+                        </div>
+                      ) :
+                      (
+                        <button type="button" className="btn btn-primary" onClick={AddHandler}>
+                          Add
+                        </button>
+                      )
+                  }
                 </td>
               </tr>
             </tbody>
@@ -322,17 +254,18 @@ export default function Wallet_Payment({ dbpath1 }) {
         <br></br>
         <div>
           <br></br>
-          <table class="table">
+          <table className="table">
             <thead>
               <tr className="table-secondary">
-                <th className="tablebg">Sr.</th>
-                <th className="tablebg">PC Machine</th>
-                <th className="tablebg">TID-1</th>
-                <th className="tablebg">TID-2</th>
-                <th className="tablebg">TID-3</th>
-
-                <th className="tablebg">Batch No</th>
+                <th className="tablebg">Sr. No.</th>
+                <th className="tablebg">PC Machine No</th>
+                <th className="tablebg">PC Machine Id</th>
+                <th className="tablebg">Current Batch No.</th>
                 <th className="tablebg">Amount</th>
+                <th className="tablebg">Action</th>
+
+                {/* <th className="tablebg">Batch No</th>
+                <th className="tablebg">Amount</th> */}
                 {/*  <th className='tablebg'>Action</th> */}
               </tr>
             </thead>
@@ -340,25 +273,23 @@ export default function Wallet_Payment({ dbpath1 }) {
               {THistory.map((res, index) => (
                 <tr className="hovereffect" key={index}>
                   <td>{index + 1}</td>
-                  <td>
-                    {/* {getPCData(res.machine_name)} */}
-                    </td>
-
-                  <td>{res.tid1}</td>
-                  <td>{res.tid2}</td>
-                  <td>{res.tid3}</td>
-                  <td>{res.batch}</td>
+                  <td>{res.PetroCard?.machineNo} {res.PetroCard?.cardId}</td>
+                  <td>{res.PetroCard?.cardId}</td>
+                  <td>{res.currentBatchNo}</td>
                   <td>{res.amount}</td>
-
-                  {/*  <td>
-                                        <button type="button" style={{height:'30px', paddingTop:'2px'}} id={"data"+res.id} class="btn btn-primary" onClick={() => onDelete(res.id)}>Delete</button> &nbsp;&nbsp; 
-                                           </td> */}
+                  <td>
+                    <div className=" flex gap-3">
+                      <button type="button" style={{ height: '30px', paddingTop: '2px' }} id={"data" + res.id} className="btn btn-primary" onClick={() => editTranHandler(res)} >Edit</button>
+                      <button type="button" style={{ height: '30px', paddingTop: '2px' }} id={"data" + res.id} className="btn btn-primary" >Delete</button>
+                      {/* &nbsp;&nbsp; */}
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div style={{ marginLeft: "900px" }}>
-            Total Amount : <span id="petrocard">0</span>
+          <div style={{ marginLeft: "750px" }}>
+            Total Amount : <span id="petrocard">{totalAmount}</span>
           </div>
         </div>
       </div>
