@@ -248,6 +248,21 @@ const MainHome = () => {
                   />
                 </div>
 
+                
+                <div>
+                  <labe class="text-gray-800 text-sm mb-2 block uppercase">
+                  opStock
+                  </labe>
+                  <input
+                    onChange={handleEditChange}
+                    type="number"
+                    name="opStock"
+                    value={editTank.opStock}
+                    placeholder="Enter nozzles no"
+                    class="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                  />
+                </div>
+
                 <div class="flex justify-end gap-4 !mt-8">
                   <button
                     onClick={closeModal}

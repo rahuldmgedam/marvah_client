@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { get } from "react-hook-form";
 export default function Tankd({ dbpath1, setDate }) {
+  
   const [amsToday, setamsToday] = useState([]);
   const [bspeedToday, setbspeedToday] = useState([]);
   const [hsdToday, sethsdToday] = useState([]);
@@ -141,7 +142,7 @@ export default function Tankd({ dbpath1, setDate }) {
     // Calculate the difference in milliseconds and convert to a number with 2 decimal places
     const differenceMS = amsToday - amsLast;
     setDifferenceMs(differenceMS);
-  }, [amsToday,amsLast]);
+  }, [amsToday, amsLast]);
 
   // Determine the border color based on the difference
   const borderColorMs = differenceMs > 0 ? "green" : "red";
@@ -151,7 +152,7 @@ export default function Tankd({ dbpath1, setDate }) {
     // Calculate the difference in milliseconds and convert to a number with 2 decimal places
     const differenceSpeed = bspeedToday - bspeedLast;
     setDifferenceSpeed(differenceSpeed);
-  }, [bspeedToday,bspeedLast]);
+  }, [bspeedToday, bspeedLast]);
 
   // Determine the border color based on the difference
   const borderColorSpeed = differenceSpeed > 0 ? "green" : "red";
@@ -161,7 +162,7 @@ export default function Tankd({ dbpath1, setDate }) {
     // Calculate the difference in milliseconds and convert to a number with 2 decimal places
     const differenceHsd = hsdToday - hsdLast;
     setDifferenceHsd(differenceHsd);
-  }, [hsdToday,hsdLast]);
+  }, [hsdToday, hsdLast]);
 
   // Determine the border color based on the difference
   const borderColorHsd = differenceHsd > 0 ? "green" : "red";
@@ -178,7 +179,7 @@ export default function Tankd({ dbpath1, setDate }) {
             <br></br>
 
             <div className="flex justify-center gap-4">
-            {/* <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
               <h5 style={{ marginLeft: "36%" }} className="mt-2">
                 <span style={{ fontSize: "26px" }}> Reading Day : </span>
               </h5>
@@ -202,18 +203,21 @@ export default function Tankd({ dbpath1, setDate }) {
                 pattern="\d{4}-\d{2}-\d{2}"
               ></input>
             </div> */}
-            <div>
-             <span className="text-2xl">Reading Day :  </span>   <span>
-                <input type="date" className="px-2 py-2 border-3 border-red-600 rounded-md" />
-                 </span>
+              <div>
+                <span className="text-2xl">Reading Day : </span>{" "}
+                <span>
+                  <input
+                    type="date"
+                    className="px-2 py-2 border-3 border-red-600 rounded-md"
+                  />
+                </span>
+              </div>
+              <div className="text-2xl mr-6">
+                <button className=" px-4 cursor-none rounded-md text-white py-2 text-2xl uppercase bg-violet-700 border-b-4">
+                  Rates
+                </button>
+              </div>
             </div>
-            <div className="text-2xl mr-6">
-              <button className=" px-4 cursor-none rounded-md text-white py-2 text-2xl uppercase bg-violet-700 border-b-4">
-                Rates
-              </button>
-            </div>
-            </div>
-           
 
             <div className="form-input">
               <div

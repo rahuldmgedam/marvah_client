@@ -256,6 +256,16 @@ const PurchaseDecantation = () => {
           <td className="border-2 border-gray-300 text-center p-2">
             {filteredData.reduce((sum, item) => sum + (+item.tank3 || 0), 0)}
           </td>
+          <td className="bg-blue-500 text-center">
+          {filteredData.reduce(
+              (sum, item) =>
+                sum +
+                (+item.tank1 || 0) +
+                (+item.tank2 || 0) +
+                (+item.tank3 || 0),
+              0
+            )}
+          </td>
         </tr>
 
         {/* Grand Total Row */}

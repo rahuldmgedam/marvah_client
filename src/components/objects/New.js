@@ -278,7 +278,7 @@ const New = () => {
                       <div className="flex font-semibold border-b-2 px-5 w-[100%]">
                         <div className="w-[60%] ">DESPENSING UNIT NO</div>
                         <div className="justify-start ">
-                          {machine.machineNo}
+                          {machine.machineNo} 
                         </div>
                       </div>
                       <div className="flex font-semibold border-b-2 px-5 w-[100%]">

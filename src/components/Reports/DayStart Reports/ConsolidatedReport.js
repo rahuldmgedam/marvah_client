@@ -183,13 +183,21 @@ const ConsolidatedReport = () => {
       </table>
 
       {/* Report Table */}
-      <div className="p-4 rounded shadow-md">
+      {/* <table className="w-[30%] ml-[40%] p-4">
+        <tr className="bg-gray-600 p-4 text-center font-bold uppercase">
+          {" "}
+          Rates{" "}
+        </tr>
+      </table> */}
+      <div className="px-4 rounded shadow-md">
         <table className="w-[50%] ml-[20%]">
+          <tr></tr>
           <thead>
             <tr className="bg-gray-600 uppercase text-white text-center">
               <th className="p-2 border-2 border-gray-300 text-center">Date</th>
               <th className="p-2 border">{product}</th>
-            
+              {/* <th className="p-2 border">Speed</th>
+              <th className="p-2 border">HSD</th> */}
             </tr>
           </thead>
 
@@ -205,15 +213,19 @@ const ConsolidatedReport = () => {
               </tr>
             ) : (
               filteredData.map((item, index) => (
-                <tr key={index} className="">
+                <tr key={index} className="hovereffect">
                   <td className="border-2 border-gray-300 text-center p-2 w-[20]">
                     {formatDate(item?.date) || "--"}
                   </td>
                   <td className="border-2 border-gray-300 text-center p-2 w-[20]">
                     {item?.reading || "--"}
                   </td>
-
-                  <td className="border-2 border-gray-300 text-center p-2 w-[20]"></td>
+                  <td className="border-2 border-gray-300 text-center p-2 w-[20]">
+                    {/* {item?.reading || "--"} */}
+                  </td>
+                  <td className="border-2 border-gray-300 text-center p-2 w-[20]">
+                    {/* {item?.reading || "--"} */}
+                  </td>
                 </tr>
               ))
             )}
