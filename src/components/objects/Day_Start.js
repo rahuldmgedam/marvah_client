@@ -135,6 +135,11 @@ export default function Tankd({ dbpath1, setDate }) {
     return `${month} ${day}`;
   }
 
+  useEffect(()=>{
+    formatDate();
+    getTodaysDate()
+  },[])
+
   // border red or green function
 
   const [differenceMs, setDifferenceMs] = useState(0);
@@ -164,9 +169,7 @@ export default function Tankd({ dbpath1, setDate }) {
     setDifferenceHsd(differenceHsd);
   }, [hsdToday, hsdLast]);
 
-  // Determine the border color based on the difference
   const borderColorHsd = differenceHsd > 0 ? "green" : "red";
-  // console.log("borderColorSpeed",borderColorSpeed)
   return (
     <>
       <center>
@@ -179,40 +182,19 @@ export default function Tankd({ dbpath1, setDate }) {
             <br></br>
 
             <div className="flex justify-center gap-4">
-              {/* <div style={{ display: "flex" }}>
-              <h5 style={{ marginLeft: "36%" }} className="mt-2">
-                <span style={{ fontSize: "26px" }}> Reading Day : </span>
-              </h5>
-              <input
-                // type="date"
-                value={getTodaysDate()}
-                style={{
-                  width: "200px",
-                  marginLeft: "20px",
-                  border: "2px solid red",
-                  fontSize: "22px",
-                  fontWeight: "500",
-                }}
-                class="form-control"
-                id="dateinput"
-                // onChange={(e) => {
-                //   setDate(e.target.value);
-                //   setCookies(e.target.value);
-                //   getDayStartData(e.target.value, -1);
-                // }}
-                pattern="\d{4}-\d{2}-\d{2}"
-              ></input>
-            </div> */}
+             
               <div>
-                <span className="text-2xl">Reading Day : </span>{" "}
-                <span>
+                <span className="text-2xl mr-2">Reading Day : </span>{" "}
+                <span className="mr-4">
                   <input
                     type="date"
                     className="px-2 py-2 border-3 border-red-600 rounded-md"
+                    value={getTodaysDate()}
+                    // onChange={}
                   />
                 </span>
               </div>
-              <div className="text-2xl mr-6">
+              <div className="text-2xl mr-96">
                 <button className=" px-4 cursor-none rounded-md text-white py-2 text-2xl uppercase bg-violet-700 border-b-4">
                   Rates
                 </button>
@@ -244,7 +226,7 @@ export default function Tankd({ dbpath1, setDate }) {
                     />
                   </div>
                   <div className="col-4">
-                    <h4 style={{ color: "red" }}>B-SPEED </h4> <br></br>
+                    <h4  className="font-bold text-red-600 text-2xl" style={{ color: "red" }}>B-SPEED </h4> <br></br>
                     Reading Day
                     <input
                       type="number"
@@ -257,7 +239,7 @@ export default function Tankd({ dbpath1, setDate }) {
                     />
                   </div>
                   <div className="col-4">
-                    <h4 style={{ color: "red" }}>C-HSD </h4> <br></br>
+                    <h4 className="font-bold text-red-600 text-2xl" style={{ color: "red" }}>C-HSD </h4> <br></br>
                     Reading Day
                     <input
                       type="number"

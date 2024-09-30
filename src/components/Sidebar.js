@@ -54,8 +54,8 @@ import logo from './images/petrol.jpg'
                             Reports
                         </button>
                         <ul class="dropdown-menu sideDrop1List">
-                        <li><Link class="dropdown-item" to="/mainhome">Add Tank Record</Link></li> 
-                        <li><Link class="dropdown-item" to="/machineLayout"> Add Make Record</Link></li>
+                        {/* <li><Link class="dropdown-item" to="/mainhome">Add Tank Record</Link></li> 
+                        <li><Link class="dropdown-item" to="/machineLayout"> Add Make Record</Link></li> */}
                             <li><Link class="dropdown-item" to="/PetrolReport">Petrol/HSD Report</Link></li>
                             <li><Link class="dropdown-item" to="/CreditClientReport">Credit Report</Link></li> 
                             <li><Link class="dropdown-item" to="/ExpensesReport">Expenses Report</Link></li> 
