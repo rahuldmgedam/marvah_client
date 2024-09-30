@@ -19,7 +19,7 @@ const EditOilProduct = ({ productId }) => {
     // Fetch the current data of the product to populate the form
     const fetchOilProduct = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/addoil");
+        const response = await axios.get("https://marvah-server.onrender.com/addoil");
         setOilProduct(response.data);
       } catch (error) {
         console.error('Error fetching the oil product data', error);

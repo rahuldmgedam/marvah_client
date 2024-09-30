@@ -10,7 +10,7 @@ const PurchaseLfr = () => {
 
   const handleFetchData = () => {
     axios
-      .get("http://localhost:4000/petrolInvoiceFeeding")
+      .get("https://marvah-server.onrender.com/petrolInvoiceFeeding")
       .then((res) => {
         setPetrolInvoice(res.data.petrolInvoice);
       })

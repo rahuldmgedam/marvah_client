@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { get } from "react-hook-form";
 export default function Tankd({ dbpath1, setDate }) {
-  
+
   const [amsToday, setamsToday] = useState([]);
   const [bspeedToday, setbspeedToday] = useState([]);
   const [hsdToday, sethsdToday] = useState([]);
@@ -20,7 +20,7 @@ export default function Tankd({ dbpath1, setDate }) {
 
   const saveMs = () => {
     axios
-      .post("http://localhost:4000/ms/create", {
+      .post("https://marvah-server.onrender.com/ms/create", {
         reading: amsToday,
       })
       .then((res) => {
@@ -29,7 +29,7 @@ export default function Tankd({ dbpath1, setDate }) {
       });
 
     axios
-      .post("http://localhost:4000/speed/create", {
+      .post("https://marvah-server.onrender.com/speed/create", {
         reading: bspeedToday,
       })
       .then((res) => {
@@ -38,7 +38,7 @@ export default function Tankd({ dbpath1, setDate }) {
       });
 
     axios
-      .post("http://localhost:4000/hsd/create", {
+      .post("https://marvah-server.onrender.com/hsd/create", {
         reading: hsdToday,
       })
       .then((res) => {
@@ -49,7 +49,7 @@ export default function Tankd({ dbpath1, setDate }) {
 
   const fetchMs = () => {
     axios
-      .get("http://localhost:4000/ms")
+      .get("https://marvah-server.onrender.com/ms")
       .then((res) => {
         // console.log("res ms", res.data[0]);
         setamsLast(res.data[res.data.length - 2].reading);
@@ -66,7 +66,7 @@ export default function Tankd({ dbpath1, setDate }) {
   // console.log("typeof amsToday", typeof amsToday);
   const fetchSpeed = () => {
     axios
-      .get("http://localhost:4000/speed")
+      .get("https://marvah-server.onrender.com/speed")
       .then((res) => {
         // console.log("res speed", res.data[0]);
         setbspeedToday(res.data[res.data.length - 2].reading);
@@ -79,7 +79,7 @@ export default function Tankd({ dbpath1, setDate }) {
 
   const fetchHsd = () => {
     axios
-      .get("http://localhost:4000/hsd")
+      .get("https://marvah-server.onrender.com/hsd")
       .then((res) => {
         // console.log("res.data", res.data[0]);
         sethsdToday(res.data[res.data.length - 2].reading);

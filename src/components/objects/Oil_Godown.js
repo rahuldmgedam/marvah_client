@@ -6,7 +6,7 @@
 
 //   const fetchPurchaseOil = async () => {
 //     try {
-//       const res = await axios.get("http://localhost:4000/purchaseoil");
+//       const res = await axios.get("https://marvah-server.onrender.com/purchaseoil");
 //       setOilProductData(res.data);
 //       // toast.success("fetched oils")
 //     } catch (error) {
@@ -485,7 +485,7 @@ const Oil_Godown = () => {
 
   const fetchPurchaseOil = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/purchaseoil");
+      const res = await axios.get("https://marvah-server.onrender.com/purchaseoil");
       const dataWithCalculatedFields = res.data.map((item) => ({
         ...item,
         opStock: item.opStock || 0, // Initialize opStock if not already set
@@ -532,7 +532,7 @@ const Oil_Godown = () => {
 
   const handleSaveStock = async () => {
     try {
-      await axios.post("http://localhost:4000/godownoil/create", oilProductData);
+      await axios.post("https://marvah-server.onrender.com/godownoil/create", oilProductData);
       alert("Stock record saved successfully!");
     } catch (error) {
       console.error("Error saving stock record:", error);

@@ -18,7 +18,7 @@ const MainHome = () => {
 
   const fetchTank = () => {
     axios
-      .get("http://localhost:4000/tank")
+      .get("https://marvah-server.onrender.com/tank")
       .then((res) => {
           console.log("tank:", res.data);
         setTank(res.data);
@@ -30,7 +30,7 @@ const MainHome = () => {
 
   const fetchMachine = () => {
     axios
-      .get("http://localhost:4000/machine")
+      .get("https://marvah-server.onrender.com/machine")
       .then((res) => {
         console.log("resmachine", res.data.machine);
         setMachine(res.data.machine);
@@ -75,7 +75,7 @@ const MainHome = () => {
   const handleEditSubmit = () => {
     console.log("edir", editTank);
     axios
-      .patch(`http://localhost:4000/tank/update/${editTank._id}`, editTank)
+      .patch(`https://marvah-server.onrender.com/tank/update/${editTank._id}`, editTank)
       .then((res) => {
         console.log("res update", res.data);
         setIsOpen(false);
@@ -90,7 +90,7 @@ const MainHome = () => {
   //  console.log("edir", editTank);
     axios
       .patch(
-        `http://localhost:4000/machine/update/${editMachine._id}`,
+        `https://marvah-server.onrender.com/machine/update/${editMachine._id}`,
         editMachine
       )
       .then((res) => {

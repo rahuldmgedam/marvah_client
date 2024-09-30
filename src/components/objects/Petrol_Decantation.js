@@ -72,7 +72,7 @@ export default function Client() {
     console.log("data", formattedData);
 
     axios
-      .post("http://localhost:4000/petroldecantation/create", formattedData)
+      .post("https://marvah-server.onrender.com/petroldecantation/create", formattedData)
       .then((res) => {
         if (res.data.state) {
           alert(res.data.msg);
@@ -93,7 +93,7 @@ export default function Client() {
   const handleUpdateInvoice = async () => {
     try {
       const res = axios.patch(
-        `http://localhost:4000/petrolInvoiceFeeding/updateshow/${selectedInvoice}`
+        `https://marvah-server.onrender.com/petrolInvoiceFeeding/updateshow/${selectedInvoice}`
       );
       if (res.data.success) {
         console.log(res.data.msg);
@@ -107,7 +107,7 @@ export default function Client() {
 
   const fetchData = () => {
     axios
-      .get("http://localhost:4000/petroldecantation")
+      .get("https://marvah-server.onrender.com/petroldecantation")
       .then((res) => {
         if (res.data) {
           console.log(res.data);
@@ -121,7 +121,7 @@ export default function Client() {
 
   const handleDelete = async (id) => {
     const response = await axios.delete(
-      `http://localhost:4000/petroldecantation/delete/${id}`
+      `https://marvah-server.onrender.com/petroldecantation/delete/${id}`
     );
     if (response) {
       if (response.data.success) {
@@ -133,7 +133,7 @@ export default function Client() {
 
   const handleFetchData = () => {
     axios
-      .get("http://localhost:4000/petrolInvoiceFeeding")
+      .get("https://marvah-server.onrender.com/petrolInvoiceFeeding")
       .then((res) => {
         const allInvoices = res.data.petrolInvoice;
         console.log("All Invoices: ", allInvoices);
@@ -160,7 +160,7 @@ export default function Client() {
   const handleFilter = async (id) => {
     console.log("id", id);
     const res = await axios.get(
-      `http://localhost:4000/petroldecantation/product/${id}`
+      `https://marvah-server.onrender.com/petroldecantation/product/${id}`
     );
     console.log("ressss", res.data);
     if (res.data) {

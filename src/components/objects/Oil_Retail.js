@@ -7,7 +7,7 @@ const Retail_Stock_Sale = () => {
 
   const fetchPurchaseOil = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/purchaseoil");
+      const res = await axios.get("https://marvah-server.onrender.com/purchaseoil");
       const dataWithCalculatedFields = res.data.map((item) => ({
         ...item,
         opStock: item.opStock , // Initialize opStock if not already set
@@ -44,7 +44,7 @@ const Retail_Stock_Sale = () => {
 
   const saveRetailStockAndSales = async () => {
     try {
-      await axios.post("http://localhost:4000/retailoil/create", oilProductData);
+      await axios.post("https://marvah-server.onrender.com/retailoil/create", oilProductData);
       alert("Data saved successfully!");
     } catch (error) {
       console.error("Error saving data:", error);

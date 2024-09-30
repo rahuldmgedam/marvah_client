@@ -37,7 +37,7 @@
 
 //   const fetchClient = () => {
 //     axios
-//       .get("http://localhost:4000/client/")
+//       .get("https://marvah-server.onrender.com/client/")
 //       .then((res) => {
 //         console.log(" client res", res.data);
 //         setClients(res.data);
@@ -52,7 +52,7 @@
 //   }, []);
 
 //   const createClient = ()=>{
-//     axios.post("http://localhost:4000/client/",{
+//     axios.post("https://marvah-server.onrender.com/client/",{
 //   }
 //     )
 
@@ -206,7 +206,7 @@ export default function Client({ dbpath1 }) {
 
   const fetchClient = () => {
     axios
-      .get("http://localhost:4000/client/")
+      .get("https://marvah-server.onrender.com/client/")
       .then((res) => {
         console.log(" client res", res.data);
         setClients(res.data);
@@ -218,7 +218,7 @@ export default function Client({ dbpath1 }) {
 
   const createClient = async () => {
     await axios
-      .post("http://localhost:4000/client/create", {
+      .post("https://marvah-server.onrender.com/client/create", {
         party_name,
         returnrecieve,
         amount,
@@ -277,7 +277,7 @@ export default function Client({ dbpath1 }) {
 
 const handleUpdateClient = (e) => {
     e.preventDefault();
-    axios.patch(`http://localhost:4000/client/update/${clientData._id}`, clientData)
+    axios.patch(`https://marvah-server.onrender.com/client/update/${clientData._id}`, clientData)
         .then((res) => {
             setClients(clients.map(client => client._id === res.data._id ? res.data : client));
             setModalIsOpen(false);
@@ -289,7 +289,7 @@ const handleUpdateClient = (e) => {
 };
 
 const handleOpenCloseClick = (id, isClosed) => {
-    axios.patch(`http://localhost:4000/client/update/${id}`, { isClosed })
+    axios.patch(`https://marvah-server.onrender.com/client/update/${id}`, { isClosed })
         .then((res) => {
           if(res.data.success){
             fetchClient()

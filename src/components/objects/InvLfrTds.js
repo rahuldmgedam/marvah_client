@@ -8,7 +8,7 @@ const InvLfrTds = () => {
 
   const handleFetchData = () => {
     axios
-      .get("http://localhost:4000/petrolInvoiceFeeding")
+      .get("https://marvah-server.onrender.com/petrolInvoiceFeeding")
       .then((res) => {
         setPetrolInvoice(res.data.petrolInvoice);
       })
@@ -32,7 +32,7 @@ const InvLfrTds = () => {
 
   const handleDelete = async (id) => {
     const res = await axios.delete(
-      `http://localhost:4000/petrolInvoiceFeeding/delete/${id}`
+      `https://marvah-server.onrender.com/petrolInvoiceFeeding/delete/${id}`
     );
     if (res.data.success) {
       alert(res.data.message);

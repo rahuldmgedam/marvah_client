@@ -6,7 +6,7 @@
 
 //   const fetchMachineReadings = async () => {
 //     try {
-//       const res = await axios.get("http://localhost:4000/reading");
+//       const res = await axios.get("https://marvah-server.onrender.com/reading");
 //       console.log(res.data.MeterReadingData);
 //       const allReadings = res.data.MeterReadingData;
 

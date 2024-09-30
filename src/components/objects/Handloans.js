@@ -26,7 +26,7 @@ export default function Handloans({ dbpath1 }) {
 
   const fetchClient = () => {
     axios
-      .get("http://localhost:4000/client")
+      .get("https://marvah-server.onrender.com/client")
       .then((res) => {
         console.log(" client res", res.data);
         // setDependency(!dependency)
@@ -42,7 +42,7 @@ export default function Handloans({ dbpath1 }) {
 
   const fetchHandloan = () => {
     axios
-      .get("http://localhost:4000/handloan")
+      .get("https://marvah-server.onrender.com/handloan")
       .then((res) => {
         const formattedData = handleDateConversion(res.data);
         // setDependency(!dependency)
@@ -67,7 +67,7 @@ export default function Handloans({ dbpath1 }) {
     };
     // console.log("newTransaction", newTransaction);
     axios
-      .post("http://localhost:4000/handloan/create", { ...newTransaction })
+      .post("https://marvah-server.onrender.com/handloan/create", { ...newTransaction })
       .then((res) => {
         if (res.data.success) {
           alert(res.data.msg);
@@ -123,7 +123,7 @@ export default function Handloans({ dbpath1 }) {
   const fetchTodaysTransactions = () => {
     // const todayDate = new Date().toISOString().slice(0, 10);
     axios
-      .get("http://localhost:4000/handloan")
+      .get("https://marvah-server.onrender.com/handloan")
       .then((res) => {
         console.log(" today's transactions", res.data);
         // setDependency(!dependency)

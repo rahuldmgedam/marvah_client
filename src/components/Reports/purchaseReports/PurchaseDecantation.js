@@ -10,7 +10,7 @@ const PurchaseDecantation = () => {
 
   const handleFetchData = () => {
     axios
-      .get("http://localhost:4000/petroldecantation")
+      .get("https://marvah-server.onrender.com/petroldecantation")
       .then((res) => {
         setPetrolInvoice(res.data);
       })

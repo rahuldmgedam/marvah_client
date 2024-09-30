@@ -17,7 +17,7 @@ const MachineLayout = () => {
 
   const fetchMachineLayout = () => {
     axios
-      .get("http://localhost:4000/machinelayout/")
+      .get("https://marvah-server.onrender.com/machinelayout/")
       .then((res) => {
         console.log("res", res.data);
         setMachineLayout(res.data.machine);
@@ -50,7 +50,7 @@ const MachineLayout = () => {
   const handleMachineLayoutSubmit = () => {
     axios
       .patch(
-        `http://localhost:4000/machinelayout/update/${editMachineLayout._id}`,
+        `https://marvah-server.onrender.com/machinelayout/update/${editMachineLayout._id}`,
         editMachineLayout
       )
       .then((res) => {

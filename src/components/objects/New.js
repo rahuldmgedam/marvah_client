@@ -12,7 +12,7 @@ const New = () => {
 
   const fetchmachine = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/machine");
+      const res = await axios.get("https://marvah-server.onrender.com/machine");
       console.log("fetchmachine", res.data);
       //   setmachine(res.machine.machine);
       setMachine(res.data.machine);
@@ -46,7 +46,7 @@ const New = () => {
     //console.log("edir", editTank);
     axios
       .patch(
-        `http://localhost:4000/machine/update/${editMachine._id}`,
+        `https://marvah-server.onrender.com/machine/update/${editMachine._id}`,
         editMachine
       )
       .then((res) => {

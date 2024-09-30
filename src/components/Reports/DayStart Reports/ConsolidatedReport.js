@@ -13,7 +13,7 @@ const ConsolidatedReport = () => {
 
   const handleFetchData = () => {
     axios
-      .get("http://localhost:4000/ms")
+      .get("https://marvah-server.onrender.com/ms")
       .then((res) => {
         setMsData(res.data);
       })
@@ -22,7 +22,7 @@ const ConsolidatedReport = () => {
       });
 
     axios
-      .get("http://localhost:4000/speed")
+      .get("https://marvah-server.onrender.com/speed")
       .then((res) => {
         setSpeedData(res.data);
       })
@@ -31,7 +31,7 @@ const ConsolidatedReport = () => {
       });
 
     axios
-      .get("http://localhost:4000/hsd")
+      .get("https://marvah-server.onrender.com/hsd")
       .then((res) => {
         setHsdData(res.data);
       })
