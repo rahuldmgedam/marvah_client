@@ -8,7 +8,7 @@
 
 //   const fetchmachineReadings = async () => {
 //     try {
-//       const res = await axios.get("http://localhost:4000/reading");
+//       const res = await axios.get("https://marvah-server.onrender.com/reading");
 //       console.log("machineReadings", res.data.MeterReadingData);
 //       //   setmachine(res.machine.machine);
 //       setMachineReadings(res.data.MeterReadingData);
@@ -79,7 +79,7 @@ const [render, setRender] = useState(false)
 
   const fetchMachineReadings = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/reading");
+      const res = await axios.get("https://marvah-server.onrender.com/reading");
       console.log("machineReadings", res.data.MeterReadingData);
       setMachineReadings(res.data.MeterReadingData);
     } catch (error) {
@@ -98,7 +98,7 @@ const [render, setRender] = useState(false)
   const handleSave = async () => {
     setId(null);
     try {
-      const res = await axios.patch(`http://localhost:4000/reading/updatereading/${id}`, { opMeterReading });
+      const res = await axios.patch(`https://marvah-server.onrender.com/reading/updatereading/${id}`, { opMeterReading });
       alert(res.data.message)
       setRender(prev => !prev)
       setOpMeterReading(0)

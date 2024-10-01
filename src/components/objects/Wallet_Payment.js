@@ -209,7 +209,7 @@ export default function Wallet_Payment({ dbpath1 }) {
                         </thead>
                         <tbody>
 
-                            {tHistory.map((res, index) =>
+                            {tHistory?.map((res, index) =>
                                 <tr className='hovereffect' key={index}>
                                     <td>{index + 1}</td>
                                     <td>

@@ -14,7 +14,7 @@
 //     const [hsdOpStock,setHsdOpStock] = useState(0) ;
 
 //     useEffect(() => {
-//       axios.get('http://localhost:4000/variation')
+//       axios.get('https://marvah-server.onrender.com/variation')
 //         .then(response => {
 //           setVariation(response.data);
 //         })
@@ -26,7 +26,7 @@
 
 
 //     useEffect(() => {
-//         axios.get('http://localhost:4000/tank')
+//         axios.get('https://marvah-server.onrender.com/tank')
 //           .then(response => {
 //             setTank(response.data);
 //           })
@@ -515,7 +515,7 @@ export default function Variation() {
 
     // Fetch total variation data on component mount
     useEffect(() => {
-        axios.get('http://localhost:4000/variation')
+        axios.get('https://marvah-server.onrender.com/variation')
             .then(response => {
                 setTotalVariation(response.data);
             })
@@ -526,7 +526,7 @@ export default function Variation() {
 
     // Fetch open stock data and set current date on component mount
     useEffect(() => {
-        axios.get('http://localhost:4000/tank')
+        axios.get('https://marvah-server.onrender.com/tank')
             .then(response => {
                 setOpenStocks(response.data);
             })
@@ -585,7 +585,7 @@ export default function Variation() {
         });
 
         // Post data to the server
-        axios.post('http://localhost:4000/variation/create', dataToSave)
+        axios.post('https://marvah-server.onrender.com/variation/create', dataToSave)
             .then(response => {
                 console.log(response.data);
                 if (response.statusText === "OK" || response.status === 200) {

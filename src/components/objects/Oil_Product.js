@@ -22,7 +22,7 @@ export default function Tank({ dbpath1 }) {
 
   const fetchOil = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/addoil");
+      const res = await axios.get("https://marvah-server.onrender.com/addoil");
       setOilProductData(res.data.allOils);
       // toast.success("fetched oils")
     } catch (error) {
@@ -47,7 +47,7 @@ export default function Tank({ dbpath1 }) {
     try {
       console.log(newAddedOil);
       const response = await axios.post(
-        `http://localhost:4000/addoil/create`,
+        `https://marvah-server.onrender.com/addoil/create`,
         newAddedOil
       );
       console.log(response.data);
@@ -75,7 +75,7 @@ export default function Tank({ dbpath1 }) {
   //       };
   //     try {
   //       const res = await axios.patch(
-  //         `http://localhost:4000/addoil/update/${id}`,EditAddedOil
+  //         `https://marvah-server.onrender.com/addoil/update/${id}`,EditAddedOil
   //       );
 
   //       //   toast.success("Oil Data Updated");
@@ -89,7 +89,7 @@ export default function Tank({ dbpath1 }) {
   const deleteOil = async (id) => {
     try {
       const res = await axios.delete(
-        `http://localhost:4000/addoil/delete/${id}`
+        `https://marvah-server.onrender.com/addoil/delete/${id}`
       );
 
       toast.success("Oil Deleted");

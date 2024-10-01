@@ -125,7 +125,7 @@
 
 //   const fetchOil = async () => {
 //     try {
-//       const res = await axios.get("http://localhost:4000/addoil");
+//       const res = await axios.get("https://marvah-server.onrender.com/addoil");
 //       setOilProductData(res.data.allOils);
 //       setPurchaseformData(oilProductData);
 //       // toast.success("fetched oils")
@@ -207,7 +207,7 @@
 //     e.preventDefault();
 //     try {
 //       const response = await axios.post(
-//         "http://localhost:4000/purchaseoil/create",
+//         "https://marvah-server.onrender.com/purchaseoil/create",
 //         {
 //           oilProductData// Sending oilProductData as the payload
 //         }
@@ -232,7 +232,7 @@
 //   const [purchaseOilData,setPurchaseOilData] = useState([])
 //   const fetchPurchaseOil = async () => {
 //     try {
-//       const res = await axios.get("http://localhost:4000/purchaseoil");
+//       const res = await axios.get("https://marvah-server.onrender.com/purchaseoil");
 //       const dataWithCalculatedFields = res.data.map((item) => ({
 //         ...item,
 //         opStock: item.opStock || 0, // Initialize opStock if not already set
@@ -954,7 +954,7 @@ const PurchaseOil = () => {
   console.log("totStockAmt2",totStockAmt2)
   const fetchOil = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/addoil");
+      const res = await axios.get("https://marvah-server.onrender.com/addoil");
       setOilProductData(res.data.allOils);
       // setPurchaseformData(oilProductData);
       // toast.success("fetched oils")
@@ -1057,7 +1057,7 @@ const PurchaseOil = () => {
       const a = { invoiceNo, totInvAmt, totInvAmtAct,totStockAmt2 };
       oilProductData.push(a);
       const response = await axios.post(
-        "http://localhost:4000/purchaseoil/create",
+        "https://marvah-server.onrender.com/purchaseoil/create",
         {
           oilProductData, // Sending oilProductData as the payload
         }
@@ -1081,7 +1081,7 @@ const PurchaseOil = () => {
   const [purchaseOilData, setPurchaseOilData] = useState([]);
   const fetchPurchaseOil = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/purchaseoil");
+      const res = await axios.get("https://marvah-server.onrender.com/purchaseoil");
       const dataWithCalculatedFields = res.data.map((item) => ({
         ...item,
         opStock: item.opStock || 0, // Initialize opStock if not already set

@@ -113,7 +113,7 @@ export default function Petrol_Invoice_Feeding() {
 
   const fetchPetrol = () => {
     axios
-      .get("http://localhost:4000/petrol")
+      .get("https://marvah-server.onrender.com/petrol")
       .then((res) => {
         if (res.data) {
           setData(res.data);
@@ -130,7 +130,7 @@ export default function Petrol_Invoice_Feeding() {
 
   const fetchPetrolInvFeeding = () => {
     axios
-      .get("http://localhost:4000/petrolInvoiceFeeding")
+      .get("https://marvah-server.onrender.com/petrolInvoiceFeeding")
       .then((res) => {
         if (res.data) {
           setInvFeedingData(res.data.petrolInvoice);
@@ -242,7 +242,7 @@ export default function Petrol_Invoice_Feeding() {
     console.log("filterData:", filterData);
 
     axios
-      .post("http://localhost:4000/petrolInvoiceFeeding/create", finalData)
+      .post("https://marvah-server.onrender.com/petrolInvoiceFeeding/create", finalData)
       .then((res) => {
         alert(res.data.msg);
         handleFetchData();
@@ -258,7 +258,7 @@ export default function Petrol_Invoice_Feeding() {
 
   const handleFetchData = () => {
     axios
-      .get("http://localhost:4000/petrolInvoiceFeeding")
+      .get("https://marvah-server.onrender.com/petrolInvoiceFeeding")
       .then((res) => {
         setPetrolInvoice(res.data.petrolInvoice);
       })
@@ -278,7 +278,7 @@ export default function Petrol_Invoice_Feeding() {
 
   const handleDelete = async (id) => {
     const res = await axios.delete(
-      `http://localhost:4000/petrolInvoiceFeeding/delete/${id}`
+      `https://marvah-server.onrender.com/petrolInvoiceFeeding/delete/${id}`
     );
     if (res.data.success) {
       alert(res.data.message);
@@ -332,7 +332,7 @@ export default function Petrol_Invoice_Feeding() {
     try {
       // Make PUT request to update petrol invoice feeding
       const response = await axios.patch(
-        `http://localhost:4000/petrolInvoiceFeeding/update/${id}`,
+        `https://marvah-server.onrender.com/petrolInvoiceFeeding/update/${id}`,
         saveData
       );
 

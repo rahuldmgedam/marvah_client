@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { get } from "react-hook-form";
 export default function Tankd({ dbpath1, setDate }) {
+
   const [amsToday, setamsToday] = useState([]);
   const [bspeedToday, setbspeedToday] = useState([]);
   const [hsdToday, sethsdToday] = useState([]);
@@ -19,7 +20,7 @@ export default function Tankd({ dbpath1, setDate }) {
 
   const saveMs = () => {
     axios
-      .post("http://localhost:4000/ms/create", {
+      .post("https://marvah-server.onrender.com/ms/create", {
         reading: amsToday,
       })
       .then((res) => {
@@ -28,7 +29,7 @@ export default function Tankd({ dbpath1, setDate }) {
       });
 
     axios
-      .post("http://localhost:4000/speed/create", {
+      .post("https://marvah-server.onrender.com/speed/create", {
         reading: bspeedToday,
       })
       .then((res) => {
@@ -37,7 +38,7 @@ export default function Tankd({ dbpath1, setDate }) {
       });
 
     axios
-      .post("http://localhost:4000/hsd/create", {
+      .post("https://marvah-server.onrender.com/hsd/create", {
         reading: hsdToday,
       })
       .then((res) => {
@@ -48,7 +49,7 @@ export default function Tankd({ dbpath1, setDate }) {
 
   const fetchMs = () => {
     axios
-      .get("http://localhost:4000/ms")
+      .get("https://marvah-server.onrender.com/ms")
       .then((res) => {
         // console.log("res ms", res.data[0]);
         setamsLast(res.data[res.data.length - 2].reading);
@@ -65,7 +66,7 @@ export default function Tankd({ dbpath1, setDate }) {
   // console.log("typeof amsToday", typeof amsToday);
   const fetchSpeed = () => {
     axios
-      .get("http://localhost:4000/speed")
+      .get("https://marvah-server.onrender.com/speed")
       .then((res) => {
         // console.log("res speed", res.data[0]);
         setbspeedToday(res.data[res.data.length - 2].reading);
@@ -78,7 +79,7 @@ export default function Tankd({ dbpath1, setDate }) {
 
   const fetchHsd = () => {
     axios
-      .get("http://localhost:4000/hsd")
+      .get("https://marvah-server.onrender.com/hsd")
       .then((res) => {
         // console.log("res.data", res.data[0]);
         sethsdToday(res.data[res.data.length - 2].reading);
@@ -134,6 +135,11 @@ export default function Tankd({ dbpath1, setDate }) {
     return `${month} ${day}`;
   }
 
+  useEffect(()=>{
+    formatDate();
+    getTodaysDate()
+  },[])
+
   // border red or green function
 
   const [differenceMs, setDifferenceMs] = useState(0);
@@ -141,7 +147,7 @@ export default function Tankd({ dbpath1, setDate }) {
     // Calculate the difference in milliseconds and convert to a number with 2 decimal places
     const differenceMS = amsToday - amsLast;
     setDifferenceMs(differenceMS);
-  }, [amsToday,amsLast]);
+  }, [amsToday, amsLast]);
 
   // Determine the border color based on the difference
   const borderColorMs = differenceMs > 0 ? "green" : "red";
@@ -151,7 +157,7 @@ export default function Tankd({ dbpath1, setDate }) {
     // Calculate the difference in milliseconds and convert to a number with 2 decimal places
     const differenceSpeed = bspeedToday - bspeedLast;
     setDifferenceSpeed(differenceSpeed);
-  }, [bspeedToday,bspeedLast]);
+  }, [bspeedToday, bspeedLast]);
 
   // Determine the border color based on the difference
   const borderColorSpeed = differenceSpeed > 0 ? "green" : "red";
@@ -161,11 +167,9 @@ export default function Tankd({ dbpath1, setDate }) {
     // Calculate the difference in milliseconds and convert to a number with 2 decimal places
     const differenceHsd = hsdToday - hsdLast;
     setDifferenceHsd(differenceHsd);
-  }, [hsdToday,hsdLast]);
+  }, [hsdToday, hsdLast]);
 
-  // Determine the border color based on the difference
   const borderColorHsd = differenceHsd > 0 ? "green" : "red";
-  // console.log("borderColorSpeed",borderColorSpeed)
   return (
     <>
       <center>
@@ -178,42 +182,24 @@ export default function Tankd({ dbpath1, setDate }) {
             <br></br>
 
             <div className="flex justify-center gap-4">
-            {/* <div style={{ display: "flex" }}>
-              <h5 style={{ marginLeft: "36%" }} className="mt-2">
-                <span style={{ fontSize: "26px" }}> Reading Day : </span>
-              </h5>
-              <input
-                // type="date"
-                value={getTodaysDate()}
-                style={{
-                  width: "200px",
-                  marginLeft: "20px",
-                  border: "2px solid red",
-                  fontSize: "22px",
-                  fontWeight: "500",
-                }}
-                class="form-control"
-                id="dateinput"
-                // onChange={(e) => {
-                //   setDate(e.target.value);
-                //   setCookies(e.target.value);
-                //   getDayStartData(e.target.value, -1);
-                // }}
-                pattern="\d{4}-\d{2}-\d{2}"
-              ></input>
-            </div> */}
-            <div>
-             <span className="text-2xl">Reading Day :  </span>   <span>
-                <input type="date" className="px-2 py-2 border-3 border-red-600 rounded-md" />
-                 </span>
+             
+              <div>
+                <span className="text-2xl mr-2">Reading Day : </span>{" "}
+                <span className="mr-4">
+                  <input
+                    type="date"
+                    className="px-2 py-2 border-3 border-red-600 rounded-md"
+                    value={getTodaysDate()}
+                    // onChange={}
+                  />
+                </span>
+              </div>
+              <div className="text-2xl mr-96">
+                <button className=" px-4 cursor-none rounded-md text-white py-2 text-2xl uppercase bg-violet-700 border-b-4">
+                  Rates
+                </button>
+              </div>
             </div>
-            <div className="text-2xl mr-6">
-              <button className=" px-4 cursor-none rounded-md text-white py-2 text-2xl uppercase bg-violet-700 border-b-4">
-                Rates
-              </button>
-            </div>
-            </div>
-           
 
             <div className="form-input">
               <div
@@ -240,7 +226,7 @@ export default function Tankd({ dbpath1, setDate }) {
                     />
                   </div>
                   <div className="col-4">
-                    <h4 style={{ color: "red" }}>B-SPEED </h4> <br></br>
+                    <h4  className="font-bold text-red-600 text-2xl" style={{ color: "red" }}>B-SPEED </h4> <br></br>
                     Reading Day
                     <input
                       type="number"
@@ -253,7 +239,7 @@ export default function Tankd({ dbpath1, setDate }) {
                     />
                   </div>
                   <div className="col-4">
-                    <h4 style={{ color: "red" }}>C-HSD </h4> <br></br>
+                    <h4 className="font-bold text-red-600 text-2xl" style={{ color: "red" }}>C-HSD </h4> <br></br>
                     Reading Day
                     <input
                       type="number"

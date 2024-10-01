@@ -14,7 +14,7 @@ export default function Sale_Fuels() {
 
   const fetchMachineReadings = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/reading");
+      const res = await axios.get("https://marvah-server.onrender.com/reading");
       const allReadings = res.data.MeterReadingData;
       setMachineReadings(allReadings);
       setMs1Readings(
@@ -71,7 +71,7 @@ export default function Sale_Fuels() {
 
   const handleSave = async () => {
     try {
-      await axios.post("http://localhost:4000/fuelsales/create", {
+      await axios.post("https://marvah-server.onrender.com/fuelsales/create", {
         ms1Readings,
       });
       setMachineReadings([]);
@@ -124,7 +124,7 @@ export default function Sale_Fuels() {
 
   const handleSave2 = async () => {
     try {
-      await axios.post("http://localhost:4000/fuelsales/create", {
+      await axios.post("https://marvah-server.onrender.com/fuelsales/create", {
         ms2Readings,
       });
       alert("Data saved successfully!");
@@ -175,7 +175,7 @@ export default function Sale_Fuels() {
 
   const handleSave3 = async () => {
     try {
-      await axios.post("http://localhost:4000/fuelsales/create", {
+      await axios.post("https://marvah-server.onrender.com/fuelsales/create", {
        ms1Readings: hsdReadings,
       });
       alert("Data saved successfully!");
@@ -188,7 +188,7 @@ export default function Sale_Fuels() {
 
   const fetchAllDAyStartReading = () => {
     axios
-      .get("http://localhost:4000/ms")
+      .get("https://marvah-server.onrender.com/ms")
       .then((res) => {
         setMs1RateAllDays(res.data);
         setMs1Rate(ms1RateAllDays[ms1RateAllDays.length - 1].reading);
@@ -198,7 +198,7 @@ export default function Sale_Fuels() {
       });
 
     axios
-      .get("http://localhost:4000/speed")
+      .get("https://marvah-server.onrender.com/speed")
       .then((res) => {
         setMs2RateAllDays(res.data);
         setMs2Rate(ms2RateAllDays[ms2RateAllDays.length - 1].reading);
@@ -208,7 +208,7 @@ export default function Sale_Fuels() {
       });
 
     axios
-      .get("http://localhost:4000/hsd")
+      .get("https://marvah-server.onrender.com/hsd")
       .then((res) => {
         setHsdRateAllDays(res.data);
         setHsdRate(hsdRateAllDays[hsdRateAllDays.length - 1].reading);

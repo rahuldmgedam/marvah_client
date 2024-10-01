@@ -1768,7 +1768,7 @@ function App() {
         />
 
       </Routes>
-      <Footer />
+  
     </Router>
   );
 }

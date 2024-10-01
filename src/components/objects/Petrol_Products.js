@@ -33,7 +33,7 @@ export default function Client() {
 
   const handleAdd = () => {
     axios
-      .post("http://localhost:4000/petrol/create", formData)
+      .post("https://marvah-server.onrender.com/petrol/create", formData)
       .then((res) => {
         if (res.data.state) {
           alert(res.data.msg);
@@ -49,7 +49,7 @@ export default function Client() {
   const fetPetrol = () => {
     console.log("data", formData);
     axios
-      .get("http://localhost:4000/petrol")
+      .get("https://marvah-server.onrender.com/petrol")
       .then((res) => {
         if (res.data) {
           setData(res.data);
@@ -80,7 +80,7 @@ export default function Client() {
   const handleUpdatepetrol = async () => {
     setUpdateLoading(true);
     const res = await axios.patch(
-      `http://localhost:4000/petrol/update/${edit._id}`,
+      `https://marvah-server.onrender.com/petrol/update/${edit._id}`,
       edit
     );
     if (res.data.success) {
@@ -92,7 +92,7 @@ export default function Client() {
   };
 
   const handleDelete = async (id) => {
-    const res = await axios.delete(`http://localhost:4000/petrol/delete/${id}`);
+    const res = await axios.delete(`https://marvah-server.onrender.com/petrol/delete/${id}`);
     if (res.data.success) {
       alert(res.data.msg);
       fetPetrol();

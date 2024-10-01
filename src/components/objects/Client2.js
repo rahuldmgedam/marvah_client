@@ -33,7 +33,7 @@ export default function Client2() {
   const handleSubmit = async () => {
     try {
       console.log("HandleSubmit ",formData)
-      const res = await axios.post("http://localhost:4000/credit_client/create", formData)
+      const res = await axios.post("https://marvah-server.onrender.com/credit_client/create", formData)
       console.log("res.data",res);
 
       if (res.data) {
@@ -50,7 +50,7 @@ export default function Client2() {
   useEffect(() => {
     const FetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/credit_client")
+        const res = await axios.get("https://marvah-server.onrender.com/credit_client")
         if (res.data) {
           console.log(res.data.creditClient);
           setClientData(res.data.creditClient)

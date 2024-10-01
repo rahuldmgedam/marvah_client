@@ -5,7 +5,7 @@
 
 //   useEffect(() => {
 //     // Replace with your GET method to fetch the data
-//     fetch('http://localhost:4000/variation/')  // Example API endpoint
+//     fetch('https://marvah-server.onrender.com/variation/')  // Example API endpoint
 //       .then(response => response.json())
 //       .then(data => setData(data))
 //       .catch(error => console.error('Error fetching data:', error));
