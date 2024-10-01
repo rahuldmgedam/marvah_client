@@ -12,7 +12,12 @@ export default function Handloans({ dbpath1 }) {
     const [clients, setClients] = useState([]);
 
     const [history, setHistory] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
     const [thistory, setTHistory] = useState([]);
+    const [amountInWord, setAmountInWord] = useState('');
+    const [outstanding, setOutsatnding] = useState('0');
+    const [TOutstanding, setTOutstanding] = useState('0');
+    const [totalCredit, settotalCredit] = useState('');
     const [formData, setFormData] = useState({
         client: '',
         billNo: '',
@@ -28,22 +33,7 @@ export default function Handloans({ dbpath1 }) {
             ...pre,
             [name]: value,
         }))
-    }
-
-    const [partyname, setPartyname] = useState('');
-    const [billNo, setBillNo] = useState('');
-    const [productName, setProductName] = useState('');
-    const [amount, setAmount] = useState('0');
-    const [rate, setRate] = useState('0');
-    const [quantity, setQuantity] = useState('');
-    const [vechicalNo, setVehicleNo] = useState('');
-    const [amountInWord, setAmountInWord] = useState('');
-    const [outstanding, setOutsatnding] = useState('0');
-    const [TOutstanding, setTOutstanding] = useState('0');
-    const [balance, setBalance] = useState('0');
-    const [tgiven, setTgiven] = useState('');
-    const [trecived, setTrecived] = useState('');
-    const [totalCredit, settotalCredit] = useState('');
+    }    
 
     const getMsDataHandler = async () => {
         const data = await getMsData();
@@ -193,18 +183,29 @@ export default function Handloans({ dbpath1 }) {
         return 'Number too large';
     }
 
+    // Calculate the total amount whenever the transaction history (tHistory) changes
+    useEffect(() => {
+        let sum = 0;
+        thistory.forEach((d) => {
+            sum += d.amount;
+        });
+        setTotalAmount(sum); // Set the total amount after calculating
+    }, [thistory]); // This effect runs whenever tHistory changes
+
+    console.log("totalAmount ",totalAmount);
+
     console.log("formdata in credit ", formData);
 
     return (
         <>
-            <div className='tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight'>
+            <div className='tankMainDiv shadow-lg px-3 mb-5 bg-body-tertiary rounded bigFontWeight'>
 
-                <h2 className='mt-3 text-center'>Credit Client</h2>
+                <h2 className='mt text-center text-3xl '>Credit Client</h2>
                 <div>
                     <span style={{ fontSize: '22px' }}> Date : {new Date().toLocaleDateString()} </span>
                 </div>
                 <div>
-                    <br></br><br></br>
+                    <br></br>
                     <h5> <span style={{ marginLeft: '600px', marginTop: '10px' }}>Outstanding : {outstanding}</span> <span style={{ marginLeft: '50px', marginTop: '10px' }}>Total Outstanding : </span> {TOutstanding}</h5>
                     <br></br>
                     <table className="table" >
@@ -270,7 +271,7 @@ export default function Handloans({ dbpath1 }) {
 
 
 
-                    <table className="table" >
+                    <table className="table relative left-[25rem] w-[48rem] " >
                         <thead>
                             <tr className='table-secondary'>
                                 <th className='tablebg'>Amount in Word</th>
@@ -303,7 +304,7 @@ export default function Handloans({ dbpath1 }) {
                         </thead>
                         <tbody>
 
-                            {thistory.map((res, index) =>
+                            {thistory?.map((res, index) =>
                                 <tr className='hovereffect' key={index}>
                                     <td>{index + 1}</td>
                                     <td>{res?.client?.clientName}</td>
@@ -368,7 +369,7 @@ export default function Handloans({ dbpath1 }) {
 
                     </table>
 
-                    <span>   <span style={{ marginLeft: '300px' }}>Total Credit = <span>{totalCredit}</span></span> </span>
+                    <span>   <span style={{ marginLeft: '400px' }}>Total Credit = <span>{totalAmount}</span></span> </span>
 
                 </div>
                 <br></br>

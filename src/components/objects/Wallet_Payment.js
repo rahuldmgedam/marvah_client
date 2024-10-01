@@ -10,6 +10,7 @@ export default function Wallet_Payment({ dbpath1 }) {
 
     const [wallet, setWallet] = useState([]);
     const [tHistory, setTHistory] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0)
     const [name, setName] = useState('');
     const [noOfTran, setNTrans] = useState('');
     const [amount, setAmonut] = useState('');
@@ -124,64 +125,72 @@ export default function Wallet_Payment({ dbpath1 }) {
         return convertToIndianNumberingWords(num);
     };
 
-
-
+    // Calculate the total amount whenever the transaction history (tHistory) changes
+    useEffect(() => {
+        let sum = 0;
+        tHistory.forEach((d) => {
+            sum += d.amount;
+        });
+        setTotalAmount(sum); // Set the total amount after calculating
+    }, [tHistory]); // This effect runs whenever tHistory changes
 
     return (
         <>
             <div className='tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight'>
 
-                <h2 className='mt-3 text-center'>Wallet Payment</h2>
+                <h2 className='mt-3 text-center text-3xl'>Wallet Payment</h2>
                 <span style={{ fontSize: '22px' }}> Date :
                     {new Date().toLocaleDateString()}
                 </span>
                 <div>
                     <br></br>
-                    <table class="table" >
+                    <table className="table">
                         <thead>
                             <tr className='table-secondary'>
                                 <th className='tablebg'>Wallet Name</th>
                                 <th className='tablebg'>Number Of Trans</th>
-                                <th className='tablebg'>Amount</th>
                                 <th className='tablebg'>Amount</th>
                                 <th className='tablebg'>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td scope="row" >
+                                <td scope="row">
                                     <select name='walletId' class="form-select editableInput bigFontWeight" aria-label="Default select example" value={formData?.walletId} onChange={(e) => setformData((pre) => ({
                                         ...pre,
                                         [e.target.name]: e.target.value
                                     }))}>
                                         <option selected>- select -</option>
-                                        {wallet.map((rest) => (
+                                        {wallet?.map((rest) => (
                                             <option value={rest._id}>{rest.bankName}</option>
                                         ))}
                                     </select>
                                 </td>
-                                <td scope="row" className=' w-[20%]'>
+                                <td scope="row" className='w-[20%]'>
                                     <input type="text" name='noOfTran' value={formData?.noOfTran} class="form-control editableInput bigFontWeight" placeholder="Number of Trans" onChange={handleChenge} />
                                 </td>
-                                <td scope="row" className=' w-[20%]'>
-                                    <input type="text" name='amount' value={formData?.amount} class="form-control editableInput bigFontWeight" placeholder="Amount" onChange={handleChenge} />
+                                <td scope="row" className='w-[20%]'>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            name='amount'
+                                            value={formData?.amount}
+                                            class="form-control editableInput bigFontWeight"
+                                            placeholder="Amount"
+                                            onChange={handleChenge}
+                                        />
+                                        <small className="text-muted text-lg">
+                                            {formData?.amount ? numberToWords(Number(formData?.amount)) : ""}
+                                        </small>
+                                    </div>
                                 </td>
-                                <td scope="row" className=' w-[25%]'>
-                                    <input
-                                        type="text"
-                                        name="amount"
-                                        // value={formData?.amount ? toWords(Number(formData?.amount)) : ""}
-                                        value={formData?.amount ? numberToWords(Number(formData?.amount)) : ""}
-                                        className="form-control editableInput bigFontWeight w-full capitalize"
-                                        placeholder="Amount"
-                                    />
+                                <td>
+                                    <button type="button" class="btn btn-primary" onClick={createWalletTranHandler}>ADD</button>
                                 </td>
-                                <td ><button type="button" class="btn btn-primary"
-                                    onClick={createWalletTranHandler}
-                                >ADD</button></td>
                             </tr>
                         </tbody>
                     </table>
+
                 </div>
                 <br></br>
                 <div>
@@ -190,11 +199,10 @@ export default function Wallet_Payment({ dbpath1 }) {
                         <thead>
                             <tr className='table-secondary'>
                                 <th className='tablebg'>Sr No</th>
-
+                                <th className='tablebg'>Date</th>
                                 <th className='tablebg'>Wallet Name</th>
                                 <th className='tablebg'>Total Transactions</th>
                                 <th className='tablebg'>Amount</th>
-                                <th className='tablebg'>Date</th>
                                 <th className='tablebg' style={{ width: '150px' }}>Action</th>
 
                             </tr>
@@ -219,7 +227,7 @@ export default function Wallet_Payment({ dbpath1 }) {
                             )}
                         </tbody>
                     </table>
-                    <div style={{ marginLeft: '550px' }}><span>Total Amount : <span id='wallet'>0</span></span></div>
+                    <div style={{ marginLeft: '740px' }}><span>Total Amount : <span id='wallet'>{totalAmount}</span></span></div>
                 </div>
             </div>
         </>
