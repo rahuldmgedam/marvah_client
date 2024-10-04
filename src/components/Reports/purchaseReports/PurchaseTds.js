@@ -708,7 +708,7 @@ const PurchaseTds = () => {
         </table> */}
         <table className="">
           <thead>
-            <tr className="bg-gray-600 uppercase text-white">
+            <tr className="bg-gray-600 uppercase text-white text-center">
               <th className="p-2 border-2 border-gray-300 text-center">
                 SR. <br /> NO.
               </th>
@@ -726,12 +726,15 @@ const PurchaseTds = () => {
                 A. TOT. <br /> VALUE
               </th>
               <th className="p-2 border">
-                VAT <br /> 25%
+                VAT <br /> %
               </th>
               <th className="p-2 border-2 border-gray-300 text-center">CESS</th>
               <th className="p-2 border-2 border-gray-300 text-center">TCS</th>
               <th className="p-2 border">
-                TOTAL <br /> AMOUNT
+                TOTAL PROD<br /> AMOUNT
+              </th>
+              <th className="p-2 border">
+                TOTAL INV<br /> AMOUNT
               </th>
             </tr>
           </thead>
@@ -820,6 +823,10 @@ const PurchaseTds = () => {
                     <td className="border-2 border-gray-300 text-center p-2 w-[20]">
                       {item.totalAmount.toFixed(2) || "--"}
                     </td>
+                 
+                    <td rowSpan={2} className="border-2 border-gray-300 text-center p-2 w-[20]">
+                    {(totalInvAmtSumGrand).toFixed(2)}
+                    </td>
                   </tr>
                 );
               })
@@ -827,7 +834,7 @@ const PurchaseTds = () => {
 
             {/* Total Sum Row */}
             {filteredData.length > 0 && (
-              <tr className="bg-gray-100 font-bold">
+              <tr hidden className="bg-gray-100 font-bold">
                 <td
                   colSpan="4"
                   className="border-2 border-gray-300 text-right p-2 text-center"
@@ -863,6 +870,9 @@ const PurchaseTds = () => {
                 </td>
                 <td className="border-2 border-gray-300 text-center p-2">
                 {(totalInvAmtSumGrand).toFixed(2)}
+                </td>
+                <td className="border-2 border-gray-300 text-center p-2">
+                {1193885}
                 </td>
               </tr>
             )}

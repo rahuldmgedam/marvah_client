@@ -1,8 +1,9 @@
 .tankMainDiv{
     width: 1200px;
-    margin: 5px;
+    /* margin: 5px; */
+    height: auto;
 
-    padding: 5px;
+    /* padding: 5px; */
     z-index: 0;
 }
 td{
@@ -47,12 +48,7 @@ td{
     margin-top: 10px;
     height: 50px;
 }
-.
-{
-    font-size: 20px;
-    text-align: center;
-    font-weight: 500;
-}
+
 .savepop{
     width: 500px;
     height: 250px;

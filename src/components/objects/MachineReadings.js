@@ -120,7 +120,7 @@ const [render, setRender] = useState(false)
 
 
   const renderTable = (readings) => (
-    <table className="min-w-full bg-white">
+    <table className="min-w-full bg-white shadow-lg">
       <thead>
         <tr className="bg-blue-400 text-white uppercase text-center">
           <th className="py-2 px-4 border-b">Side No</th>
@@ -163,8 +163,8 @@ const [render, setRender] = useState(false)
     </table>
   );
 
-  return (
-    <div className="container mx-auto p-4">
+  return (<>
+   <div className="p-4 w-[90%] border-1 border-gray-400 bg-white shadow-lg">
       <h1 className="text-xl font-bold mb-3 uppercase  flex justify-center">
         Make Wise Meter Record (Diesel Point) GILBARCO-93260208
       </h1>
@@ -180,6 +180,8 @@ const [render, setRender] = useState(false)
       </h1>
       {renderTable(filterReadingsBySide(5, 6))}
     </div>
+  </>
+   
   );
 };
 

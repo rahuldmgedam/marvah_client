@@ -1,16 +1,19 @@
 .sideMainDiv{
     margin: 0;
     padding: 0;
-    margin-right: 3px;
+    /* margin-top: -48px; */
+    /* margin-right: 3px; */
     width:290px;
-    height:1500px;
+    /* position: fixed; */
+    height:100vh;
     background-color:#3A1078;
+    
     
 }
 .imgClass{
     width:130px;
     border-radius:120px;
-    margin-top:50px;
+    margin-top:5px;
     margin-left:75px
 }
 .sideInfo{

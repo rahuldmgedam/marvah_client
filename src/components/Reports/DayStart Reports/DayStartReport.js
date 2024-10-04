@@ -503,6 +503,7 @@
 
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const DayStartReport = () => {
   const [product, setProduct] = useState("ALL");
@@ -626,6 +627,7 @@ const DayStartReport = () => {
 
     return `${day}-${month}-${year}`;
   }
+  const navigate = useNavigate();
 
   return (
     <div className="p-6">
@@ -637,6 +639,17 @@ const DayStartReport = () => {
         Day Start Report
       </h1>
 
+      <div className="flex justify-between w-[100%] mb-4">
+            <div></div>
+            <div className="flex">
+              <button
+                className="bg-blue-500 px-2 py-1 rounded-md"
+                onClick={() => navigate(-1)}
+              >
+                back
+              </button>
+            </div>
+          </div>
       <table className="mb-4 w-[100%]">
         <tbody>
           <tr className="bg-[#008b8b]">

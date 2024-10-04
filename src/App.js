@@ -95,12 +95,8 @@ import InvLfrTds from "./components/objects/InvLfrTds";
 import DayStartReport from "./components/Reports/DayStart Reports/DayStartReport";
 import ConsolidatedReport from "./components/Reports/DayStart Reports/ConsolidatedReport";
 
-
 function App() {
-
-
   return (
-
     <Router>
       <Routes>
         <Route
@@ -163,7 +159,6 @@ function App() {
           }
         />
 
-
         <Route
           path="/machineReadings"
           element={
@@ -180,7 +175,6 @@ function App() {
             </>
           }
         />
-
 
         <Route
           path="/readingcomponent"
@@ -250,7 +244,6 @@ function App() {
           }
         />
 
-
         <Route
           path="/machineReadings"
           element={
@@ -267,7 +260,6 @@ function App() {
             </>
           }
         />
-
 
         <Route
           path="/readingcomponent"
@@ -891,16 +883,14 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <PetrolReport
-
-                  />
+                  <PetrolReport />
                 </div>
               </div>
             </>
           }
         />
 
-<Route
+        <Route
           path="/monthlydsr"
           element={
             <>
@@ -910,9 +900,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <MonthlyDsr
-                   
-                  />
+                  <MonthlyDsr />
                 </div>
               </div>
             </>
@@ -963,9 +951,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <pouches_godown
-
-                  />
+                  <pouches_godown />
                 </div>
               </div>
             </>
@@ -982,9 +968,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <pouches_purchase
-
-                  />
+                  <pouches_purchase />
                 </div>
               </div>
             </>
@@ -1018,10 +1002,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Wallet_Payment
-
-
-                  />
+                  <Wallet_Payment />
                 </div>
               </div>
             </>
@@ -1055,10 +1036,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Add_Petro_Card
-
-
-                  />
+                  <Add_Petro_Card />
                 </div>
               </div>
             </>
@@ -1109,10 +1087,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Statement_Entry
-
-
-                  />
+                  <Statement_Entry />
                 </div>
               </div>
             </>
@@ -1129,10 +1104,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Bank_Deposits
-
-
-                  />
+                  <Bank_Deposits />
                 </div>
               </div>
             </>
@@ -1161,16 +1133,12 @@ function App() {
           element={
             <>
               <div style={{ display: "flex" }}>
-                <div>
+                <div className="w-[20%]">
                   <Sidebar />
                 </div>
-                <div>
+                <div className="w-[80%]"> 
                   <Navbar />
-                  <Day_Start
-
-
-
-                  />
+                  <Day_Start/>
                 </div>
               </div>
             </>
@@ -1187,10 +1155,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Bank_Statement
-
-
-                  />
+                  <Bank_Statement />
                 </div>
               </div>
             </>
@@ -1241,10 +1206,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Client_Cheque
-
-
-                  />
+                  <Client_Cheque />
                 </div>
               </div>
             </>
@@ -1329,10 +1291,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Generate_Bills
-
-
-                  />
+                  <Generate_Bills />
                 </div>
               </div>
             </>
@@ -1366,10 +1325,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Petrol_Decantation
-
-
-                  />
+                  <Petrol_Decantation />
                 </div>
               </div>
             </>
@@ -1386,10 +1342,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Petrol_Invoice_Feeding
-
-
-                  />
+                  <Petrol_Invoice_Feeding />
                 </div>
               </div>
             </>
@@ -1473,10 +1426,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Credit_Client
-
-
-                  />
+                  <Credit_Client />
                 </div>
               </div>
             </>
@@ -1487,12 +1437,12 @@ function App() {
           path="/handloans"
           element={
             <>
-              <div style={{ display: "flex" }}>
-                <div>
+              <div className="" style={{ display: "flex" }}>
+                <div className="">
                   <Sidebar />
                 </div>
-                <div>
-                  <Navbar />
+                <div className="">
+                  <Navbar className="fixed"/>
                   <Handloans />
                 </div>
               </div>
@@ -1578,10 +1528,7 @@ function App() {
                 </div>
                 <div>
                   {/* <Navbar /> */}
-                  <Petrol_Products
-
-
-                  />
+                  <Petrol_Products />
                 </div>
               </div>
             </>
@@ -1598,10 +1545,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Add_Oil_Pouches
-
-
-                  />
+                  <Add_Oil_Pouches />
                 </div>
               </div>
             </>
@@ -1617,18 +1561,14 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <Add_Expenses_Topic
-
-
-                  />
+                  <Add_Expenses_Topic />
                 </div>
               </div>
             </>
           }
         />
 
-
-<Route
+        <Route
           path="/monthlysales"
           element={
             <>
@@ -1638,10 +1578,7 @@ function App() {
                 </div>
                 <div>
                   <Navbar />
-                  <MonthlySales
-                   
-                  
-                  />
+                  <MonthlySales />
                 </div>
               </div>
             </>
@@ -1657,16 +1594,13 @@ function App() {
                 </div>
                 <div className="w-[100%]">
                   {/* <Navbar /> */}
-                  <PurchaseTds
-                   
-                  
-                  />
+                  <PurchaseTds />
                 </div>
               </div>
             </>
           }
         />
-        
+
         <Route
           path="/purchaselfr"
           element={
@@ -1677,17 +1611,14 @@ function App() {
                 </div>
                 <div className="w-[100%]">
                   {/* <Navbar /> */}
-                  <PurchaseLfr
-                   
-                  
-                  />
+                  <PurchaseLfr />
                 </div>
               </div>
             </>
           }
         />
 
-<Route
+        <Route
           path="/purchasedecantation"
           element={
             <>
@@ -1697,17 +1628,14 @@ function App() {
                 </div>
                 <div className="w-[100%]">
                   {/* <Navbar /> */}
-                  <PurchaseDecantation
-                   
-                  
-                  />
+                  <PurchaseDecantation />
                 </div>
               </div>
             </>
           }
         />
 
-<Route
+        <Route
           path="/invLfrTds"
           element={
             <>
@@ -1717,17 +1645,14 @@ function App() {
                 </div>
                 <div className="w-[100%]">
                   <Navbar />
-                  <InvLfrTds
-                   
-                  
-                  />
+                  <InvLfrTds />
                 </div>
               </div>
             </>
           }
         />
 
-<Route
+        <Route
           path="/dayStartReport"
           element={
             <>
@@ -1737,17 +1662,14 @@ function App() {
                 </div>
                 <div className="w-[100%]">
                   {/* <Navbar /> */}
-                  <DayStartReport
-                   
-                  
-                  />
+                  <DayStartReport />
                 </div>
               </div>
             </>
           }
         />
 
-<Route
+        <Route
           path="/consolidatedReport"
           element={
             <>
@@ -1757,18 +1679,13 @@ function App() {
                 </div>
                 <div className="w-[100%]">
                   {/* <Navbar /> */}
-                  <ConsolidatedReport
-                   
-                  
-                  />
+                  <ConsolidatedReport />
                 </div>
               </div>
             </>
           }
         />
-
       </Routes>
-  
     </Router>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../css/Tank.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const init = {
   invoiceNumber: "",
@@ -207,11 +208,23 @@ export default function Client() {
     <>
       <div className="">
         {/* <span className="text-2xl font-bold"> Date : {getCurrentDate()} </span> */}
-        <h2 className="text-center text-2xl uppercase pt-20 font-bold mb-4">
+        <h2 className="text-center fixed ml-[28%] text-2xl uppercase font-bold">
            Decantation Record 
         </h2>
+        <div className="text-xl flex mt-8 justify-between gap-2 text-white rounded-md w-[76%]">
+           <div>
+           {/* <Link to={"/Petrol_Products"} className="p-2 bg-green-600 rounded-md">
+              Add Index Form
+            </Link> */}
+            </div>
+            <div>
+           <Link to={"/purchasedecantation"} className="px-2 py-1 bg-green-600 rounded-md mt-6">
+             Reports
+            </Link>
+            </div>
+          </div>
         <div className="mt-4">
-          <h1 className="text-md font-bold text-center mt-6 mb-6 uppercase text-xl">
+          <h1 className="text-md font-bold text-center uppercase text-xl">
             Purchase Record (Petrol/Diesel):
           </h1>
           
@@ -467,9 +480,9 @@ export default function Client() {
                 <th class=" text-center text-md  border-2 border-black text-white">
                   TOTAL(KL)
                 </th>
-                <th class=" text-center text-md  border-2 border-black text-white">
+                {/* <th class=" text-center text-md  border-2 border-black text-white">
                   ACTION
-                </th>
+                </th> */}
               </tr>
             </thead>
 
@@ -492,7 +505,7 @@ export default function Client() {
                     <td className="border-2 text-center border-gray-700">
                       {res.tanktotalkl}{" "}
                     </td>
-                    <td className="border-2 text-center border-gray-700">
+                    {/* <td className="border-2 text-center border-gray-700">
                       <button
                         type="button"
                         className="btn btn-danger"
@@ -500,7 +513,7 @@ export default function Client() {
                       >
                         Delete
                       </button>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
             </tbody>
