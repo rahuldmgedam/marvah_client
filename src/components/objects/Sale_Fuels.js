@@ -225,7 +225,7 @@ export default function Sale_Fuels() {
   }, [ms1Readings, ms2Readings, hsdReadings]);
 
   return (
-    <main className="tankMainDiv shadow-lg p-1 bg-body-tertiary rounded bigFontWeight min-h-fit">
+    <main className="tankMainDiv  shadow-lg p-1 bg-body-tertiary rounded bigFontWeight min-h-fit">
       {/* <div className="relative">
         <h1 className="tracking-wide fixed z-10 ml-[35%] mb-3 uppercase font-bold text-center text-3xl px-3">
           Fuel Sales
@@ -243,7 +243,7 @@ export default function Sale_Fuels() {
         
         </div>
       </div> */}
-      <div className=" bg-white z-10 top-10  fixed w-full">
+      <div className=" bg-white z-1 -mt-4 ml-6  fixed w-full">
         <h1 className="tracking-wide fixed ml-[35%] mb-3 uppercase font-bold text-center text-3xl px-3">
           Fuel Sales
         </h1>

@@ -98,6 +98,7 @@ import Sale_Fuels from "./components/objects/Sale_Fuels";
 import HandloansReport from "./components/Reports/Hand/HandloansReport";
 import AdvanceReport from "./components/Reports/Hand/AdvanceReport";
 import ConsoliFuelsales from "./components/Reports/FuelSaleReports/ConsoliFuelsales";
+import BankDeposits from "./components/objects/Bank_Deposits";
 
 function App() {
   return (
@@ -1044,13 +1045,28 @@ function App() {
           path="/Petro_Card"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Petro_Card />
+                </div>
+              </div> */}
+               <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  {/* <Navbar /> */}
+                  <Petro_Card/>
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1061,13 +1077,28 @@ function App() {
           path="/Wallet_Payment"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Wallet_Payment />
+                </div>
+              </div> */}
+                    <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  {/* <Navbar /> */}
+                  <Wallet_Payment/>
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1078,13 +1109,28 @@ function App() {
           path="/Add_Wallet"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Add_Wallet />
+                </div>
+              </div> */}
+                 <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  {/* <Navbar /> */}
+                  <Add_Wallet/>
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1095,13 +1141,28 @@ function App() {
           path="/Add_Petro_Card"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Add_Petro_Card />
+                </div>
+              </div> */}
+                 <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Add_Petro_Card/>
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1169,13 +1230,28 @@ function App() {
           path="/Bank_Deposits"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Bank_Deposits />
+                </div>
+              </div> */}
+                    <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <BankDeposits />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1277,13 +1353,26 @@ function App() {
           path="/Client_Cheque"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Client_Cheque />
+                </div>
+              </div> */}
+                 <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                  <div>
+                  <Sidebar />
+                  </div>
+                </div>
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Client_Cheque/>
+                  </div>
                 </div>
               </div>
             </>
@@ -1381,13 +1470,28 @@ function App() {
           path="/Generate_Bills"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Generate_Bills />
+                </div>
+              </div> */}
+                <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Generate_Bills/>
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1532,13 +1636,28 @@ function App() {
           path="/add_Credit"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Add_Credit />
+                </div>
+              </div> */}
+                     <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  {/* <Navbar /> */}
+                  <Add_Credit/>
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1549,13 +1668,28 @@ function App() {
           path="/credit_client"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Credit_Client />
+                </div>
+              </div> */}
+                 <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Credit_Client/>
+                  </div>
+              
                 </div>
               </div>
             </>
