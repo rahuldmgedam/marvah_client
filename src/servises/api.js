@@ -1,5 +1,5 @@
 // const BASE_URL = process.env.REACT_APP_BASE_URL
-// const BASE_URL = "https://marvah-server.onrender.com"
+// const BASE_URL = "http://localhost:4000"
 const BASE_URL = "https://marvah-server.onrender.com"
 
 export const cardEndpoint = {
@@ -35,4 +35,10 @@ export const fuelEndpoints = {
     GET_MS_DATA_API: BASE_URL + `/ms/`,
     GET_SPEED_DATA_API: BASE_URL + `/speed/`,
     GET_HSD_DATA_API: BASE_URL + `/hsd/`,
+}
+
+export const bankEndpoints = {
+    CREATE_BANK_API : BASE_URL + "/bank/createBank",
+    GET_BANK_DATA_API : BASE_URL + "/bank/getBankData",
+    CHANGE_BANK_STATUS_API : BASE_URL + "/bank/changeStatus"
 }

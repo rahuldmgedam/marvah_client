@@ -4,6 +4,10 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { changeStatus, createBank, getBankData } from "../../servises/opretions/bank";
+import toast from "react-hot-toast";
+
+
 export default function Tank({ dbpath1 }) {
   const [banks, setBanks] = useState([]);
 
@@ -11,6 +15,54 @@ export default function Tank({ dbpath1 }) {
   const [headName, setHeadName] = useState("");
   const [accountNo, setAccountNo] = useState("");
   const [balance, setBalance] = useState("");
+
+  const [formData, setFormData] = useState({
+    BankName: '',
+    AccountNumber: '',
+    AccountName: '',
+    BranchName: '',
+    AccountType: '',
+  })
+
+  const chengeHandler = (e) => {
+    const { name, value } = e.target
+
+    setFormData((pre) => ({
+      ...pre,
+      [name]: value
+    }))
+  }
+
+  const createBankHandler = async () => {
+    const data = await createBank(formData);
+    setFormData((pre) => ({
+      ...pre,
+      BankName: '',
+      AccountNumber: '',
+      AccountName: '',
+      BranchName: '',
+      AccountType: '',
+    }))
+
+    getBackDataHandler();
+  }
+
+  const getBackDataHandler = async () => {
+    const data = await getBankData();
+    console.log("data ", data);
+    setBanks(data);
+  }
+
+  useEffect(() => {
+    getBackDataHandler();
+  }, [])
+
+  const handleChangeStatus = async (id) => {
+    const data = await changeStatus(id);
+    toast.success(data?.message);
+    getBackDataHandler();
+  }
+
 
   const loadBanks = async () => {
     let query = "select * from rwt_bank_account WHERE account_status='active'";
@@ -122,13 +174,15 @@ export default function Tank({ dbpath1 }) {
   //     loadBanks();
   //   }, []);
   const datecache = Cookies.get("dateCookies");
+
+  console.log("FormData", formData);
   return (
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-        <h2 className="mt-3 text-center">Add Bank Account</h2>
+        <h2 className="mt-3 text-center text-3xl">Add Bank Account</h2>
         <span style={{ fontSize: "22px" }}>
           {" "}
-          Date :{/* {convertDateFormat(datecache)} */}
+          Date : {new Date().toLocaleDateString()}
         </span>
         <div>
           <br></br>
@@ -136,61 +190,76 @@ export default function Tank({ dbpath1 }) {
             <thead>
               <tr className="table-secondary">
                 <th className="tablebg">Bank Name</th>
-                <th className="tablebg">Bank Head Name</th>
                 <th className="tablebg">Account No</th>
-                <th className="tablebg">Balance</th>
+                <th className="tablebg">Account Name</th>
+                <th className="tablebg">Branch Name</th>
+                <th className="tablebg">Account Type</th>
                 <th className="tablebg">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td scope="row">
-                  <select
-                    class="form-select editableInput bigFontWeight"
-                    aria-label="Default select example"
-                    value={bankName}
-                    onChange={(e) => setBankName(e.target.value)}
-                  >
-                    <option selected>- select -</option>
-
-                    <option value="HDFC Bank">HDFC Bank </option>
-
-                    <option value="Shikshak Sahakari Bank">
-                      Shikshak Sahakari Bank{" "}
-                    </option>
-
-                    <option value="Bank of Baroda">Bank of Baroda </option>
-                  </select>
-                </td>
                 <td>
                   <input
                     type="text"
                     class="form-control editableInput bigFontWeights"
-                    placeholder="Head Name"
-                    onChange={(e) => setHeadName(e.target.value)}
+                    placeholder="Bank Name"
+                    name="BankName"
+                    value={formData?.BankName}
+                    onChange={chengeHandler}
                   />
                 </td>
+
                 <td>
                   <input
                     type="text"
                     class="form-control editableInput bigFontWeights"
                     placeholder="Account Number"
-                    onChange={(e) => setAccountNo(e.target.value)}
+                    name="AccountNumber"
+                    value={formData?.AccountNumber}
+                    onChange={chengeHandler}
                   />
                 </td>
                 <td>
                   <input
                     type="text"
                     class="form-control editableInput bigFontWeights"
-                    placeholder="Balance"
-                    onChange={(e) => setBalance(e.target.value)}
+                    placeholder="Account Name"
+                    name="AccountName"
+                    value={formData?.AccountName}
+                    onChange={chengeHandler}
                   />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control editableInput bigFontWeights"
+                    placeholder="Branch Name"
+                    name="BranchName"
+                    value={formData?.BranchName}
+                    onChange={chengeHandler}
+                  />
+                </td>
+                <td scope="row">
+                  <select
+                    class="form-select editableInput bigFontWeight"
+                    aria-label="Default select example"
+                    name="AccountType"
+                    value={formData?.AccountType}
+                    onChange={chengeHandler}
+                  >
+                    <option value={""} disabled selected>-Select Account Type-</option>
+
+                    <option value="Saving">Saving </option>
+
+                    <option value="Current">Current</option>
+                  </select>
                 </td>
                 <td>
                   <button
                     type="button"
                     class="btn btn-primary"
-                    //  onClick={onAdd}
+                    onClick={createBankHandler}
                   >
                     Save
                   </button>
@@ -206,20 +275,32 @@ export default function Tank({ dbpath1 }) {
             <thead>
               <tr className="table-secondary">
                 <th className="tablebg">Bank Name</th>
-                <th className="tablebg">Bank Head Name</th>
                 <th className="tablebg">Account No</th>
+                <th className="tablebg">Account Name</th>
+                <th className="tablebg">Branch Name</th>
+                <th className="tablebg">Account Type</th>
                 <th className="tablebg">Action</th>
               </tr>
             </thead>
             <tbody>
               {banks.map((res, index) => (
                 <tr className="hovereffect" key={index}>
-                  <td>{res.name}</td>
-                  <td>{res.head_name}</td>
-                  <td>{res.account_no}</td>
+                  <td>{res?.BankName}</td>
+                  <td>{res?.AccountNumber}</td>
+                  <td>{res?.AccountName}</td>
+                  <td>{res?.BranchName}</td>
+                  <td>{res?.AccountType}</td>
 
-                  <td style={{ width: "50px" }}>
-                    <button
+                  <td className=" w-[5%] flex gap-3">
+                    {res?.status ?
+                    (<button type="button" class="bg-blue-600 px-2 rounded text-white "
+                      onClick={() => handleChangeStatus(res?._id)}
+                    >Close</button>) :
+                    (<button type="button" class="bg-blue-600 px-2 rounded text-white "
+                      onClick={() => handleChangeStatus(res?._id)}
+                    >Open</button>)}
+
+                    {res?.transaction.length <= 0 && <button
                       type="button"
                       style={{ height: "30px", paddingTop: "2px" }}
                       id={"data" + res.bank_account_id}
@@ -227,7 +308,7 @@ export default function Tank({ dbpath1 }) {
                       onClick={() => onDelete(res.bank_account_id)}
                     >
                       Delete
-                    </button>
+                    </button>}
                   </td>
                 </tr>
               ))}
