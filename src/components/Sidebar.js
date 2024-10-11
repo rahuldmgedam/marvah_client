@@ -381,7 +381,7 @@ export default function Sidebar() {
               <li><Link to="/mainhome" className="hover:underline">Add Tank Record</Link></li>
               <li><Link to="/machineLayout" className="hover:underline">Add Make Record</Link></li>
               <li><Link to="/Add_Bank" className="hover:underline">Add Banks</Link></li>
-              <li><Link to="/add_client2" className="hover:underline">Add Client</Link></li>
+              {/* <li><Link to="/add_client2" className="hover:underline">Add Client</Link></li> */}
               <li><Link to="/add_Credit" className="hover:underline">Add Credit</Link></li>
               <li><Link to="/add_client" className="hover:underline">Add Handloan Client</Link></li>
               <li><Link to="/Oil_Products" className="hover:underline">Add Oil Product</Link></li>

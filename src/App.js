@@ -1502,13 +1502,28 @@ function App() {
           path="/Add_Bank"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Add_Bank />
+                </div>
+              </div> */}
+                 <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Add_Bank/>
+                  </div>
+              
                 </div>
               </div>
             </>
