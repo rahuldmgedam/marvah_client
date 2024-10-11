@@ -1,171 +1,3 @@
-// import React from "react";
-// import "../css/Tank.css";
-// import axios from "axios";
-// import { useState, useEffect } from "react";
-// import { Link, useNavigate } from "react-router-dom";
-// import Cookies from "js-cookie";
-
-// export default function Client({ dbpath1 }) {
-//   const [clients, setClients] = useState([]);
-
-//   const [party_name, setParty_name] = useState("");
-//   const [contact_no, setContact_no] = useState(0);
-//   const [remarks, setRemarks] = useState("");
-//   const [party_id, setParty_id] = useState("");
-
-//   const [amount, setAmount] = useState("");
-//   const [product, setproduct] = useState("");
-//   const [nozzles_in_mpd, setnozzles_in_mpd] = useState("");
-
-//   const [inputDispensingUnitNo, setInputDispensingUnitNo] = useState({});
-//   const [inputMake, setInputMake] = useState({});
-//   const [inputSerialNo, setInputSerialNo] = useState({});
-//   const [inputConnectedTanks, setInputConnectedTanks] = useState({});
-//   const [inputProduct, setInputProduct] = useState({});
-//   const [inputNozzlesInMpd, setInputNozzlesInMpd] = useState({});
-
-//   const navigate = useNavigate();
-
-//   //rahuls code 16th july
-//   const [clientData,setClientData] = useState({})
-
-//   const handleClientChange = (e)=>{
-//     const {name,value} = e.target
-//         e.preventDefault();
-//         setClientData({...clientData,[name]:value});
-//   }
-
-//   const fetchClient = () => {
-//     axios
-//       .get("https://marvah-server.onrender.com/client/")
-//       .then((res) => {
-//         console.log(" client res", res.data);
-//         setClients(res.data);
-//       })
-//       .catch((error) => {
-//         console.log(error.message);
-//       });
-//   };
-
-//   useEffect(() => {
-//     fetchClient();
-//   }, []);
-
-//   const createClient = ()=>{
-//     axios.post("https://marvah-server.onrender.com/client/",{
-//   }
-//     )
-
-// }
-//   return (
-//     <>
-//       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-//         <h2 className="mt-3 bg-blue-400 text-white p-3 text-2xl uppercase text-center">
-//           Handloan Client
-//         </h2>
-//         <span style={{ fontSize: "22px" }}>
-//           {" "}
-//           Date :{/* {convertDateFormat(datecache)} */}
-//         </span>
-//         <div>
-//           <br></br>
-//           <table class="table" style={{ width: "900px" }}>
-//             <thead>
-//               <tr className="table-secondary">
-//                 <th className="tablebg">Party Name</th>
-//                 <th className="tablebg">Contact no.</th>
-//                 <th className="tablebg">Remarks</th>
-//                 {/*  <th className='tablebg'>Amount</th> */}
-
-//                 <th className="tablebg">Action</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               <tr>
-//                 <td scope="row">
-//                   <input
-//                     type="text"
-//                     class="form-control editableInput bigFontWeight"
-//                     placeholder="Name"
-//                     onChange={(e) => setParty_name(e.target.value)}
-//                   />
-//                 </td>
-//                 <td>
-//                   <input
-//                     type="number"
-//                     class="form-control editableInput bigFontWeight"
-//                     placeholder="Contact No."
-//                     onChange={(e) => setContact_no(e.target.value)}
-//                   />
-//                 </td>
-//                 <td>
-//                   <input
-//                     type="text"
-//                     class="form-control editableInput bigFontWeight"
-//                     placeholder="Remarks"
-//                     onChange={(e) => setRemarks(e.target.value)}
-//                   />
-//                 </td>
-//                 {/* <td><input type="text" class="form-control editableInput bigFontWeight" placeholder="Amount" onChange={(e) => setAmount(e.target.value)} /></td>
-//                  */}
-//                 <td>
-//                   <button
-//                     type="button"
-//                     class="btn font-bold btn-primary"
-//                     //  onClick={onAdd}
-//                   >
-//                     SAVE
-//                   </button>
-//                 </td>
-//               </tr>
-//             </tbody>
-//           </table>
-//         </div>
-//         <br></br>
-//         <div>
-//           <br></br>
-//           <table class="table">
-//             <thead>
-//               <tr className="table-secondary">
-//                 <th className="tablebg">Party Name</th>
-//                 <th className="tablebg">Contact no.</th>
-//                 <th className="tablebg">Remarks</th>
-//                 {/*  <th className='tablebg'>Amount</th>
-//                  */}
-//                 <th className="tablebg">Action</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {clients.map((res, index) => (
-//                 <tr className="hovereffect" key={index}>
-//                   <td>{res.party_name}</td>
-//                   <td>{res.contact_no}</td>
-//                   <td>{res.remarks}</td>
-
-//                   {/* <td>{res.amount}</td>  */}
-//                   <td style={{ width: "150px" }}>
-//                     {/* <button type="button" id={"tank"+res.machine_id} class="btn btn-primary " onClick={() => onSave(res.machine_id)}>Save</button> &nbsp;
-//                      */}{" "}
-//                     {/* <button type="button" id={"tank"+res.machine_id} class="btn btn-primary">Close</button> &nbsp;
-//                                         <button type="button" id={"tank"+res.machine_id} class="btn btn-primary">Open</button> &nbsp; */}
-//                     <button
-//                       type="button"
-
-//                       class="bg-blue-500 px-2 py-1 text-white rounded-md "
-//                       // onClick={() => onDelete(res.client_id)}
-//                     >
-//                       Edit
-//                     </button>
-//                   </td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
 
 //gagan code
 
@@ -316,6 +148,17 @@ const handleOpenCloseClick = (id, isClosed) => {
           {" "}
           Date :{todaysDate}
         </span>
+        <div className="flex justify-between w-[90%]">
+            <div></div>
+            <div className="flex">
+              <button
+                className="bg-blue-500 px-2 py-1 rounded-md text-white"
+                onClick={() => navigate(-1)}
+              >
+                back
+              </button>
+            </div>
+          </div>
         <div>
           <br></br>
 

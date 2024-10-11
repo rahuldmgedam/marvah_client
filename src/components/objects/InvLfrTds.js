@@ -71,13 +71,23 @@ const InvLfrTds = () => {
   return (
     <>
       {/* 1. invoice feed start  */}
-      <div className="lfr-tds-inv">
-        <h1 className="font-bold text-2xl text-center mb-4 mt-4">
+      <div className="lfr-tds-inv w-[92%]">
+        <h1 className="font-bold text-2xl text-center fixed ml-[32%]">
           INVOICE/LFR/TDS Report
         </h1>
-        <div className="text-2xl  font-bold"> Date : {getCurrentDate()} </div>
-
-        <h2 className=" text-xl font-bold mb-1 text-center uppercase">
+        <div className="text-2xl  font-bold mt-2"> Date : {getCurrentDate()} </div>
+        <div className="flex justify-between w-[95%]">
+            <div></div>
+            <div className="flex">
+              <button
+                className="bg-blue-500 px-2 py-1 rounded-md"
+                onClick={() => navigate(-1)}
+              >
+                back
+              </button>
+            </div>
+          </div>
+        <h2 className=" text-xl font-bold mb-1 mt-1 text-center uppercase">
           Invoice entry{" "}
         </h2>
 
@@ -118,8 +128,8 @@ const InvLfrTds = () => {
                 <th className="border-2 border-gray-900">TCS</th>
                 <th className="border-2 border-gray-900">=</th>
                 <th className="border-2 border-gray-900">T Amount</th>
-                <th className="border-2 border-gray-900">T inv Amount</th>
-                <th className="border-2 border-gray-900">Action</th>
+                {/* <th className="border-2 border-gray-900">T inv Amount</th> */}
+                {/* <th className="border-2 border-gray-900">Action</th> */}
               </tr>
             </thead>
             <tbody>
@@ -213,17 +223,17 @@ const InvLfrTds = () => {
                       <td className="border-2 border-gray-900 w-[1%]">=</td>
 
                       {/* Total Amount */}
-                      <td className="border-2 border-gray-900">
-                        {item.totalAmount}
+                      <td  className="border-2 border-gray-900">
+                        {(item.totalAmount)?.toFixed(2)}
                       </td>
 
                       {/* Total Invoice Amount */}
-                      <td className="border-2 border-gray-900">
+                      <td hidden className="border-2 border-gray-900">
                         {InvTotSum.toFixed(2)}
                       </td>
 
                       {/* Action */}
-                      <td className="border-2 border-gray-900 flex">
+                      {/* <td className="border-2 border-gray-900 flex">
                       <button
                           onClick={() => handleUpdate(item)}
                           type="button"
@@ -238,7 +248,7 @@ const InvLfrTds = () => {
                         >
                           <MdDelete color="red" size={25} />
                         </button>
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })}
@@ -301,7 +311,7 @@ const InvLfrTds = () => {
                 <th className="border-2 border-gray-900">x</th>
                 <th className="border-2 border-gray-900">tds(%)</th>
                 <th className="border-2 border-gray-900">Act. tds payable</th>
-                <th className="border-2 border-gray-900">Action</th>
+                {/* <th className="border-2 border-gray-900">Action</th> */}
               </tr>
             </thead>
             <tbody>
@@ -365,7 +375,7 @@ const InvLfrTds = () => {
                       </td>
 
                       {/* Action Button */}
-                      <td className="border-2 border-gray-900">
+                      {/* <td className="border-2 border-gray-900">
                         <button
                           onClick={() => handleUpdate(item)}
                           type="button"
@@ -381,7 +391,7 @@ const InvLfrTds = () => {
                         >
                           <MdDelete color="red" size={25} />
                         </button>
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })}
@@ -474,7 +484,7 @@ const InvLfrTds = () => {
                 <th className="border-2 border-gray-900 w-8">%</th>
                 <th className="border-2 border-gray-900">Tot SGST</th>
                 <th className="border-2 border-gray-900">Total LFR value</th>
-                <th className="border-2 border-gray-900">Action</th>
+                {/* <th className="border-2 border-gray-900">Action</th> */}
               </tr>
             </thead>
             <tbody>
@@ -561,7 +571,7 @@ const InvLfrTds = () => {
                       </td>
 
                       {/* Action Button */}
-                      <td className="border-2 border-gray-900">
+                      {/* <td className="border-2 border-gray-900">
                       <button
                           onClick={() => handleDelete(item._id)}
                           type="button"
@@ -576,7 +586,7 @@ const InvLfrTds = () => {
                         >
                           <MdDelete color="red" size={25} />
                         </button>
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })}

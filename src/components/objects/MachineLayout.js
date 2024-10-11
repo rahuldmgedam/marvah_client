@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import MachineReadings from "./MachineReadings";
 import ReadingComponent from "./ReadingComponent";
+import { useNavigate } from "react-router-dom";
 
 const MachineLayout = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -66,13 +67,39 @@ const MachineLayout = () => {
       });
   }
 
+  function getCurrentDate() {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed in JS
+    const year = today.getFullYear();
+  
+    return `${day}-${month}-${year}`;
+  }
+
+  const navigate = useNavigate()
   return (
     <>
-      <h1 className="font-bold text-lg p-3 mb-4 text-white rounded- bg-green-900 text-center w-full">
+      <h1 className="font-bold fixed w-[80%] text-lg p-3 mb-4 text-white rounded- bg-green-900 text-center">
         ALL MACHINES LAYOUT RECORD
       </h1>
+
+      <div className=" uppercase text-2xl mt-16 ml-4">
+        <h1>Date : {getCurrentDate()}</h1>
+      </div>
+
+      <div className="flex justify-between w-[90%]">
+            <div></div>
+            <div className="flex">
+              <button
+                className="bg-blue-500 px-3 py-1 mb-2 rounded-md text-white"
+                onClick={() => navigate(-1)}
+              >
+                back
+              </button>
+            </div>
+          </div>
       {/* 3 machines layout start */}
-      <section>
+      <section className="w-[90%] ml-4">
         {/* modal start */}
         {machineOpen && (
           <div className="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">

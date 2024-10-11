@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "../css/Tank.css";
 import axios from "axios";
 import { FaAngleDown } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import { MdArrowBack, MdBackHand } from "react-icons/md";
 
 const init = {
   ProductName: "",
@@ -10,11 +12,11 @@ const init = {
   vat: "",
   cess: "",
   tcs: "",
-  lfrPerKl:"",
-  tds:"",
-  cgst:"",
-  sgst:"",
-  tdsLfr:"",
+  lfrPerKl: "",
+  tds: "",
+  cgst: "",
+  sgst: "",
+  tdsLfr: "",
 };
 
 export default function Client() {
@@ -92,22 +94,38 @@ export default function Client() {
   };
 
   const handleDelete = async (id) => {
-    const res = await axios.delete(`https://marvah-server.onrender.com/petrol/delete/${id}`);
+    const res = await axios.delete(
+      `https://marvah-server.onrender.com/petrol/delete/${id}`
+    );
     if (res.data.success) {
       alert(res.data.msg);
       fetPetrol();
     }
   };
 
+  const navigate = useNavigate();
+
   return (
     <>
-      <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-        <h2 className="mt-3 text-center">
-         INDEX FORM INVOICE/TDS/LFR 
-        </h2>
-        <div>
-          <br></br>
-          <table className="table">
+      <h2 className="text-center text-2xl fixed ml-[30%] font-bold tracking-wider mb-8">
+        INDEX FORM INVOICE/TDS/LFR
+      </h2>
+
+      <div className="tankMainDiv shadow-lg bg-body-tertiary rounded bigFontWeight">
+        <div className="mt-12">
+          <br />
+          <div className="flex justify-between w-[90%]">
+            <div></div>
+            <div className="flex">
+              <button
+                className="bg-blue-500 px-2 py-1 rounded-md"
+                onClick={() => navigate(-1)}
+              >
+                back
+              </button>
+            </div>
+          </div>
+          <table className="table w-[90%] ml-4">
             <thead>
               <tr className="table-secondary text-center uppercase">
                 <th className="">Product</th>
@@ -115,12 +133,16 @@ export default function Client() {
                 <th className="">Taxable Amount per unit</th>
                 <th className="">VAT/LST %</th>
                 <th className="">CESS per unit</th>
-                <th className="">TCS per unit</th> 
-                <th className="">(194Q) <br /> TDS(%)</th>
+                <th className="">TCS per unit</th>
+                <th className="">
+                  (194Q) <br /> TDS(%)
+                </th>
                 <th className="">LFR per KL</th>
                 <th className="">cgst(%)</th>
                 <th className="">sgst(%)</th>
-                <th className="">(194I) <br /> tds(Lfr)(%)</th>
+                <th className="">
+                  (194I) <br /> tds(Lfr)(%)
+                </th>
 
                 {/* <th className="">Action</th> */}
               </tr>
@@ -189,7 +211,6 @@ export default function Client() {
                   <input
                     type="text"
                     name="tds"
-                    
                     value={formData.tds}
                     onChange={handleChange}
                     className="form-control editableInput  "
@@ -244,7 +265,7 @@ export default function Client() {
               <tr>
                 <td colSpan={10}> </td>
                 <td>
-                <button
+                  <button
                     type="button"
                     className="px-5 py-1.5 bg-blue-500 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-gradient-to-tr hover:bg-gradient-to-tl from-blue-700 to-blue-300"
                     onClick={handleAdd}
@@ -256,13 +277,12 @@ export default function Client() {
             </tbody>
           </table>
         </div>
-        <br></br>
-        <div>
-          <br></br>
+        <br />
+        <div className="ml-12">
           <div class="overflow-x-auto font-[sans-serif]">
-          <h1 className="uppercase mb-2 font-bold">invoice index</h1>
+            <h1 className="uppercase font-bold mt-2 mb-2">invoice index</h1>
 
-            <table class="min-w-full bg-white">
+            <table class="w-[80%] bg-white">
               <thead class=" whitespace-nowrap bg-slate-300">
                 <tr className="p-2">
                   <th class="p-0 text-center text-sm border-2 border-black ">
@@ -273,10 +293,11 @@ export default function Client() {
                   </th>
                   <th class="p-0 text-center text-sm border-2 border-black ">
                     TAX. AMT <br />
-                    PER UNIT 
+                    PER UNIT
                   </th>
                   <th class="p-0 text-center text-sm border-2 border-black ">
-                    VAT/ <br />LST(%)
+                    VAT/ <br />
+                    LST(%)
                   </th>
                   <th class="p-0 text-center text-sm border-2 border-black ">
                     CESS
@@ -284,7 +305,7 @@ export default function Client() {
                   <th class="p-0 text-center text-sm border-2 border-black ">
                     TCS
                   </th>
-                
+
                   <th class="p-0 text-center text-sm border-2 border-black">
                     ACTION
                   </th>
@@ -298,21 +319,21 @@ export default function Client() {
                         {item.ProductName}
                       </td>
                       <td class="text-center text-sm border-8 border-blue-500">
-                      {item.rate}
+                        {item.rate}
                       </td>
                       <td class="text-center text-sm border-8 border-blue-500">
-                      {item.taxamount}
+                        {item.taxamount}
                       </td>
                       <td class="text-center text-sm border-8 border-blue-500">
-                      {item.vat}
+                        {item.vat}
                       </td>
                       <td class="text-center text-sm border-8 border-blue-500">
-                      {item.cess}
+                        {item.cess}
                       </td>
                       <td class="text-center text-sm border-8 border-blue-500">
-                      {item.tcs}
+                        {item.tcs}
                       </td>
-                    
+
                       <td class="border-2 text-center border-gray-500 ">
                         <button
                           type="button"
@@ -335,123 +356,122 @@ export default function Client() {
               </tbody>
             </table>
 
-      
-<h1 className="uppercase mb-2 mt-4 font-bold">LFR index</h1>
+            <h1 className="uppercase mb-2 mt-2 font-bold">LFR index</h1>
 
-<table class="min-w-full bg-white">
-  <thead class=" whitespace-nowrap bg-slate-300">
-    <tr className="p-2">
-      <th class="p-0 text-center text-sm border-2 border-black ">
-        PRODUCT
-      </th>
-    
-      <th class="p-0 text-center text-sm border-2 border-black">
-        LFR PER KL
-      </th>
-      <th class="p-0 text-center text-sm border-2 border-black">
-        CGST(%)
-      </th>
-      <th class="p-0 text-center text-sm border-2 border-black">
-        SGST(%)
-      </th>
-      <th class="p-0 text-center text-sm border-2 border-black">
-        TDS(LFR)(%)
-      </th>
-      <th class="p-0 text-center text-sm border-2 border-black">
-        ACTION
-      </th>
-    </tr>
-  </thead>
-  <tbody class="whitespace-nowrap">
-    {data &&
-      data.map((item) => (
-        <tr class="">
-          <td class="border-2 text-center text-sm  border-gray-500">
-            {item.ProductName}
-          </td>
-         
-          <td class="text-center text-sm border-8 border-blue-500">
-            {item.lfrPerKl}
-          </td>
-          <td class="text-center text-sm border-8 border-blue-500">
-            {item.cgst}
-          </td>
-          <td class="text-center text-sm border-8 border-blue-500">
-            {item.sgst}
-          </td>
-          <td class="text-center text-sm border-8 border-blue-500">
-            {item.tdsLfr}
-          </td>
-          <td class="border-2 text-center border-gray-500">
-            <button
-              type="button"
-              class="px-1 py-1 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-green-700 hover:bg-green-800 active:bg-green-700"
-              onClick={() => handleUpdate(item)}
-            >
-              EDIT
-            </button>
-
-            <button
-              type="button"
-              class="px-1 py-1 ml-4 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-red-700 hover:bg-red-800 active:bg-red-700"
-              onClick={() => handleDelete(item._id)}
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      ))}
-  </tbody>
-</table>
-<h1 className="uppercase mb-2 font-bold mt-4">TDS index</h1>
-
-<table class="bg-white w-[50%]">
-  <thead class=" whitespace-nowrap bg-slate-300">
-    <tr className="p-2">
-    <th class="p-0 text-center text-sm border-2 border-black ">
+            <table class="w-[80%] bg-white">
+              <thead class=" whitespace-nowrap bg-slate-300">
+                <tr className="p-2">
+                  <th class="p-0 text-center text-sm border-2 border-black ">
                     PRODUCT
                   </th>
-      <th class="p-0 text-center text-sm border-2 border-black uppercase ">
-         TDS (%)
-      </th>
-      <th class="p-0 text-center text-sm border-2 border-black">
-        ACTION
-      </th>
-    </tr>
-  </thead>
-  <tbody class="whitespace-nowrap">
-    {data &&
-      data.map((item) => (
-        <tr class="">
-            <td class="border-2 text-center text-sm  border-gray-500">
-            {item.ProductName}
-          </td>
-          <td class="text-center text-sm border-8 border-blue-500">
-            {item.tds}
-          </td>
-          <td class="border-2 text-center border-gray-500">
-            <button
-              type="button"
-              class="px-1 py-1 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-green-700 hover:bg-green-800 active:bg-green-700"
-              onClick={() => handleUpdate(item)}
-            >
-              EDIT
-            </button>
 
-            <button
-              type="button"
-              class="px-1 py-1 ml-4 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-red-700 hover:bg-red-800 active:bg-red-700"
-              onClick={() => handleDelete(item._id)}
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      ))}
-  </tbody>
-</table>
+                  <th class="p-0 text-center text-sm border-2 border-black">
+                    LFR PER KL
+                  </th>
+                  <th class="p-0 text-center text-sm border-2 border-black">
+                    CGST(%)
+                  </th>
+                  <th class="p-0 text-center text-sm border-2 border-black">
+                    SGST(%)
+                  </th>
+                  <th class="p-0 text-center text-sm border-2 border-black">
+                    TDS(LFR)(%)
+                  </th>
+                  <th class="p-0 text-center text-sm border-2 border-black">
+                    ACTION
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="whitespace-nowrap">
+                {data &&
+                  data.map((item) => (
+                    <tr class="">
+                      <td class="border-2 text-center text-sm  border-gray-500">
+                        {item.ProductName}
+                      </td>
 
-{/* lfr end */}
+                      <td class="text-center text-sm border-8 border-blue-500">
+                        {item.lfrPerKl}
+                      </td>
+                      <td class="text-center text-sm border-8 border-blue-500">
+                        {item.cgst}
+                      </td>
+                      <td class="text-center text-sm border-8 border-blue-500">
+                        {item.sgst}
+                      </td>
+                      <td class="text-center text-sm border-8 border-blue-500">
+                        {item.tdsLfr}
+                      </td>
+                      <td class="border-2 text-center border-gray-500">
+                        <button
+                          type="button"
+                          class="px-1 py-1 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-green-700 hover:bg-green-800 active:bg-green-700"
+                          onClick={() => handleUpdate(item)}
+                        >
+                          EDIT
+                        </button>
+
+                        <button
+                          type="button"
+                          class="px-1 py-1 ml-4 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-red-700 hover:bg-red-800 active:bg-red-700"
+                          onClick={() => handleDelete(item._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+            <h1 className="uppercase mb-2 font-bold mt-2">TDS index</h1>
+
+            <table class="bg-white w-[50%]">
+              <thead class=" whitespace-nowrap bg-slate-300">
+                <tr className="p-2">
+                  <th class="p-0 text-center text-sm border-2 border-black ">
+                    PRODUCT
+                  </th>
+                  <th class="p-0 text-center text-sm border-2 border-black uppercase ">
+                    TDS (%)
+                  </th>
+                  <th class="p-0 text-center text-sm border-2 border-black">
+                    ACTION
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="whitespace-nowrap">
+                {data &&
+                  data.map((item) => (
+                    <tr class="">
+                      <td class="border-2 text-center text-sm  border-gray-500">
+                        {item.ProductName}
+                      </td>
+                      <td class="text-center text-sm border-8 border-blue-500">
+                        {item.tds}
+                      </td>
+                      <td class="border-2 text-center border-gray-500">
+                        <button
+                          type="button"
+                          class="px-1 py-1 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-green-700 hover:bg-green-800 active:bg-green-700"
+                          onClick={() => handleUpdate(item)}
+                        >
+                          EDIT
+                        </button>
+
+                        <button
+                          type="button"
+                          class="px-1 py-1 ml-4 rounded-lg text-white text-sm tracking-wider  border border-current outline-none bg-red-700 hover:bg-red-800 active:bg-red-700"
+                          onClick={() => handleDelete(item._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+
+            {/* lfr end */}
           </div>
         </div>
       </div>
@@ -460,7 +480,10 @@ export default function Client() {
         <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
           <div class="w-full max-w-lg font-bold bg-white shadow-lg rounded-lg p-8 relative">
             <div class="flex items-center font-bold">
-              <h3 class="text-blue-600 text-xl font-bold flex-1"> Invoice Update</h3>
+              <h3 class="text-blue-600 text-xl font-bold flex-1">
+                {" "}
+                Invoice Update
+              </h3>
               <svg
                 onClick={() => setModel(false)}
                 xmlns="http://www.w3.org/2000/svg"
@@ -548,9 +571,8 @@ export default function Client() {
                     class="px-4 py-1.5 text-sm rounded-md bg-white border border-gray-400 w-full outline-blue-500"
                   />
                 </div>
-                
               </div>
-                <h1 className="text-blue-500">LFR UPDATE</h1>
+              <h1 className="text-blue-500">LFR UPDATE</h1>
               <div className="flex gap-2">
                 {" "}
                 <div>
@@ -573,7 +595,6 @@ export default function Client() {
                     class="px-4 py-1.5 text-sm rounded-md bg-white border border-gray-400 w-full outline-blue-500"
                   />
                 </div>
-                
               </div>
 
               <div className="flex gap-2">
@@ -598,21 +619,20 @@ export default function Client() {
                     class="px-4 py-1.5 text-sm rounded-md bg-white border border-gray-400 w-full outline-blue-500"
                   />
                 </div>
-                
               </div>
               <h1 className="text-blue-500">TDS UPDATE</h1>
 
               <div className="flex flex-col w-[24%]">
-                  <labe class="mb-2 text-md block text-center">tds</labe>
-                  <input
-                    type="text"
-                    value={edit.tds}
-                    name="tds"
-                    onChange={handleChangeUpdate}
-                    class="px-4 py-1.5 text-sm w-24 rounded-md bg-white border border-gray-400 w-full outline-blue-500"
-                  />
-                </div>
-              
+                <labe class="mb-2 text-md block text-center">tds</labe>
+                <input
+                  type="text"
+                  value={edit.tds}
+                  name="tds"
+                  onChange={handleChangeUpdate}
+                  class="px-4 py-1.5 text-sm w-24 rounded-md bg-white border border-gray-400 w-full outline-blue-500"
+                />
+              </div>
+
               <div className="text-center  ">
                 {!updateLoading ? (
                   <button

@@ -103,13 +103,28 @@ const MainHome = () => {
       });
   };
 
+  function getCurrentDate() {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed in JS
+    const year = today.getFullYear();
+  
+    return `${day}-${month}-${year}`;
+  }
+  
+  console.log(getCurrentDate()); // Output will be in "dd-mm-yyyy" format
+  
+
   return (
     <>
  
-      <h1 className="font-bold text-lg p-3 mb-4 text-white rounded- bg-green-900 text-center w-full">
+      <h1 className="font-bold text-2xl p-3 mb-2 text-white rounded- bg-green-900 text-center fixed w-[80%]">
         TANK RECORDS LAYOUT
       </h1>
-      <section className="storage-cont">
+      <div className=" text-2xl mt-16 ml-4 uppercase">
+        <h1>Date : {getCurrentDate()}</h1>
+      </div>
+      <section className="storage-cont w-[90%]">
         <div class="font-sans overflow-x-auto">
           <table class="min-w-full divide-y divide-black-200 border-2 mb-7">
             <thead class="bg-gray-800 whitespace-nowrap">

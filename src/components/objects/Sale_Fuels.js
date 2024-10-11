@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/Tank.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Sale_Fuels() {
   const [machineReadings, setMachineReadings] = useState([]);
@@ -35,13 +34,11 @@ export default function Sale_Fuels() {
     fetchMachineReadings();
   }, []);
 
-
   // ms1 data
 
   const [ms1Readings, setMs1Readings] = useState([]);
   const [ms1Rate, setMs1Rate] = useState(0);
   const [ms1RateAllDays, setMs1RateAllDays] = useState([]);
-
 
   const [totals, setTotals] = useState({
     saleTotal: 0,
@@ -76,14 +73,13 @@ export default function Sale_Fuels() {
       });
       setMachineReadings([]);
       setTotals({});
-      setMs1Readings({})
+      setMs1Readings({});
       alert("Data saved successfully!");
     } catch (error) {
       console.error(error);
       alert("Error saving data.");
     }
   };
-
 
   // ms2 speed
   const [ms2Readings, setMs2Readings] = useState([]);
@@ -93,8 +89,6 @@ export default function Sale_Fuels() {
 
   const [ms2Rate, setMs2Rate] = useState(0);
   const [hsdRate, setHsdRate] = useState(0);
-
-
 
   const [totals2, setTotals2] = useState({
     saleTotal2: 0,
@@ -128,13 +122,12 @@ export default function Sale_Fuels() {
         ms2Readings,
       });
       alert("Data saved successfully!");
-      setMs2Readings([])
+      setMs2Readings([]);
     } catch (error) {
       console.error(error);
       alert("Error saving data.");
     }
   };
-
 
   // hsd speed
   // const [hsdReadings, setMs2Readings] = useState([]);
@@ -144,8 +137,6 @@ export default function Sale_Fuels() {
 
   // const [ms2Rate, setMs2Rate] = useState(0);
   // const [hsdRate, setHsdRate] = useState(0);
-
-
 
   const [totals3, setTotals3] = useState({
     saleTotal3: 0,
@@ -176,7 +167,7 @@ export default function Sale_Fuels() {
   const handleSave3 = async () => {
     try {
       await axios.post("https://marvah-server.onrender.com/fuelsales/create", {
-       ms1Readings: hsdReadings,
+        ms1Readings: hsdReadings,
       });
       alert("Data saved successfully!");
     } catch (error) {
@@ -184,7 +175,6 @@ export default function Sale_Fuels() {
       alert("Error saving data.");
     }
   };
-
 
   const fetchAllDAyStartReading = () => {
     axios
@@ -218,19 +208,33 @@ export default function Sale_Fuels() {
       });
   };
 
-    useEffect(() => {
-      fetchAllDAyStartReading();
-    }, [ms1Readings,ms2Readings,hsdReadings]);
+  useEffect(() => {
+    fetchAllDAyStartReading();
+  }, [ms1Readings, ms2Readings, hsdReadings]);
 
   return (
-    <main className="tankMainDiv shadow-lg p-1 mb-5 bg-body-tertiary rounded bigFontWeight">
+    <main className="tankMainDiv shadow-lg p-1 bg-body-tertiary rounded bigFontWeight min-h-fit">
       <div className="relative">
-        <h1 className="tracking-wide uppercase font-bold text-center text-3xl px-3 py-1">
+        <h1 className="tracking-wide fixed ml-[35%] mb-3 uppercase font-bold text-center text-3xl px-3">
           Fuel Sales
         </h1>
-        <h1 className="flex items-start font-bold font-2xl text-black">
-          Date: {new Date().toLocaleDateString()}
+        <h1 className="flex items-start mt-1 text-2xl text-black ml-6 uppercase">
+          Date : {new Date().toLocaleDateString()}
         </h1>
+        <div className="flex justify-between w-[90%]">
+          <Link
+            className="px-2 mr-3 py-1 rounded-md text-white"
+            to={"/machineLayout"}
+          >
+            
+          </Link>
+          {/* <Link
+            className="bg-blue-600 px-2 mr-3 py-1 rounded-md text-white"
+            to={"/machineLayout"}
+          >
+            Add Readings
+          </Link> */}
+        </div>
       </div>
       {/* ms1 start */}
       <section className="ms-1">
@@ -239,158 +243,7 @@ export default function Sale_Fuels() {
             ms-1
           </div>
         </div>
-        <table className="w-[100%]">
-  <thead className="tablebg py-2">
-    <tr className="text-center font-bold py-2">
-      <th>Nozzle ID</th>
-      <th>Side</th>
-      <th>Opening</th>
-      <th>Closing</th>
-      <th>Sale</th>
-      <th>Testing</th>
-      <th>Actual Sale</th>
-      <th>Rate</th>
-      <th></th>
-      <th>T Amount</th>
-    </tr>
-  </thead>
-  <tbody>
-    {ms1Readings.map((item, index) => (
-      <tr
-        key={item._id}
-        className="font-bold border-2 border-slate-300"
-      >
-        <td>
-          <input
-            className="text-center w-32"
-            value={item.nozzleProduct}
-            readOnly
-          />
-        </td>
-        <td>
-          <input
-            className="text-center w-20"
-            value={item.sideNo}
-            readOnly
-          />
-        </td>
-        <td>
-          <input
-            className="text-center w-32"
-            value={item.opMeterReading}
-            readOnly
-          />
-        </td>
-        <td>
-          <input
-            type="number"
-            value={item.closing || ""}
-            className="text-center bg-blue-600 w-32"
-            onChange={(e) => {
-              const newClosing = parseFloat(e.target.value) || 0;
-              const updatedReadings = [...ms1Readings];
-              updatedReadings[index].closing = newClosing;
-
-              // Calculate the sale if both closing and opMeterReading are present
-              if (newClosing && item.opMeterReading !== undefined) {
-                updatedReadings[index].sale =
-                  newClosing - item.opMeterReading;
-              } else {
-                updatedReadings[index].sale = ""; // Set sale as empty string initially
-              }
-
-              setMs1Readings(updatedReadings);
-            }}
-          />
-        </td>
-        <td>
-          <input
-            value={item.sale !== undefined ? item.sale : ""}
-            className="text-center w-32"
-            readOnly
-          />
-        </td>
-
-        <td>
-          <input
-            className="bg-blue-700 text-center text-white w-32"
-            value={item.testing || ""}
-            type="number"
-            onChange={(e) => {
-              const newTesting = parseFloat(e.target.value) || 0;
-              const updatedReadings = [...ms1Readings];
-              updatedReadings[index].testing = newTesting;
-              setMs1Readings(updatedReadings);
-            }}
-          />
-        </td>
-
-        <td>
-          <input
-            value={
-              item.closing == null ||
-              item.opMeterReading == null ||
-              item.testing == null
-                ? ""
-                : (item.closing || 0) -
-                  (item.opMeterReading || 0) -
-                  (item.testing || 0)
-            }
-            className="text-center w-32"
-            readOnly
-          />
-        </td>
-
-        <td>
-          <input
-            disabled
-            style={{ display: "none" }}
-            value={(item.rate = ms1Rate)}
-            className="text-center w-32 bg-rose-500"
-            readOnly
-          />
-        </td>
-        <td>
-          <input
-            style={{ display: "none" }}
-            className="text-center w-40"
-            value={(item.saleActTotal = totals.saleActTotal)}
-            readOnly
-          />
-        </td>
-        <td>
-          <input
-            hidden
-            className="text-center w-40"
-            value={(item.totalAmount = totals.saleActTotal * ms1Rate)}
-            readOnly
-          />
-        </td>
-      </tr>
-    ))}
-    <tr className="tablebg">
-      <th className="text-center" colSpan="4">
-        Total
-      </th>
-      <th className="text-center">
-        {totals.saleTotal === 0 ? "" : totals.saleTotal}
-      </th>
-      <th className="text-center">
-        {totals.testingTotal === 0 ? "" : totals.testingTotal}
-      </th>
-      <th className="text-center">
-        {totals.saleActTotal === 0 ? "" : totals.saleActTotal}
-      </th>
-      <th className="text-center">{ms1Rate}</th>
-      <th className="text-center"></th>
-      <th className="text-center">
-        {totals.saleActTotal === 0 ? "" : totals.saleActTotal * ms1Rate}
-      </th>
-    </tr>
-  </tbody>
-</table>
-
-        {/* <table className="w-[100%]">
+        <table className="w-[90%] ml-4">
           <thead className="tablebg py-2">
             <tr className="text-center font-bold py-2">
               <th>Nozzle ID</th>
@@ -435,8 +288,8 @@ export default function Sale_Fuels() {
                 <td>
                   <input
                     type="number"
-                    value={item.closing || ""}
-                    className="text-center bg-blue-600 w-32"
+                    value={item.closing || 0}
+                    className="text-center bg-blue-600 w-32 text-white"
                     onChange={(e) => {
                       const newClosing = parseFloat(e.target.value) || 0;
                       const updatedReadings = [...ms1Readings];
@@ -464,8 +317,8 @@ export default function Sale_Fuels() {
 
                 <td>
                   <input
-                    className="bg-blue-700 text-center text-white w-32"
-                    value={item.testing || ""}
+                    className="bg-blue-700 text-center text-white w-16"
+                    value={item.testing || 0}
                     type="number"
                     onChange={(e) => {
                       const newTesting = parseFloat(e.target.value) || 0;
@@ -487,7 +340,14 @@ export default function Sale_Fuels() {
                           (item.opMeterReading || 0) -
                           (item.testing || 0)
                     }
-                    className="text-center w-32"
+                    className={`text-center w-32 ${
+                      (item.closing || 0) -
+                        (item.opMeterReading || 0) -
+                        (item.testing || 0) >=
+                      0
+                        ? ""
+                        : "text-red-600"
+                    }`}
                     readOnly
                   />
                 </td>
@@ -519,41 +379,48 @@ export default function Sale_Fuels() {
                 </td>
               </tr>
             ))}
-            <tr className="tablebg">
-              <th className="text-center" colSpan="4">
-                Total
+            <tr className="border-2 ">
+              <th className="text-center ml-16" colSpan="4">
+                <span className="ml-80">TOTAL  (=)</span>
               </th>
-              <th className="text-center">{totals.saleTotal}</th>
-              <th className="text-center">{totals.testingTotal}</th>
-              <th className="text-center">{totals.saleActTotal}</th>
+              <th className="text-center">
+                {totals.saleTotal === 0 ? "" : totals.saleTotal}
+              </th>
+              <th className="text-center">
+                {totals.testingTotal === 0 ? "" : totals.testingTotal}
+              </th>
+              <th className="text-center">
+                {totals.saleActTotal === 0 ? "" : totals.saleActTotal}
+              </th>
               <th className="text-center">{ms1Rate}</th>
               <th className="text-center"></th>
-              <th className="text-center">{totals.saleActTotal * ms1Rate}</th>
+              <th className="text-center">
+                {totals.saleActTotal === 0 ? "" : totals.saleActTotal * ms1Rate}
+              </th>
             </tr>
           </tbody>
-        </table> */}
-        <div className="flex justify-between">
-          <button>
+        </table>
 
-          </button>
+        <div className="flex justify-between w-[90%] ml-4">
+          <button></button>
           <button
             className="bg-blue-600 px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold"
             onClick={handleSave}
           >
-            Save 
+            Save
           </button>
         </div>
       </section>
-            {/* ms1 end */}
+      {/* ms1 end */}
 
-               {/* ms2 start */}
+      {/* ms2 start */}
       <section className="ms-2">
-        <div className="flex justify-center mb-2">
-          <div className="block text-2xl justify-center tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
+        <div className="flex justify-center">
+          <div className="block text-2xl justify-center tracking-wider text-blue-600 px-2 rounded-md uppercase font-bold">
             ms-2
           </div>
         </div>
-        <table className="w-[100%]">
+        <table className="w-[90%] ml-4">
           <thead className="tablebg py-2">
             <tr className="text-center font-bold py-2">
               <th>Nozzle ID</th>
@@ -598,8 +465,8 @@ export default function Sale_Fuels() {
                 <td>
                   <input
                     type="number"
-                    value={item2.closing || ""}
-                    className="text-center bg-blue-600 w-32"
+                    value={item2.closing || 0}
+                    className="text-center bg-blue-600 w-32 text-white"
                     onChange={(e) => {
                       const newClosing = parseFloat(e.target.value) || 0;
                       const updatedReadings = [...ms2Readings];
@@ -619,7 +486,7 @@ export default function Sale_Fuels() {
                 </td>
                 <td>
                   <input
-                    value={item2.sale2 !== undefined ? item2.sale2: ""}
+                    value={item2.sale2 !== undefined ? item2.sale2 : ""}
                     className="text-center w-32"
                     readOnly
                   />
@@ -627,8 +494,8 @@ export default function Sale_Fuels() {
 
                 <td>
                   <input
-                    className="bg-blue-700 text-center text-white w-32"
-                    value={item2.testing || ""}
+                    className="bg-blue-700 text-center text-white w-16"
+                    value={item2.testing || 0}
                     type="number"
                     onChange={(e) => {
                       const newTesting = parseFloat(e.target.value) || 0;
@@ -676,15 +543,17 @@ export default function Sale_Fuels() {
                   <input
                     hidden
                     className="text-center w-40"
-                    value={(item2.totalAmount = totals2.saleActTotal2 * ms2Rate)}
+                    value={
+                      (item2.totalAmount = totals2.saleActTotal2 * ms2Rate)
+                    }
                     readOnly
                   />
                 </td>
               </tr>
             ))}
-            <tr className="tablebg">
+            <tr className="border-2">
               <th className="text-center" colSpan="4">
-                Total
+                <span className="ml-80"> TOTAL(=) </span>
               </th>
               <th className="text-center">{totals2.saleTotal2}</th>
               <th className="text-center">{totals2.testingTotal2}</th>
@@ -695,26 +564,26 @@ export default function Sale_Fuels() {
             </tr>
           </tbody>
         </table>
-        <div className="flex justify-between">
+        <div className="flex justify-between ml-4 w-[90%]">
           <button></button>
-        <button
+          <button
             className="bg-blue-600 px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold"
             onClick={handleSave2}
           >
-            Save 
+            Save
           </button>
         </div>
       </section>
-            {/* ms2 end */}
+      {/* ms2 end */}
 
-                   {/* hsd start */}
+      {/* hsd start */}
       <section className="ms-2">
-          <div className="flex justify-center">
+        <div className="flex justify-center">
           <div className="block text-2xl justify-center tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
             HSD
           </div>
         </div>
-        <table className="w-[100%]">
+        <table className="w-[90%] ml-4">
           <thead className="tablebg py-2">
             <tr className="text-center font-bold py-2">
               <th>Nozzle ID</th>
@@ -759,8 +628,8 @@ export default function Sale_Fuels() {
                 <td>
                   <input
                     type="number"
-                    value={item2.closing || ""}
-                    className="text-center bg-blue-600 w-32"
+                    value={item2.closing || 0}
+                    className="text-center bg-blue-600 w-32 text-white"
                     onChange={(e) => {
                       const newClosing = parseFloat(e.target.value) || 0;
                       const updatedReadings = [...hsdReadings];
@@ -780,7 +649,7 @@ export default function Sale_Fuels() {
                 </td>
                 <td>
                   <input
-                    value={item2.sale3 !== undefined ? item2.sale3: ""}
+                    value={item2.sale3 !== undefined ? item2.sale3 : ""}
                     className="text-center w-32"
                     readOnly
                   />
@@ -788,8 +657,8 @@ export default function Sale_Fuels() {
 
                 <td>
                   <input
-                    className="bg-blue-700 text-center text-white w-32"
-                    value={item2.testing || ""}
+                    className="bg-blue-700 text-center text-white w-16"
+                    value={item2.testing || 0}
                     type="number"
                     onChange={(e) => {
                       const newTesting = parseFloat(e.target.value) || 0;
@@ -837,15 +706,17 @@ export default function Sale_Fuels() {
                   <input
                     hidden
                     className="text-center w-40"
-                    value={(item2.totalAmount = totals2.saleActTotal2 * ms2Rate)}
+                    value={
+                      (item2.totalAmount = totals2.saleActTotal2 * ms2Rate)
+                    }
                     readOnly
                   />
                 </td>
               </tr>
             ))}
-            <tr className="tablebg">
+            <tr className="border-2">
               <th className="text-center" colSpan="4">
-                Total
+                <span className="ml-80"> TOTAL(=) </span>
               </th>
               <th className="text-center">{totals3.saleTotal3}</th>
               <th className="text-center">{totals3.testingTotal3}</th>
@@ -856,17 +727,17 @@ export default function Sale_Fuels() {
             </tr>
           </tbody>
         </table>
-        <div className="flex justify-between">
+        <div className="flex justify-between w-[90%] ml-4">
           <button></button>
-        <button
+          <button
             className="bg-blue-600 px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold"
             onClick={handleSave3}
           >
-            Save 
+            Save
           </button>
         </div>
       </section>
-            {/* hsd end */}
+      {/* hsd end */}
     </main>
   );
 }

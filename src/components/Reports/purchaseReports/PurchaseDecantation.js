@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const PurchaseDecantation = () => {
   const [product, setProduct] = useState("MS");
@@ -60,6 +61,8 @@ const PurchaseDecantation = () => {
     return `${day}-${month}-${year}`;
   }
 
+  const navigate = useNavigate();
+
   return (
     <div className="p-6">
       <h1 className="text-3xl text-white bg-[#3A1078] p-3 uppercase font-bold text-center mb-3">
@@ -69,6 +72,18 @@ const PurchaseDecantation = () => {
       <h1 className="text-2xl uppercase font-bold text-center mb-3">
         Decantation report
       </h1>
+
+      <div className="flex justify-between w-[100%] mb-4">
+            <div></div>
+            <div className="flex">
+              <button
+                className="bg-blue-500 px-2 py-1 rounded-md"
+                onClick={() => navigate(-1)}
+              >
+                back
+              </button>
+            </div>
+          </div>
 
       <table className=" mb-4 w-[100%]">
         <tbody>

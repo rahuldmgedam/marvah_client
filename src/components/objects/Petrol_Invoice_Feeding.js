@@ -368,19 +368,26 @@ export default function Petrol_Invoice_Feeding() {
   return (
     <>
       <div className="tankMainDiv shadow-lg  bg-body-tertiary rounded">
-        <h2 className="font-bold mb-4 mt-4 text-2xl text-center uppercase">
+        <h2 className="font-bold fixed w-[80%] mb-4 text-2xl text-center uppercase">
           Petrol Invoice Feeding
         </h2>
-        <div className="mb-2 flex justify-between">
+        <div className="mb-2 flex justify-between mt-8 w-[90%] ml-4">
           <div className="text-2xl  font-bold"> Date : {getCurrentDate()} </div>
-          <div className="text-xl text-white  font-bold rounded-md  bg-green-900 py-2">
-            <Link to={"/Petrol_Products"} className="p-2">
-              Add Index Form
+          <div className="text-xl flex gap-2 text-white  font-bold rounded-md">
+           <div>
+           {/* <Link to={"/Petrol_Products"} className="p-2 bg-green-600 rounded-md">
+              petrol Index Form
+            </Link> */}
+            </div>
+            <div>
+           <Link to={"/purchasetds"} className="p-2 bg-green-600 rounded-md">
+             Reports
             </Link>
+            </div>
           </div>
         </div>
 
-        <div>
+        <div className="w-[90%] ml-4">
           <form action="" onSubmit={(e) => e.preventDefault()}>
             <table className="table text-center">
               <thead>

@@ -157,11 +157,11 @@ export default function Handloans({ dbpath1 }) {
 
   return (
     <>
-      <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-        <h2 className="mt-3 mb-4 p-2 text-3xl font-bold uppercase text-center">
+      <div className=" shadow-lg p-3 bg-body-tertiary rounded bigFontWeight">
+        <h2 className="mb-4 p-2 text-3xl fixed w-[80%] font-bold uppercase text-center">
           Handloans
         </h2>
-        <div className="flex justify-between mb-4 mt-3">
+        <div className="flex justify-between mb-4 mt-3 w-[90%]">
           <span className="text-2xl"> Date :{todaysDate}</span>
           {/* <span className="font-bold">
             Balance : <span className="bg-yellow-300"> {balance} </span>
@@ -180,17 +180,21 @@ export default function Handloans({ dbpath1 }) {
                 className="bg-green-700 px-2 mr-3 py-1 rounded-md text-white"
          
               >
+                Reports
+              </Link>
+            </span>
+            <span>
+              <Link onClick={handleDateConversion}
+                className="bg-green-700 px-2 mr-3 py-1 rounded-md text-white"
+         
+              >
                 History
               </Link>
             </span>
-            {/* <span>
-              <Link className=" px-2 bg-yellow-900 py-1 rounded-md text-white">
-                History
-              </Link>
-            </span> */}
+       
           </div>
         </div>
-        <table className="w-[100%]">
+        <table className="w-[90%]">
           <thead className="px-2 py-3 w-[100%]">
             <tr className="bg-[#3A1078] w-[100%] text-white text-center">
               <th className="px-2 py-2">Party Name</th>
@@ -264,17 +268,66 @@ export default function Handloans({ dbpath1 }) {
             </tr>
           </tbody>
         </table>
-        <br />
+    
 
-        <h2 className="text-center text-xl font-bold">
+        <h2 className="text-center text-xl font-bold mt-2 mb-2">
           Today's Transactions
         </h2>
-        <br />
-
+   
         <table className="w-[90%] border-2">
+  <thead className="">
+    <tr className="bg-[#3A1078] text-center text-white border-2 border-grey-200">
+      {/* <th className="tablebg">Sr No.</th> */}
+      <th className="bg-[#3A1078] px-1 py-2">Party Name</th>
+      <th className="py-2 w-32">Debit-Out</th>
+      <th className="py-2">Credit-In</th>
+      <th className="py-2">Narration</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      todaysTransactions.map((transaction, index) => (
+        (todaysDate === transaction.date) && (
+          <tr className="hovereffect text-center" key={index}>
+            {/* <td>{index + 1}</td> */}
+            <td className="p-2 border-2 border-grey-200">{transaction.party_name}</td>
+            <td className="p-2 border-2 border-grey-200">
+              {transaction.voucher_type === "Debit-Out" ? transaction.amount : "-"}
+            </td>
+            <td className="p-2 border-2 border-grey-200">
+              {transaction.voucher_type === "Credit-In" ? transaction.amount : "-"}
+            </td>
+            <td className="p-2 border-2 border-grey-200">{transaction.narration}</td>
+          </tr>
+        )
+      ))
+    }
+
+    {/* Calculate and display the total sum */}
+    <tr className="font-bold text-center bg-green-500 text-white" >
+      <td className="">Total</td>
+      <td className="p-2 border-2 border-grey-200">
+        {
+          todaysTransactions
+            .filter(transaction => transaction.voucher_type === "Debit-Out" && todaysDate === transaction.date)
+            .reduce((total, transaction) => total + transaction.amount, 0)
+        }
+      </td>
+      <td className="p-2 border-2 border-grey-200">
+        {
+          todaysTransactions
+            .filter(transaction => transaction.voucher_type === "Credit-In" && todaysDate === transaction.date)
+            .reduce((total, transaction) => total + transaction.amount, 0)
+        }
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+        {/* <table className="w-[90%] border-2">
           <thead className="">
             <tr className="bg-[#3A1078] text-center text-white  border-2 border-grey-200">
-              {/* <th className="tablebg">Sr No.</th> */}
               <th className="bg-[#3A1078] px-1 py-2">Party Name</th>
               <th className="py-2 w-32">Debit-Out</th>
               <th className="py-2">Credit-In</th>
@@ -287,7 +340,6 @@ export default function Handloans({ dbpath1 }) {
               todaysTransactions.map((transaction, index) => (
 
                 (todaysDate === transaction.date) && (<tr className="hovereffect text-center" key={index}>
-                  {/* <td>{index + 1}</td> */}
                   <td className="p-2 border-2 border-grey-200">{transaction.party_name}</td>
                   <td className="p-2 border-2 border-grey-200">
                     {transaction.voucher_type === "Debit-Out"
@@ -307,25 +359,72 @@ export default function Handloans({ dbpath1 }) {
               ))
             }
           </tbody>
-        </table>
+        </table> */}
 
-        <br />
-        
-        <br />
+
         <h2 className="text-center text-xl p-2 font-bold">
           Client's Transaction History
         </h2>
         <h1 className=" px-2 py-1 text-xl ">Party Name : {partyname}</h1>
-        <br />
+  
+
         <table className="w-[90%] border-2">
+  <thead className="items-center p-2">
+    <tr className="bg-[#3A1078] text-center p-2 text-white border-2 border-grey-200">
+      <th className="items-center p-2">Sr No.</th>
+      <th className="items-center">Date</th>
+      <th className="">Debit-Out</th>
+      <th className="">Credit-In</th>
+      <th className="">Narration</th>
+    </tr>
+  </thead>
+  <tbody>
+    {handloan
+      .filter((client) => client.party_name === partyname)
+      .map((client, index) => (
+        <tr className="hovereffect text-center" key={index}>
+          <td className="p-2 border-2 border-grey-200 w-20">{index + 1}</td>
+          <td className="p-2 border-2 border-grey-200 w-32">{client?.date}</td>
+          <td className="p-2 border-2 border-grey-200 w-24">
+            {client.voucher_type === "Debit-Out" ? client.amount : "-"}
+          </td>
+          <td className="p-2 border-2 border-grey-200 w-24">
+            {client.voucher_type === "Credit-In" ? client.amount : "-"}
+          </td>
+          <td className="p-2 border-2 border-grey-200">{client.narration}</td>
+        </tr>
+      ))}
+    
+    {/* Total Row */}
+    <tr className="font-bold text-center bg-green-500 text-white">
+      <td colSpan={2} className="text-center">Total</td>
+ 
+      <td className="p-2 border-2 border-grey-200">
+        {
+          handloan
+            .filter(client => client.party_name === partyname && client.voucher_type === "Debit-Out")
+            .reduce((total, client) => total + client.amount, 0)
+        }
+      </td>
+      <td className="p-2 border-2 border-grey-200">
+        {
+          handloan
+            .filter(client => client.party_name === partyname && client.voucher_type === "Credit-In")
+            .reduce((total, client) => total + client.amount, 0)
+        }
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+        {/* <table className="w-[90%] border-2">
           <thead className="items-center p-2">
-          <tr className="bg-[#3A1078] hovereffect text-center p-2 text-white  border-2 border-grey-200">
+          <tr className="bg-[#3A1078] text-center p-2 text-white  border-2 border-grey-200">
           <th className="items-center p-2" >Sr No.</th>
               <th className="items-center">Date</th>
-              {/* <th className="tablebg">Voucher-Type</th> */}
               <th className="">Debit- Out</th>
               <th className="">Credit-In</th>
-              {/* <th className="tablebg">Balance</th> */}
               <th className="">Narration</th>
             </tr>
           </thead>
@@ -336,19 +435,17 @@ export default function Handloans({ dbpath1 }) {
                 <tr className="hovereffect text-center" key={index}>
                   <td className="p-2 border-2 border-grey-200 w-20">{index + 1}</td>
                   <td className="p-2 border-2 border-grey-200 w-32">{client?.date}</td>
-                  {/* <td>{client.voucher_type}</td> */}
                   <td className="p-2 border-2 border-grey-200 w-24">
                     {client.voucher_type === "Debit-Out" ? client.amount : "-"}
                   </td>
                   <td className="p-2 border-2 border-grey-200 w-24">
                     {client.voucher_type === "Credit-In" ? client.amount : "-"}
                   </td>
-                  {/* <td>{balance}</td> */}
                   <td className="p-2 border-2 border-grey-200">{client.narration}</td>
                 </tr>
               ))}
           </tbody>
-        </table>
+        </table> */}
       </div>
     </>
   );
