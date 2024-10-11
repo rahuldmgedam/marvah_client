@@ -169,7 +169,7 @@ export default function Petrol_Invoice_Feeding() {
       parseFloat(taxamount) * parseFloat(saveData.klQty)
     ).toFixed(1);
     // const vatlst = (productAmount * (vatPercent / 100)).toFixed(1);
-    const vatlst = productAmount;
+    const vatlst = (productAmount);
 
     const totalAmount = (
       parseFloat(productAmount) +
@@ -542,7 +542,7 @@ export default function Petrol_Invoice_Feeding() {
                       type="text"
                       name="vatlst"
                       className="form-control bigFontWeight"
-                      value={saveData.vatlst || ""}
+                      value={saveData?.vatlst || "0"}
                       // value={saveData.vatPercent ? saveData.vatlst : ""}
                       disabled
                     />
@@ -551,7 +551,7 @@ export default function Petrol_Invoice_Feeding() {
                   <td className="bigFontWeight">
                     <input
                       type="text"
-                      value={filterData.cess * saveData.klQty || ""}
+                      value={filterData.cess * saveData.klQty || "0"}
                       className="form-control bigFontWeight"
                       disabled
                     />
@@ -560,7 +560,7 @@ export default function Petrol_Invoice_Feeding() {
                   <td className="bigFontWeight">
                     <input
                       type="text"
-                      value={filterData.tcs || ""}
+                      value={filterData.tcs || "0"}
                       className="form-control bigFontWeight"
                       disabled
                     />
@@ -571,7 +571,7 @@ export default function Petrol_Invoice_Feeding() {
                       type="text"
                       name="totalAmount"
                       className="form-control bigFontWeight"
-                      value={saveData.totalAmount}
+                      value={(saveData.totalAmount)}
                       disabled
                     />
                   </td>
@@ -671,7 +671,176 @@ export default function Petrol_Invoice_Feeding() {
         )} */}
 
         {/* 1. invoice feed start  */}
+          
+          {!showDecantation && <>
+            <h2 className=" text-xl font-bold mb-1 mt-1 text-center uppercase">
+          Invoice entry{" "}
+        </h2>
 
+        <div className="relative">
+          <div
+            className="overflow-x-auto scroll-mx-5"
+            ref={topScrollRef}
+            onScroll={() => handleScroll(topScrollRef, tableScrollRef)}
+            style={{ height: "1.5rem" }}
+          >
+            <div style={{ width: "200%" }}></div>
+          </div>
+
+          <table className="w-[93%]">
+            <thead className="px-2">
+              <tr className="text-center uppercase px-2">
+                <th className="border-2 px-2 border-gray-900">S.No.</th>
+                <th className="border-2 border-gray-900">Invoice No.</th>
+                <th className="border-2 border-gray-900">Product</th>
+                <th className="border-2 border-gray-900">KL/Qty</th>
+                <th className="border-2 border-gray-900">x</th>
+                <th className="border-2 px-2 border-gray-900">Rate/Unit</th>
+                <th className="border-2 border-gray-900">=</th>
+                <th className="border-2 px-2 border-gray-900">Value</th>
+                <th className="border-2 border-gray-900">+</th>
+                <th className="border-2 border-gray-900 w-16">
+                  Taxable Amount
+                </th>
+                <th className="border-2 border-gray-900">=</th>
+                <th className="border-2 border-gray-900">Product <br /> Amount</th>
+                <th className="border-2 border-gray-900">x</th>
+                <th className="border-2 border-gray-900">VAT %</th>
+                <th className="border-2 border-gray-900">=</th>
+                <th className="border-2 border-gray-900">VAT/LST</th>
+                <th className="border-2 border-gray-900">+</th>
+                <th className="border-2 border-gray-900">CESS</th>
+                <th className="border-2 border-gray-900">+</th>
+                <th className="border-2 border-gray-900">TCS</th>
+                <th className="border-2 border-gray-900">=</th>
+                <th className="border-2 border-gray-900">T Amount</th>
+                {/* <th className="border-2 border-gray-900">T inv Amount</th> */}
+                {/* <th className="border-2 border-gray-900">Action</th> */}
+              </tr>
+            </thead>
+            <tbody>
+              {petrolInvoice.length > 0 &&
+                petrolInvoice.map((item, index, array) => {
+                  // Check if this is the first product for this invoice
+                  const isFirstRowOfInvoice =
+                    index === 0 ||
+                    item.invoiceNumber !== array[index - 1].invoiceNumber;
+
+                  return (
+                    <tr key={index} className="text-center">
+                      {/* SR NO and INVOICE NO Merging */}
+                      {isFirstRowOfInvoice && (
+                        <>
+                          {/* S.No */}
+                          <td
+                            rowSpan={
+                              array.filter(
+                                (rowItem) =>
+                                  rowItem.invoiceNumber === item.invoiceNumber
+                              ).length
+                            }
+                            className="border-2 border-gray-900"
+                          >
+                            {item.serialNumber}
+                          </td>
+
+                          {/* Invoice No */}
+                          <td
+                            rowSpan={
+                              array.filter(
+                                (rowItem) =>
+                                  rowItem.invoiceNumber === item.invoiceNumber
+                              ).length
+                            }
+                            className="border-2 border-gray-900"
+                          >
+                            {item.invoiceNumber}
+                          </td>
+                        </>
+                      )}
+
+                      {/* Product Name */}
+                      <td className="border-2 border-gray-900">
+                        {item.ProductName}
+                      </td>
+
+                      {/* KL/Qty */}
+                      <td className="border-2 border-gray-900">{item.klQty}</td>
+                      <td className="border-2 border-gray-900 w-[1%]">x</td>
+
+                      {/* Rate per Unit */}
+                      <td className="border-2 border-gray-900">{item.rate}</td>
+                      <td className="border-2 border-gray-900 w-[1%]">=</td>
+
+                      {/* Value */}
+                      <td className="border-2 border-gray-900">{item.Value}</td>
+                      <td className="border-2 border-gray-900 w-[1%]">+</td>
+
+                      {/* Taxable Amount */}
+                      <td className="border-2 border-gray-900 w-16">
+                        {item.taxamount}
+                      </td>
+                      <td className="border-2 border-gray-900 w-[1%]">=</td>
+
+                      {/* Product Amount */}
+                      <td className="border-2 border-gray-900">
+                        {item.productAmount}
+                      </td>
+                      <td className="border-2 border-gray-900 w-[1%]">x</td>
+
+                      {/* VAT % */}
+                      <td className="border-2 border-gray-900 w-[12]">
+                        {item.vat}
+                      </td>
+                      <td className="border-2 border-gray-900 w-[1%]">=</td>
+
+                      {/* VAT/LST */}
+                      <td className="border-2 border-gray-900">
+                        {item.vatlst.toFixed()}
+                      </td>
+                      <td className="border-2 border-gray-900 w-[1%]">+</td>
+
+                      {/* CESS */}
+                      <td className="border-2 border-gray-900">{item.cess}</td>
+                      <td className="border-2 border-gray-900 w-[1%]">+</td>
+
+                      {/* TCS */}
+                      <td className="border-2 border-gray-900">{item.tcs}</td>
+                      <td className="border-2 border-gray-900 w-[1%]">=</td>
+
+                      {/* Total Amount */}
+                      <td  className="border-2 border-gray-900">
+                        {(item.totalAmount)?.toFixed(2)}
+                      </td>
+
+                      {/* Total Invoice Amount */}
+                      <td hidden className="border-2 border-gray-900">
+                        {InvTotSum.toFixed(2)}
+                      </td>
+
+                  
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+
+          <div className="flex justify-between mt-2 mb-4">
+            <div></div>
+
+            <div
+              className="text-center mr-16 font-bold border-gray-900"
+              colSpan={4}
+            >
+              T. Invoice Amt:{" "}
+              <span className="border-2 p-2 border-gray-900 mr-5">
+                {" "}
+                {totInvoiceAmt.toFixed(2)}{" "}
+              </span>
+            </div>
+          </div>
+        </div>
+          </>}
         {showDecantation && (
           <>
             <div className="lfr-tds-inv">

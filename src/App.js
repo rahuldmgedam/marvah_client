@@ -34,7 +34,7 @@ import Generate_Bills from "./components/objects/Generate_Bills";
 import Add_Bank from "./components/objects/Add_Bank";
 import Add_Staff from "./components/objects/Add_Staff";
 import Oil_Pouches from "./components/objects/Oil_Pouches";
-import Sale_Fuels from "./components/objects/Sale_Fuels";
+import SFuelale_s from "./components/objects/Sale_Fuels";
 import Variartion from "./components/objects/Variation";
 import Add_Wallet from "./components/objects/Add_Wallet";
 import Add_Petro_Card from "./components/objects/Add_Petro_Card";
@@ -94,6 +94,10 @@ import PurchaseDecantation from "./components/Reports/purchaseReports/PurchaseDe
 import InvLfrTds from "./components/objects/InvLfrTds";
 import DayStartReport from "./components/Reports/DayStart Reports/DayStartReport";
 import ConsolidatedReport from "./components/Reports/DayStart Reports/ConsolidatedReport";
+import Sale_Fuels from "./components/objects/Sale_Fuels";
+import HandloansReport from "./components/Reports/Hand/HandloansReport";
+import AdvanceReport from "./components/Reports/Hand/AdvanceReport";
+import ConsoliFuelsales from "./components/Reports/FuelSaleReports/ConsoliFuelsales";
 
 function App() {
   return (
@@ -112,13 +116,28 @@ function App() {
           path="/mainhome"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <MainHome />
+                </div>
+              </div> */}
+                       <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  {/* <Navbar /> */}
+                  <MainHome />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -146,13 +165,28 @@ function App() {
           path="/machinelayout"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <MachineLayout />
+                </div>
+              </div> */}
+                  <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  {/* <Navbar /> */}
+                  <MachineLayout />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -877,13 +911,28 @@ function App() {
           path="/PetrolReport"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <PetrolReport />
+                </div>
+              </div> */}
+                        <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  {/* <Navbar /> */}
+                  <PetrolReport />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -911,7 +960,7 @@ function App() {
           path="/Day_End"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
@@ -919,7 +968,23 @@ function App() {
                   <Navbar />
                   <Day_End />
                 </div>
+              </div> */}
+                  <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Day_End/>
+                  </div>
+              
+                </div>
               </div>
+
             </>
           }
         />
@@ -1064,13 +1129,19 @@ function App() {
           path="/Variation"
           element={
             <>
-              <div style={{ display: "flex" }}>
+            <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
                 <div>
                   <Sidebar />
                 </div>
-                <div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
                   <Navbar />
                   <Variation />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1132,13 +1203,19 @@ function App() {
           path="/Day_Start"
           element={
             <>
-              <div style={{ display: "flex" }}>
+                <div style={{ display: "flex" }}>
                 <div className="w-[20%]">
+                <div>
                   <Sidebar />
                 </div>
-                <div className="w-[80%]"> 
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
                   <Navbar />
-                  <Day_Start/>
+                  <Day_Start />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1252,12 +1329,16 @@ function App() {
           element={
             <>
               <div style={{ display: "flex" }}>
-                <div>
+                <div className="w-[20%]">
+                  <div>
                   <Sidebar />
+                  </div>
                 </div>
-                <div>
+                <div className="w-[80%]">
+                  <div>
                   <Navbar />
                   <Sale_Fuels />
+                  </div>
                 </div>
               </div>
             </>
@@ -1268,7 +1349,22 @@ function App() {
           path="/Oil_Purchase"
           element={
             <>
-              <div style={{ display: "flex" }}>
+                <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Oil_Purchase/>
+                  </div>
+              
+                </div>
+              </div>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
@@ -1276,7 +1372,7 @@ function App() {
                   <Navbar />
                   <Oil_Purchase />
                 </div>
-              </div>
+              </div> */}
             </>
           }
         />
@@ -1319,13 +1415,19 @@ function App() {
           path="/Petrol_Decantation"
           element={
             <>
-              <div style={{ display: "flex" }}>
+                <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
                 <div>
                   <Sidebar />
                 </div>
-                <div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
                   <Navbar />
                   <Petrol_Decantation />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1337,12 +1439,18 @@ function App() {
           element={
             <>
               <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
                 <div>
                   <Sidebar />
                 </div>
-                <div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
                   <Navbar />
                   <Petrol_Invoice_Feeding />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1353,13 +1461,28 @@ function App() {
           path="/Oil_Godown"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Oil_Godown />
+                </div>
+              </div> */}
+                  <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Oil_Godown />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1370,13 +1493,19 @@ function App() {
           path="/add_client"
           element={
             <>
-              <div style={{ display: "flex" }}>
+                 <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
                 <div>
                   <Sidebar />
                 </div>
-                <div>
-                  <Navbar />
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  {/* <Navbar /> */}
                   <Client />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1437,13 +1566,19 @@ function App() {
           path="/handloans"
           element={
             <>
-              <div className="" style={{ display: "flex" }}>
-                <div className="">
+          <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
                   <Sidebar />
                 </div>
-                <div className="">
-                  <Navbar className="fixed"/>
-                  <Handloans />
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Handloans/>
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1454,13 +1589,19 @@ function App() {
           path="/advances"
           element={
             <>
-              <div style={{ display: "flex" }}>
+                 <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
                 <div>
                   <Sidebar />
                 </div>
-                <div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
                   <Navbar />
                   <Advances />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1488,13 +1629,28 @@ function App() {
           path="/Oil_Retail"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Oil_Retail />
+                </div>
+              </div> */}
+                  <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Oil_Retail/>
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1505,13 +1661,28 @@ function App() {
           path="/Oil_Products"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Oil_Products />
+                </div>
+              </div> */}
+                        <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Oil_Products />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1522,13 +1693,28 @@ function App() {
           path="/Petrol_Products"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
-                  {/* <Navbar /> */}
+                  <Navbar />
                   <Petrol_Products />
+                </div>
+              </div> */}
+                  <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Petrol_Products />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1588,13 +1774,19 @@ function App() {
           path="/purchasetds"
           element={
             <>
-              <div style={{ display: "flex" }}>
+                 <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
                 <div>
                   <Sidebar />
                 </div>
-                <div className="w-[100%]">
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
                   {/* <Navbar /> */}
                   <PurchaseTds />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1605,13 +1797,19 @@ function App() {
           path="/purchaselfr"
           element={
             <>
-              <div style={{ display: "flex" }}>
+                <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
                 <div>
                   <Sidebar />
                 </div>
-                <div className="w-[100%]">
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
                   {/* <Navbar /> */}
-                  <PurchaseLfr />
+                  <PurchaseLfr/>
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1622,13 +1820,19 @@ function App() {
           path="/purchasedecantation"
           element={
             <>
-              <div style={{ display: "flex" }}>
+                 <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
                 <div>
                   <Sidebar />
                 </div>
-                <div className="w-[100%]">
-                  {/* <Navbar /> */}
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
                   <PurchaseDecantation />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1639,13 +1843,19 @@ function App() {
           path="/invLfrTds"
           element={
             <>
-              <div style={{ display: "flex" }}>
+                <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
                 <div>
                   <Sidebar />
                 </div>
-                <div className="w-[100%]">
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
                   <Navbar />
                   <InvLfrTds />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1656,13 +1866,19 @@ function App() {
           path="/dayStartReport"
           element={
             <>
-              <div style={{ display: "flex" }}>
+                 <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
                 <div>
                   <Sidebar />
                 </div>
-                <div className="w-[100%]">
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
                   {/* <Navbar /> */}
-                  <DayStartReport />
+                  <DayStartReport/>
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1673,19 +1889,90 @@ function App() {
           path="/consolidatedReport"
           element={
             <>
-              <div style={{ display: "flex" }}>
+             <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
                 <div>
                   <Sidebar />
                 </div>
-                <div className="w-[100%]">
-                  {/* <Navbar /> */}
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
                   <ConsolidatedReport />
+                  </div>
+              
                 </div>
               </div>
             </>
           }
         />
+         <Route
+          path="/handloanReports"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+                <div className="w-[80%]">
+                  {/* <Navbar /> */}
+                  <HandloansReport />
+                </div>
+              </div>
+            </>
+          }
+        />
+<Route
+          path="/advanceReports"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                  <div>
+                    <Sidebar />
+                  </div>
+                </div>
+                <div className="w-[80%]">
+                  {/* <Navbar /> */}
+                  <div>
+                    <AdvanceReport />
+                  </div>
+                </div>
+              </div>
+            </>
+          }
+        />
+
+        
+<Route
+          path="/ConsoFuelSalesReport"
+          element={
+            <>
+        
+                        <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  {/* <Navbar /> */}
+                  <ConsoliFuelsales/>
+                  </div>
+              
+                </div>
+              </div>
+            </>
+          }
+        />
+
       </Routes>
+     
     </Router>
   );
 }

@@ -30,6 +30,8 @@ export default function Sale_Fuels() {
     }
   };
 
+  console.log("machineReadings", machineReadings);
+
   useEffect(() => {
     fetchMachineReadings();
   }, []);
@@ -68,15 +70,17 @@ export default function Sale_Fuels() {
 
   const handleSave = async () => {
     try {
-      await axios.post("https://marvah-server.onrender.com/fuelsales/create", {
-        ms1Readings,
-      });
-      setMachineReadings([]);
-      setTotals({});
-      setMs1Readings({});
+      // Sending ms1Readings array directly as the data payload to match the backend expectation
+      await axios.post(
+        "https://marvah-server.onrender.com/fuelsales/create",
+        ms1Readings
+      );
+      setMachineReadings([]); // Reset machine readings
+      setMs1Readings([]); // Reset ms1 readings
+      setTotals({}); // Reset totals
       alert("Data saved successfully!");
     } catch (error) {
-      console.error(error);
+      console.error("Error saving data:", error);
       alert("Error saving data.");
     }
   };
@@ -116,27 +120,33 @@ export default function Sale_Fuels() {
     setTotals2({ saleTotal2, testingTotal2, saleActTotal2, amountTotal2 });
   }, [ms2Readings, rates]);
 
+  // const handleSave2 = async () => {
+  //   try {
+  //     await axios.post("https://marvah-server.onrender.com/fuelsales/create", {
+  //       ms2Readings,
+  //     });
+  //     alert("Data saved successfully!");
+  //     setMs2Readings([]);
+  //   } catch (error) {
+  //     console.error(error);
+  //     alert("Error saving data.");
+  //   }
+  // };
+
   const handleSave2 = async () => {
     try {
-      await axios.post("https://marvah-server.onrender.com/fuelsales/create", {
-        ms2Readings,
-      });
+      // Sending ms2Readings array directly as the data payload to match the backend expectation
+      await axios.post(
+        "https://marvah-server.onrender.com/fuelsales/create",
+        ms2Readings
+      );
       alert("Data saved successfully!");
-      setMs2Readings([]);
+      setMs2Readings([]); // Reset ms2 readings after successful save
     } catch (error) {
-      console.error(error);
+      console.error("Error saving data:", error);
       alert("Error saving data.");
     }
   };
-
-  // hsd speed
-  // const [hsdReadings, setMs2Readings] = useState([]);
-
-  // const [ms2RateAllDays, setMs2RateAllDays] = useState([]);
-  // const [hsdRateAllDays, setHsdRateAllDays] = useState([]);
-
-  // const [ms2Rate, setMs2Rate] = useState(0);
-  // const [hsdRate, setHsdRate] = useState(0);
 
   const [totals3, setTotals3] = useState({
     saleTotal3: 0,
@@ -166,12 +176,14 @@ export default function Sale_Fuels() {
 
   const handleSave3 = async () => {
     try {
-      await axios.post("https://marvah-server.onrender.com/fuelsales/create", {
-        ms1Readings: hsdReadings,
-      });
+      // Sending hsdReadings array directly as the data payload to match the backend expectation
+      await axios.post(
+        "https://marvah-server.onrender.com/fuelsales/create",
+        hsdReadings
+      );
       alert("Data saved successfully!");
     } catch (error) {
-      console.error(error);
+      console.error("Error saving data:", error);
       alert("Error saving data.");
     }
   };
@@ -214,7 +226,24 @@ export default function Sale_Fuels() {
 
   return (
     <main className="tankMainDiv shadow-lg p-1 bg-body-tertiary rounded bigFontWeight min-h-fit">
-      <div className="relative">
+      {/* <div className="relative">
+        <h1 className="tracking-wide fixed z-10 ml-[35%] mb-3 uppercase font-bold text-center text-3xl px-3">
+          Fuel Sales
+        </h1>
+        <h1 className="flex fixed z-10 items-start mt-1 text-2xl text-black ml-6 uppercase">
+          Date : {new Date().toLocaleDateString()}
+        </h1>
+        <div className="flex justify-between w-[90%]">
+          <Link
+            className="px-2 mr-3 py-1 rounded-md text-white"
+            to={"/machineLayout"}
+          >
+            
+          </Link>
+        
+        </div>
+      </div> */}
+      <div className=" bg-white z-10 top-10  fixed w-full">
         <h1 className="tracking-wide fixed ml-[35%] mb-3 uppercase font-bold text-center text-3xl px-3">
           Fuel Sales
         </h1>
@@ -225,19 +254,12 @@ export default function Sale_Fuels() {
           <Link
             className="px-2 mr-3 py-1 rounded-md text-white"
             to={"/machineLayout"}
-          >
-            
-          </Link>
-          {/* <Link
-            className="bg-blue-600 px-2 mr-3 py-1 rounded-md text-white"
-            to={"/machineLayout"}
-          >
-            Add Readings
-          </Link> */}
+          ></Link>
         </div>
+              
       </div>
       {/* ms1 start */}
-      <section className="ms-1">
+      <section className="ms-1 mt-16">
         <div className="flex justify-center">
           <div className="block text-2xl justify-center tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
             ms-1
@@ -285,10 +307,11 @@ export default function Sale_Fuels() {
                     readOnly
                   />
                 </td>
+
                 <td>
                   <input
                     type="number"
-                    value={item.closing || 0}
+                    value={item.closing || "0"}
                     className="text-center bg-blue-600 w-32 text-white"
                     onChange={(e) => {
                       const newClosing = parseFloat(e.target.value) || 0;
@@ -302,6 +325,12 @@ export default function Sale_Fuels() {
                       } else {
                         updatedReadings[index].sale = ""; // Set sale as empty string initially
                       }
+
+                      // Calculate the actual sale with updated closing value
+                      updatedReadings[index].actualSale =
+                        newClosing -
+                        (item.opMeterReading || 0) -
+                        (item.testing || 0);
 
                       setMs1Readings(updatedReadings);
                     }}
@@ -324,6 +353,13 @@ export default function Sale_Fuels() {
                       const newTesting = parseFloat(e.target.value) || 0;
                       const updatedReadings = [...ms1Readings];
                       updatedReadings[index].testing = newTesting;
+
+                      // Update actual sale when the testing value changes
+                      updatedReadings[index].actualSale =
+                        (item.closing || 0) -
+                        (item.opMeterReading || 0) -
+                        newTesting;
+
                       setMs1Readings(updatedReadings);
                     }}
                   />
@@ -351,7 +387,6 @@ export default function Sale_Fuels() {
                     readOnly
                   />
                 </td>
-
                 <td>
                   <input
                     disabled
@@ -381,7 +416,7 @@ export default function Sale_Fuels() {
             ))}
             <tr className="border-2 ">
               <th className="text-center ml-16" colSpan="4">
-                <span className="ml-80">TOTAL  (=)</span>
+                <span className="ml-80">TOTAL (=)</span>
               </th>
               <th className="text-center">
                 {totals.saleTotal === 0 ? "" : totals.saleTotal}

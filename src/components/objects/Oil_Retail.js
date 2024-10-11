@@ -57,10 +57,10 @@ const Retail_Stock_Sale = () => {
     <div>
   <div className="">
     <div className="text-2xl font-bold uppercase">
-     <span className="">Date: {localDate} </span> <span className="ml-36">Retail Stock/Sale Record  </span>
+     <span className="ml-4">Date: {localDate} </span> <span className="ml-36">Retail Stock/Sale Record  </span>
     </div>
   
-    <table  className="bg-white border mt-20 border-gray-700">
+    <table className="bg-white border mt-20 border-gray-700 ml-4">
       <thead className="">
         <tr className="bg-[#3A1078] text-white uppercase text-sm">
           {/* Table Headers */}
