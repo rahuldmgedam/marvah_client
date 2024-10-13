@@ -17,6 +17,8 @@ export default function Tankd({ dbpath1, setDate }) {
   const [bspeedLast, setbspeedLast] = useState(0);
   const [hsdLast, sethsdLast] = useState(0);
 
+  const [selectedDate, setSelectedDate] = useState(""); // State to store selected date
+
   const saveMs = () => {
     axios
       .post("https://marvah-server.onrender.com/ms/create", {
@@ -151,7 +153,7 @@ export default function Tankd({ dbpath1, setDate }) {
   }, [amsToday, amsLast]);
 
   // Determine the border color based on the difference
-  const borderColorMs = differenceMs > 0 ? "green" : "red";
+  const borderColorMs = differenceMs >= 0 ? "green" : "red";
 
   const [differenceSpeed, setDifferenceSpeed] = useState(0);
   useEffect(() => {
@@ -161,7 +163,7 @@ export default function Tankd({ dbpath1, setDate }) {
   }, [bspeedToday, bspeedLast]);
 
   // Determine the border color based on the difference
-  const borderColorSpeed = differenceSpeed > 0 ? "green" : "red";
+  const borderColorSpeed = differenceSpeed >= 0 ? "green" : "red";
 
   const [differenceHsd, setDifferenceHsd] = useState(0);
   useEffect(() => {
@@ -204,30 +206,71 @@ export default function Tankd({ dbpath1, setDate }) {
     return `${day}-${month}-${year}`;
 }
 
+const fetchDataForDate = (date) => {
+  axios
+    .get(`https://marvah-server.onrender.com/ms`)
+    .then((res) => {
+      setamsToday(res.data.reading);
+      setamsLast(res.data.previousReading);
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+
+  axios
+    .get(`https://marvah-server.onrender.com/speed`)
+    .then((res) => {
+      setbspeedToday(res.data.reading);
+      setbspeedLast(res.data.previousReading);
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+
+  axios
+    .get(`https://marvah-server.onrender.com/hsd`)
+    .then((res) => {
+      sethsdToday(res.data.reading);
+      sethsdLast(res.data.previousReading);
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+
+  // Handle date selection
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
+    setSelectedDate(selectedDate);
+    fetchDataForDate(selectedDate); // Fetch readings for the selected date
+  };
+
 console.log((convertToDDMMYYYY(lastDate)))
   return (
     <>
       <div className="">
         <center>
           <b>
-            <div className="tankMainDiv shadow-lg p-1 mt-24 bg-body-tertiary rounded bigFontWeight min-h-fit">
-              <h1 className=" font-bold text-center text-3xl uppercase  border-violet-600 ">
+            <div className="tankMainDiv fixed shadow-lg p-1 bg-body-tertiary rounded bigFontWeight min-h-fit">
+              <h1 className=" font-bold fixed ml-[33%] text-center text-3xl uppercase  border-violet-600 ">
                 {" "}
                 Day Start
               </h1>
               <br></br>
 
-              <div className="flex justify-center gap-4 mt-5">
+              <div className="flex justify-center mt-10 gap-4">
                 <div>
-                  <span className="text-xl ml-20 uppercase">
+                  <span className="text-xl ml-20 uppercase font-semibold">
                     Reading Day :{" "}
                   </span>{" "}
                   <span className="mr-4">
                     <input
+                      // type="date"
                       type="string"
                       className="px-2 py-2 border-3 border-red-600 rounded-md"
                       value={(convertToDDMMYYYY(lastDate))}
-
+                      // value={selectedDate}
+                      onChange={handleDateChange} // Trigger fetching data on date change
                       // onChange={}
                     />
                   </span>
@@ -240,12 +283,12 @@ console.log((convertToDDMMYYYY(lastDate)))
                 <div></div>
               </div>
               {/* report div */}
-              <div className="flex justify-between w-[74%] mb-8">
+              <div className="flex justify-between w-[74%]">
                 <div></div>
 
                 <div>
                   <div
-                    className="bg-blue-600 px-3 py-1  rounded-md text-white"
+                    className="bg-blue-600 px-4 py-2  rounded-md text-white"
                     type="button"
                     onClick={() => navigate("/dayStartReport")}
                   >

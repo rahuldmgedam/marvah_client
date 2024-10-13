@@ -107,12 +107,12 @@ export default function Client() {
 
   return (
     <>
-      <h2 className="text-center text-2xl fixed ml-[30%] font-bold tracking-wider mb-8">
+      <h2 className="text-center p-2 text-2xl fixed ml-[30%] font-bold tracking-wider mb-8">
         INDEX FORM INVOICE/TDS/LFR
       </h2>
 
       <div className="tankMainDiv shadow-lg bg-body-tertiary rounded bigFontWeight">
-        <div className="mt-12">
+        <div className="mt-4">
           <br />
           <div className="flex justify-between w-[90%]">
             <div></div>

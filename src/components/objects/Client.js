@@ -140,9 +140,9 @@ const handleOpenCloseClick = (id, isClosed) => {
 
       {/* //modal end */}
 
-      <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-        <h2 className="mt-3 mb-3 bg-blue-400 text-white p-3 text-2xl uppercase text-center">
-          Handloan Client
+      <div className="tankMainDiv shadow-lg p-3bg-body-tertiary rounded bigFontWeight">
+        <h2 className="  text-black p-3 text-2xl uppercase text-center">
+          Handloan/Advances Client
         </h2>
         <span className="mt-5" style={{ fontSize: "22px" }}>
           {" "}
@@ -168,7 +168,7 @@ const handleOpenCloseClick = (id, isClosed) => {
                 <div className="border-gray-400 rounded-sm p-2">
                   <h1 className="uppercase font-bold">
                     <span className=" bg-[#0077b7b]">
-                      Create new handloan name
+                      {/* Create new handloan/advances name */}
                     </span>
                   </h1>
                 </div>

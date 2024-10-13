@@ -71,11 +71,11 @@ const InvLfrTds = () => {
   return (
     <>
       {/* 1. invoice feed start  */}
-      <div className="lfr-tds-inv w-[92%]">
-        <h1 className="font-bold text-2xl text-center fixed ml-[32%]">
+      <div className="lfr-tds-inv w-[95%] ml-3">
+        <h1 className="font-bold text-2xl text-center ">
           INVOICE/LFR/TDS Report
         </h1>
-        <div className="text-2xl  font-bold mt-2"> Date : {getCurrentDate()} </div>
+        <div className="text-2xl ml-2  font-bold mt-2"> Date : {getCurrentDate()} </div>
         <div className="flex justify-between w-[95%]">
             <div></div>
             <div className="flex">

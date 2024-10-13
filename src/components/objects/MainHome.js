@@ -1,9 +1,7 @@
-
-
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import New from "../objects/New"
+import New from "../objects/New";
+import { useNavigate } from "react-router-dom";
 
 //import { TankModel } from "../../../../marwa_backend/models/tank.model";
 
@@ -20,7 +18,7 @@ const MainHome = () => {
     axios
       .get("https://marvah-server.onrender.com/tank")
       .then((res) => {
-          console.log("tank:", res.data);
+        console.log("tank:", res.data);
         setTank(res.data);
       })
       .catch((error) => {
@@ -75,7 +73,10 @@ const MainHome = () => {
   const handleEditSubmit = () => {
     console.log("edir", editTank);
     axios
-      .patch(`https://marvah-server.onrender.com/tank/update/${editTank._id}`, editTank)
+      .patch(
+        `https://marvah-server.onrender.com/tank/update/${editTank._id}`,
+        editTank
+      )
       .then((res) => {
         console.log("res update", res.data);
         setIsOpen(false);
@@ -87,7 +88,7 @@ const MainHome = () => {
   };
   //console.log("editMachine.product", editMachine.product);
   const handleEditMachineSubmit = () => {
-  //  console.log("edir", editTank);
+    //  console.log("edir", editTank);
     axios
       .patch(
         `https://marvah-server.onrender.com/machine/update/${editMachine._id}`,
@@ -105,28 +106,45 @@ const MainHome = () => {
 
   function getCurrentDate() {
     const today = new Date();
-    const day = String(today.getDate()).padStart(2, '0');
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed in JS
+    const day = String(today.getDate()).padStart(2, "0");
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed in JS
     const year = today.getFullYear();
-  
+
     return `${day}-${month}-${year}`;
   }
   
+  const navigate = useNavigate();
+
   console.log(getCurrentDate()); // Output will be in "dd-mm-yyyy" format
-  
 
   return (
     <>
- 
-      <h1 className="font-bold text-2xl p-3 mb-2 text-white rounded- bg-green-900 text-center fixed w-[80%]">
-        TANK RECORDS LAYOUT
-      </h1>
-      <div className=" text-2xl mt-16 ml-4 uppercase">
-        <h1>Date : {getCurrentDate()}</h1>
+      <div>
+        <h1 className="font-bold text-2xl ml-10 z-10 p-3 rounded- bg-white text-center fixed w-[80%]">
+          TANK RECORDS LAYOUT
+        </h1>
+        <div className="flex relative justify-between  z-10">
+            <div></div>
+            <div className="flex">
+              <button
+                className="bg-blue-500 mt-6 text-white mr-6 px-2 py-1 rounded-md "
+                onClick={() => navigate(-1)}
+              >
+                back 
+              </button>
+            </div>
+          </div>
       </div>
-      <section className="storage-cont w-[90%]">
+
+      <div className=" text-2xl  ml-4 uppercase">
+        {/* <h1>Date : {getCurrentDate()}</h1>. */}
+      </div>
+   
+     
+      <section className="storage-cont w-[90%] ml-16">
+
         <div class="font-sans overflow-x-auto">
-          <table class="min-w-full divide-y divide-black-200 border-2 mb-7">
+          <table class="min-w-full divide-y divide-black-200 border-2 mb-7 mt-20">
             <thead class="bg-gray-800 whitespace-nowrap">
               <tr>
                 <th class="px-4 py-2 text-center text-md font-bold text-white uppercase tracking-wider">
@@ -263,10 +281,9 @@ const MainHome = () => {
                   />
                 </div>
 
-                
                 <div>
                   <labe class="text-gray-800 text-sm mb-2 block uppercase">
-                  opStock
+                    opStock
                   </labe>
                   <input
                     onChange={handleEditChange}
@@ -299,7 +316,7 @@ const MainHome = () => {
           </div>
         )}
       </section>
-      
+
       <New />
       {/* 2. machine modal start */}
 
@@ -420,8 +437,6 @@ const MainHome = () => {
           </div>
         </div>
       )}
-
-
     </>
   );
 };

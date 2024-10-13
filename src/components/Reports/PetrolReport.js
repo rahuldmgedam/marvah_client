@@ -161,7 +161,7 @@ export default function PetrolReport({
 
   return (
     <>
-      <div className="tankMainDiv shadow-lg p-3 mb-5  bg-body-tertiary rounded bigFontWeight">
+      <div className="tankMainDiv ml-4 shadow-lg p-3 mb-5  bg-body-tertiary rounded bigFontWeight">
         <h2 className="mt-3 text-center">Petrol Report</h2>
         <span style={{ fontSize: "22px" }}> Date :/</span>
         <div>

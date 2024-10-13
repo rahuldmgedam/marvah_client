@@ -548,13 +548,13 @@ const Oil_Godown = () => {
             Godown stock
           </h2>
           <div className="mb-4">
-            <label className="font-bold text-2xl">
+            <label className="font-bold text-2xl ml-4">
               Date :{localDate}
               {/* {formatDate(oilProductData[0].purchaseOilDate)} */}
             </label>{" "}
             <br />
           </div>
-          <table className="bg-white border border-gray-700">
+          <table className="bg-white border ml-4 border-gray-700">
             <thead className="">
               <tr className="bg-[#3A1078] text-white  uppercase text-sm">
                 <th className="py-1 px-2 text-center">

@@ -79,19 +79,19 @@ const MachineLayout = () => {
   const navigate = useNavigate()
   return (
     <>
-      <h1 className="font-bold fixed w-[80%] text-lg p-3 mb-4 text-white rounded- bg-green-900 text-center">
+      <h1 className=" ml-9 font-bold bg-white z-10 fixed w-[80%] text-2xl p-3 mb-4  rounded- text-center">
         ALL MACHINES LAYOUT RECORD
       </h1>
 
-      <div className=" uppercase text-2xl mt-16 ml-4">
+      {/* <div className=" uppercase text-2xl mt-16 ml-4">
         <h1>Date : {getCurrentDate()}</h1>
-      </div>
+      </div> */}
 
       <div className="flex justify-between w-[90%]">
             <div></div>
             <div className="flex">
               <button
-                className="bg-blue-500 px-3 py-1 mb-2 rounded-md text-white"
+                className="bg-blue-500 px-3 mt-4 z-10 py-1 mb-2 rounded-md text-white"
                 onClick={() => navigate(-1)}
               >
                 back
@@ -99,7 +99,7 @@ const MachineLayout = () => {
             </div>
           </div>
       {/* 3 machines layout start */}
-      <section className="w-[90%] ml-4">
+      <section className="w-[90%] mt-8 ml-16">
         {/* modal start */}
         {machineOpen && (
           <div className="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
@@ -216,9 +216,9 @@ const MachineLayout = () => {
                   <th className="px-4 py-2 text-center text-sm font-bold text-white uppercase tracking-wider">
                     PRODUCT
                   </th>
-                  <th className="px-4 py-2 text-center text-sm font-bold text-white uppercase tracking-wider">
+                  {/* <th className="px-4 py-2 text-center text-sm font-bold text-white uppercase tracking-wider">
                     ACTION
-                  </th>
+                  </th> */}
                 </tr>
               </thead>
 
@@ -241,17 +241,15 @@ const MachineLayout = () => {
                       <td className="px-4 py-2 text-sm  text-gray-800 text-center font-bold">
                         {item.product}
                       </td>
-                      <td className="px-4 py-2 text-sm text-center text-gray-800 font-extrabold">
+                      {/* <td className="px-4 py-2 text-sm text-center text-gray-800 font-extrabold">
                         <button
                           className="bg-blue-500 text-white rounded-md px-3 py-1 mr-4"
                           onClick={() => handleMachineLayoutEdit(item)}
                         >
                           Edit
                         </button>
-                        {/* <button className="bg-red-500 text-white rounded-md px-3 py-1 mr-4">
-                          Delete
-                        </button> */}
-                      </td>
+                   
+                      </td> */}
                     </tr>
                   ))}
               </tbody>
@@ -260,8 +258,11 @@ const MachineLayout = () => {
         </section>
       </section>
       {/* 3 machines layout end */}
-
-      <MachineReadings />
+        
+        <div className="ml-16 w-[100%]">
+        <MachineReadings />
+        </div>
+   
 
 
 

@@ -153,7 +153,6 @@ const [render, setRender] = useState(false)
                   ) : (
                     <button className="bg-green-500 px-2 mr-1 rounded-md text-white font-semibold" onClick={() => (handleSave())}>Save</button>
                   )}
-                  {/* <button className="bg-red-500 px-2 ml-1 rounded-md text-white font-semibold">Delete</button> */}
                 </div>
               </td>
             </tr>

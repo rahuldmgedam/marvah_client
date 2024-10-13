@@ -18,6 +18,8 @@ export default function Variation() {
   const [actualBalances, setActualBalances] = useState([null, null, null]); // Store actual balance data
   const [currentDate, setCurrentDate] = useState(""); // Store current date
 
+  const [invNo,setInvNo] = useState(0);
+
   // Sales data for different products
   const Ms = { actualSale: 4326 };
   const Ms2 = { actualSale: 2047 };
@@ -39,30 +41,31 @@ export default function Variation() {
       });
   }, []);
 
-  console.log(
-    "msTank1",
-    msTank1,
-    "speedTank2",
-    speedTank2,
-    "hsdTank3",
-    hsdTank3
-  );
+  // console.log(
+  //   "msTank1",
+  //   msTank1,
+  //   "speedTank2",
+  //   speedTank2,
+  //   "hsdTank3",
+  //   hsdTank3
+  // );
 
   const fetchReceipts = () => {
     axios
       .get("https://marvah-server.onrender.com/petroldecantation")
       .then((response) => {
         // setReceipts(response?.data);
-        setMsTank1(response.data[0].tank1 * 1000);
-        setSpeedTank2(response.data[0].tank2 * 1000);
-        setHsdTank3(response.data[0].tank3 * 1000);
+        setMsTank1(response.data[0]?.tank1 * 1000);
+        setSpeedTank2(response.data[0]?.tank2 * 1000);
+        setHsdTank3(response.data[0]?.tank3 * 1000);
+        setInvNo(response.data?.[0] )
       });
   };
 
   useEffect(() => {
     fetchReceipts();
   }, []);
-  console.log("fetchReceipts", receipts);
+  // console.log("fetchReceipts", receipts);
 
   // Fetch open stock data and set current date on component mount
   useEffect(() => {
