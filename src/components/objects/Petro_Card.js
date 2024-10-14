@@ -143,7 +143,7 @@ export default function Wallet_Payment({ dbpath1 }) {
   return (
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-        <h2 className="mt-3 text-center">Petro Card</h2>
+        <h2 className="mt-3 text-3xl text-center">Petro Card</h2>
         <span style={{ fontSize: "22px" }}>
           {" "}
           Date : {new Date().toLocaleDateString()}
