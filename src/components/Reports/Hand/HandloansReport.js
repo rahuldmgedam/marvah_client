@@ -467,7 +467,7 @@ function HandloansReport() {
         <h1 className='font-bold text-center my-8 text-2xl'>Handloan Report</h1>
         <button
           className='absolute right-10 top-8 bg-[#3B82F6] focus:outline-none text-white px-4 py-2 rounded'
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/handloans")}
         >Back</button>
       </div>
 

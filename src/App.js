@@ -1173,13 +1173,28 @@ function App() {
           path="/Staff_Salary"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Staff_Salary />
+                </div>
+              </div> */}
+                   <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Staff_Salary />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1213,13 +1228,28 @@ function App() {
           path="/Statement_Entry"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Statement_Entry />
+                </div>
+              </div> */}
+                   <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Statement_Entry />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1302,13 +1332,29 @@ function App() {
           path="/Bank_Statement"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Bank_Statement />
+                </div>
+              </div> */}
+
+              <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Bank_Statement />
+                  </div>
+              
                 </div>
               </div>
             </>

@@ -642,6 +642,7 @@ export default function Handloans({ dbpath1 }) {
       .then((res) => {
         if (res.data.success) {
           alert(res.data.msg);
+          setAmountInWords("")
           fetchClient();
           fetchHandloan();
           setHandloan([]);

@@ -119,7 +119,7 @@ export default function Client() {
             <div className="flex">
               <button
                 className="bg-blue-500 px-2 py-1 rounded-md"
-                onClick={() => navigate(-1)}
+                onClick={() => navigate("/Petrol_Invoice_Feeding")}
               >
                 back
               </button>

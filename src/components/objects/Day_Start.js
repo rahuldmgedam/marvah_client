@@ -206,9 +206,17 @@ export default function Tankd({ dbpath1, setDate }) {
     return `${day}-${month}-${year}`;
 }
 
+
+
+
+  console.log("selectedDate",selectedDate)
+
+console.log((convertToDDMMYYYY(lastDate)))
+
 const fetchDataForDate = (date) => {
+  console.log(formatToDateString(date))
   axios
-    .get(`https://marvah-server.onrender.com/ms`)
+    .get(`https://marvah-server.onrender.com/ms?date=${formatToDateString(date)}`)
     .then((res) => {
       setamsToday(res.data.reading);
       setamsLast(res.data.previousReading);
@@ -218,7 +226,7 @@ const fetchDataForDate = (date) => {
     });
 
   axios
-    .get(`https://marvah-server.onrender.com/speed`)
+    .get(`https://marvah-server.onrender.com/speed?date=${formatToDateString(date)}`)
     .then((res) => {
       setbspeedToday(res.data.reading);
       setbspeedLast(res.data.previousReading);
@@ -228,7 +236,7 @@ const fetchDataForDate = (date) => {
     });
 
   axios
-    .get(`https://marvah-server.onrender.com/hsd`)
+    .get(`https://marvah-server.onrender.com/hsd?date=${formatToDateString(date)}`)
     .then((res) => {
       sethsdToday(res.data.reading);
       sethsdLast(res.data.previousReading);
@@ -238,14 +246,32 @@ const fetchDataForDate = (date) => {
     });
 };
 
-  // Handle date selection
-  const handleDateChange = (e) => {
-    const selectedDate = e.target.value;
-    setSelectedDate(selectedDate);
-    fetchDataForDate(selectedDate); // Fetch readings for the selected date
+
+function formatToDateString(dateStr) {
+  const date = new Date(dateStr); // Create a Date object from the string
+
+  const options = {
+    weekday: 'short', // Abbreviated weekday name (e.g., "Tue")
+    year: 'numeric',
+    month: 'short', // Abbreviated month name (e.g., "Oct")
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    timeZoneName: 'short', // Time zone abbreviation
   };
 
-console.log((convertToDDMMYYYY(lastDate)))
+  const formattedDate = date.toLocaleString('en-GB', options); // Convert to string with specified options
+  return `${formattedDate} GMT+0000 (Coordinated Universal Time)`; // Add the desired time zone information
+}
+
+// Handle date selection
+const handleDateChange = (e) => {
+  const selectedDate = e.target.value;
+  setSelectedDate((selectedDate));
+  fetchDataForDate(formatToDateString(selectedDate)); // Fetch readings for the selected date
+};
+
   return (
     <>
       <div className="">
@@ -265,11 +291,11 @@ console.log((convertToDDMMYYYY(lastDate)))
                   </span>{" "}
                   <span className="mr-4">
                     <input
-                      // type="date"
-                      type="string"
+                      type="date"
+                      // type="string"
                       className="px-2 py-2 border-3 border-red-600 rounded-md"
-                      value={(convertToDDMMYYYY(lastDate))}
-                      // value={selectedDate}
+                      // value={(convertToDDMMYYYY(lastDate))}
+                      value={selectedDate}
                       onChange={handleDateChange} // Trigger fetching data on date change
                       // onChange={}
                     />
@@ -405,7 +431,8 @@ console.log((convertToDDMMYYYY(lastDate)))
                         style={{ borderColor: borderColorMs }}
                         name="msdiff"
                         class="form-control inputDivPrice text-center text-2xl"
-                        value={(amsToday - amsLast).toFixed(2)}
+                        // value={(amsToday - amsLast).toFixed(2)}
+                        value={differenceMs}
                         // onChange={(e)=>diffChangeHandler(e)}
                         // value={amsDifference}
                         // value={104.33}
