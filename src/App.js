@@ -99,6 +99,7 @@ import HandloansReport from "./components/Reports/Hand/HandloansReport";
 import AdvanceReport from "./components/Reports/Hand/AdvanceReport";
 import ConsoliFuelsales from "./components/Reports/FuelSaleReports/ConsoliFuelsales";
 import BankDeposits from "./components/objects/Bank_Deposits";
+import PurchasetdsMain from "./components/Reports/purchaseReports/PurchasetdsMain";
 
 function App() {
   return (
@@ -1429,13 +1430,26 @@ function App() {
           path="/Oil_Pouches"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Oil_Pouches />
+                </div>
+              </div> */}
+                      <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                  <div>
+                  <Sidebar />
+                  </div>
+                </div>
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Oil_Pouches/>
+                  </div>
                 </div>
               </div>
             </>
@@ -2024,7 +2038,7 @@ function App() {
            
                 <div className="w-[80%]">
                   <div>
-                  <Navbar />
+                  {/* <Navbar /> */}
                   <PurchaseDecantation />
                   </div>
               
@@ -2160,6 +2174,29 @@ function App() {
                   <ConsoliFuelsales/>
                   </div>
               
+                </div>
+              </div>
+            </>
+          }
+        />
+
+<Route
+          path="/purchasetdsmain"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                  <div>
+                    <Sidebar />
+                  </div>
+                </div>
+
+                <div className="w-[80%]">
+                  <div>
+                    {/* <Navbar /> */}
+                    <PurchasetdsMain />
+                  </div>
+
                 </div>
               </div>
             </>

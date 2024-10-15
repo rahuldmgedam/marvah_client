@@ -128,7 +128,7 @@ const MainHome = () => {
             <div className="flex">
               <button
                 className="bg-blue-500 mt-6 text-white mr-6 px-2 py-1 rounded-md "
-                onClick={() => navigate(-1)}
+                onClick={() => navigate("/Variation")}
               >
                 back 
               </button>

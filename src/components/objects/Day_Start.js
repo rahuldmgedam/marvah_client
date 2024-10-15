@@ -58,7 +58,7 @@ export default function Tankd({ dbpath1, setDate }) {
         setamsLast(res.data[res.data.length - 2].reading);
 
         // const todayR = res.data.length;
-        console.log("todayR", res.data.length - 1);
+        // console.log("todayR", res.data.length - 1);
         setamsToday(res.data[res.data.length - 1].reading);
       })
       .catch((error) => {
@@ -66,12 +66,10 @@ export default function Tankd({ dbpath1, setDate }) {
       });
   };
 
-  // console.log("typeof amsToday", typeof amsToday);
   const fetchSpeed = () => {
     axios
       .get("https://marvah-server.onrender.com/speed")
       .then((res) => {
-        // console.log("res speed", res.data[0]);
         setbspeedToday(res.data[res.data.length - 2].reading);
         setbspeedLast(res.data[res.data.length - 1].reading);
       })
@@ -84,9 +82,7 @@ export default function Tankd({ dbpath1, setDate }) {
     axios
       .get("https://marvah-server.onrender.com/hsd")
       .then((res) => {
-        // console.log("res.data", res.data[0]);
         sethsdToday(res.data[res.data.length - 2].reading);
-        // setDateStart(res.data[0].date);
         sethsdLast(res.data[res.data.length - 1].reading);
       })
       .catch((error) => {
@@ -104,7 +100,6 @@ export default function Tankd({ dbpath1, setDate }) {
 
   function getTodaysDate() {
     const today = new Date();
-    //  console.log(today)
     const year = today.getFullYear();
     const month = (today.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
     const day = today.getDate().toString().padStart(2, "0");
@@ -143,16 +138,13 @@ export default function Tankd({ dbpath1, setDate }) {
     getTodaysDate();
   }, []);
 
-  // border red or green function
 
   const [differenceMs, setDifferenceMs] = useState(0);
   useEffect(() => {
-    // Calculate the difference in milliseconds and convert to a number with 2 decimal places
     const differenceMS = amsToday - amsLast;
     setDifferenceMs(differenceMS);
   }, [amsToday, amsLast]);
 
-  // Determine the border color based on the difference
   const borderColorMs = differenceMs >= 0 ? "green" : "red";
 
   const [differenceSpeed, setDifferenceSpeed] = useState(0);
@@ -162,7 +154,6 @@ export default function Tankd({ dbpath1, setDate }) {
     setDifferenceSpeed(differenceSpeed);
   }, [bspeedToday, bspeedLast]);
 
-  // Determine the border color based on the difference
   const borderColorSpeed = differenceSpeed >= 0 ? "green" : "red";
 
   const [differenceHsd, setDifferenceHsd] = useState(0);
@@ -172,7 +163,7 @@ export default function Tankd({ dbpath1, setDate }) {
     setDifferenceHsd(differenceHsd);
   }, [hsdToday, hsdLast]);
 
-  const borderColorHsd = differenceHsd > 0 ? "green" : "red";
+  const borderColorHsd = differenceHsd >= 0 ? "green" : "red";
   const navigate = useNavigate();
 
 
@@ -211,7 +202,6 @@ export default function Tankd({ dbpath1, setDate }) {
 
   console.log("selectedDate",selectedDate)
 
-console.log((convertToDDMMYYYY(lastDate)))
 
 const fetchDataForDate = (date) => {
   console.log(formatToDateString(date))
@@ -447,8 +437,8 @@ const handleDateChange = (e) => {
                         name="speeddiff"
                         class="form-control inputDivPrice text-center text-2xl"
                         style={{ borderColor: borderColorSpeed }}
-                        // value={bspeedDifference}
-                        value={(bspeedToday - bspeedLast).toFixed(2)}
+                        value={differenceSpeed}
+                        // value={(bspeedToday - bspeedLast).toFixed(2)}
                         id="diffspeed"
                         aria-describedby="emailHelp"
                         disabled
@@ -464,8 +454,8 @@ const handleDateChange = (e) => {
                             name="hsddiff"
                             class="form-control inputDivPrice text-center text-2xl"
                             style={{ borderColor: borderColorHsd }}
-                            // value={hsdDifference}
-                            value={(hsdToday - hsdLast).toFixed(2)}
+                            value={differenceHsd}
+                            // value={(hsdToday - hsdLast).toFixed(2)}
                             id="diffhsd"
                             aria-describedby="emailHelp"
                             disabled
