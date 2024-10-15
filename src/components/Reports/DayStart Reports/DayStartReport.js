@@ -494,7 +494,7 @@ const DayStartReport = () => {
             Consolidated Report
           </button>
           <button
-            className="bg-blue-500 text-white px-2 mr-12 py-1 rounded-md"
+            className="bg-blue-500 text-white px-2 mr-20 py-1 rounded-md"
             onClick={() => navigate("/Day_start")}
           >
             Back
@@ -503,7 +503,7 @@ const DayStartReport = () => {
       </div>
 
       {/* Filters */}
-      <table className="mb-4 w-full px-16 border border-gray-400">
+      <table className="mb-4 w-[90%] ml-10 px-16 border border-gray-400">
         <thead className="bg-[#008b8b]">
           <tr className="text-white">
             <th className="border border-gray-400 p-2">Select Product</th>

@@ -733,7 +733,7 @@ export default function Client() {
   console.log("data", petrolInvoice);
   return (
     <>
-      <div className="relative w-full">
+      <div className="relative w-[90%]">
         {/* <span className="text-2xl font-bold"> Date : {getCurrentDate()} </span> */}
         <div className="w-full mt-4 text-center">
         <h2 className="text-2xl uppercase font-bold">

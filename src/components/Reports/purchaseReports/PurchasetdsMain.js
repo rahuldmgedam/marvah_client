@@ -118,7 +118,7 @@ const navigate =   useNavigate();
           </button>
         </div>
       </div>
-      <table className=" mb-4 w-[100%]">
+      <table className="ml-6 mb-4 w-[100%]">
         <thead className="bg-[#008b8b] text-white">
           <tr className="border border-gray-400">
             <th className="p-2 border border-gray-400">Select Product</th>

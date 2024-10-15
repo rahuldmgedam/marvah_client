@@ -495,7 +495,7 @@ const PurchaseDecantation = () => {
             </div>
           </div>
 
-      <table className=" mb-4 w-[100%] shadow-sm">
+      <table className=" mb-4 ml-6 w-[100%] shadow-sm">
       <thead className="border-2 bg-[#008b8b] text-white">
         <tr>
           <th className="border border-gray-500 p-2 text-left">Select Product</th>

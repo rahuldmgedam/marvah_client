@@ -281,12 +281,12 @@ const handleDateChange = (e) => {
                   </span>{" "}
                   <span className="mr-4">
                     <input
-                      type="date"
-                      // type="string"
+                      // type="date"
+                      type="string"
                       className="px-2 py-2 border-3 border-red-600 rounded-md"
-                      // value={(convertToDDMMYYYY(lastDate))}
-                      value={selectedDate}
-                      onChange={handleDateChange} // Trigger fetching data on date change
+                      value={(convertToDDMMYYYY(lastDate))}
+                      // value={selectedDate}
+                      // onChange={handleDateChange} // Trigger fetching data on date change
                       // onChange={}
                     />
                   </span>

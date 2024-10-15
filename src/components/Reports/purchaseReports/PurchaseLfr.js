@@ -605,7 +605,7 @@ const PurchaseLfr = () => {
           onClick={() => navigate('/Petrol_Invoice_Feeding')}
         >Back</button>
       </div>
-      <table className=" mb-4 w-[100%]">
+      <table className=" ml-6 mb-4 w-[100%]">
         <thead className="bg-[#008b8b] text-white">
           <tr>
             <th className="p-2 border border-gray-400">Select Product</th>
