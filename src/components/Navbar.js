@@ -455,7 +455,7 @@ export default function Navbar() {
               </Link>
             </li>
             <li>
-              <Link class="dropdown-item" to="/Staff_Salary">
+              <Link class="dropdown-item" to="/StaffSalary">
                 Staff Salary
               </Link>
             </li>
