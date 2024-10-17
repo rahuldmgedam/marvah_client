@@ -100,6 +100,7 @@ import AdvanceReport from "./components/Reports/Hand/AdvanceReport";
 import ConsoliFuelsales from "./components/Reports/FuelSaleReports/ConsoliFuelsales";
 import BankDeposits from "./components/objects/Bank_Deposits";
 import PurchasetdsMain from "./components/Reports/purchaseReports/PurchasetdsMain";
+import StaffSalary from "./components/objects/StaffSalary";
 
 function App() {
   return (
@@ -2203,7 +2204,32 @@ function App() {
           }
         />
 
+        
+      <Route
+          path="/staffSalary"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                  <div>
+                    <Sidebar />
+                  </div>
+                </div>
+
+                <div className="w-[80%]">
+                  <div>
+                    <Navbar />
+                    <StaffSalary/>
+                  </div>
+
+                </div>
+              </div>
+            </>
+          }
+        />
+
       </Routes>
+
      
     </Router>
   );

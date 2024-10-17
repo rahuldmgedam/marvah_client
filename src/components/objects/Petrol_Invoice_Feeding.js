@@ -1596,7 +1596,7 @@ export default function Petrol_Invoice_Feeding() {
         handleFetchData();
         setSaveData(initValue); // Reset the form
         // setShowDecantation(true);
-        navigate("/invLfrTds")
+        // navigate("/invLfrTds")
 
       })
       .catch((error) => {
@@ -1719,7 +1719,7 @@ export default function Petrol_Invoice_Feeding() {
         {/* <h2 className="font-bold  fixed items-center justify-center w-[80%]  mb-4 text-2xl text-center uppercase">
           Petrol Invoice Feeding
         </h2> */}
-        <div className="bg-white z-10 top-10 p-4 fixed w-[80%] mt-2 flex justify-between ">
+        <div className="bg-white mr-6 z-10 top-10 p-4 fixed w-[80%] mt-2 flex justify-between ">
           <div className="text-2xl  font-bold"> Date : {getCurrentDate()} </div>
           <h2 className="font-bold  mb-4 text-2xl text-center uppercase">
             Petrol Invoice Feeding
