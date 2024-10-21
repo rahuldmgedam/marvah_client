@@ -1,3 +1,4 @@
+
 // import { useState, useEffect } from "react";
 // import axios from "axios";
 
@@ -7,6 +8,7 @@
 //     staffName: "",
 //     ms: "",
 //     sp: "",
+//     hsd: "",
 //     holidays: "",
 //     workingDays: "",
 //   });
@@ -17,8 +19,10 @@
 //   const [error, setError] = useState('');
 
 //   // Fetch all staff data when the component loads
+// //   axios.get("https://marvah-server.onrender.com/staffSalary")
+
 //   useEffect(() => {
-//     axios.get("/api/staff")
+//     axios.get("http://localhost:4000/staffSalary")
 //       .then((response) => setStaffData(response.data))
 //       .catch((error) => console.error("Error fetching staff data:", error));
 //   }, []);
@@ -31,17 +35,17 @@
 
 //   // Handle Add or Update
 //   const handleAddOrUpdateStaff = () => {
-//     const { ms, sp, workingDays } = newStaff;
-//     const total = ms && sp ? parseFloat(ms) + parseFloat(sp) : 0;
+//     const { ms, sp,hsd, workingDays } = newStaff;
+//     const total = ms && sp && hsd ? parseFloat(ms) + parseFloat(sp) + parseFloat(hsd) : 0;
 //     const average = workingDays && parseInt(workingDays) !== 0
 //       ? (total / parseInt(workingDays)).toFixed(2)
 //       : "N/A";
 
 //     // Calculate Total Salary
-//     const salary = (ms && sp) ? (parseFloat(ms) * 0.50 + parseFloat(sp) * 0.60).toFixed(2) : "N/A";
+//     const salary = (ms && sp) ? (parseFloat(ms) * 0.50 + parseFloat(sp) * 0.60 + parseFloat(hsd) * 0.50).toFixed(2) : "N/A";
 
 //     // Validation check
-//     if (!newStaff.staffName || !newStaff.ms || !newStaff.sp || !newStaff.holidays || !newStaff.workingDays) {
+//     if (!newStaff.staffName || !newStaff.ms || !newStaff.sp || !newStaff.hsd || !newStaff.holidays || !newStaff.workingDays) {
 //       setError('All fields are required.');
 //       return;
 //     }
@@ -50,7 +54,7 @@
 
 //     if (isEditing) {
 //       // Update staff on backend
-//       axios.put(`/api/staff/${editingId}`, { ...newStaff, total, average, salary })
+//       axios.put(`http://localhost:4000/staffSalary/staffSalaryUpdate/${editingId}`, { ...newStaff, total, average, salary })
 //         .then((response) => {
 //           const updatedStaffData = staffAverage.map((staff) =>
 //             staff._id === editingId ? response.data : staff
@@ -62,19 +66,21 @@
 //             staffName: "",
 //             ms: "",
 //             sp: "",
+//             hsd: "",
 //             holidays: "",
 //             workingDays: "",
 //           });
 //         });
 //     } else {
 //       // Add new staff to backend
-//       axios.post("/api/staff", { ...newStaff, total, average, salary })
+//       axios.post("http://localhost:4000/staffSalary/createStaffSalary", { ...newStaff, total, average, salary })
 //         .then((response) => {
 //           setStaffData([...staffAverage, response.data]);
 //           setNewStaff({
 //             staffName: "",
 //             ms: "",
 //             sp: "",
+//             hsd: "",
 //             holidays: "",
 //             workingDays: "",
 //           });
@@ -95,7 +101,7 @@
 //   };
 
 //   const handleDeleteConfirm = () => {
-//     axios.delete(`/api/staff/${deleteId}`)
+//     axios.delete(`http://localhost:4000/staffSalary/staffSalaryDelete/${deleteId}`)
 //       .then(() => {
 //         const updatedStaffData = staffAverage.filter(
 //           (staff) => staff._id !== deleteId
@@ -110,7 +116,7 @@
 //   };
 
 //   return (
-//     <div className="min-h-screen bg-gray-100 p-10">
+//     <div className="w-[100%] bg-gray-100 p-10">
 //       <h1 className="text-4xl font-bold text-center mb-10 text-gray-800 uppercase">
 //         Staff Average Salary
 //       </h1>
@@ -123,6 +129,7 @@
 //               <th className="py-3 px-6 text-left">Staff Name</th>
 //               <th className="py-3 px-6 text-left">Ms</th>
 //               <th className="py-3 px-6 text-left">Spd</th>
+//               <th className="py-3 px-6 text-left">Hsd</th>
 //               <th className="py-3 px-6 text-left">Holidays</th>
 //               <th className="py-3 px-6 text-left">Working Days</th>
 //               <th className="py-3 px-6 text-left">Action</th>
@@ -157,6 +164,16 @@
 //                   value={newStaff.sp}
 //                   onChange={handleInputChange}
 //                   placeholder="Sp"
+//                   className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+//                 />
+//               </td>
+//               <td className="py-3 px-6 border-r border-gray-200">
+//                 <input
+//                   type="text"
+//                   name="hsd"
+//                   value={newStaff.hsd}
+//                   onChange={handleInputChange}
+//                   placeholder="Hsd"
 //                   className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
 //                 />
 //               </td>
@@ -202,6 +219,7 @@
 //               <th className="py-3 px-6 text-left">Staff Name</th>
 //               <th className="py-3 px-6 text-left">Ms</th>
 //               <th className="py-3 px-6 text-left">Spd</th>
+//               <th className="py-3 px-6 text-left">Hsd</th>
 //               <th className="py-3 px-6 text-left">Holidays</th>
 //               <th className="py-3 px-6 text-left">Working Days</th>
 //               <th className="py-3 px-6 text-left">Total</th>
@@ -216,6 +234,7 @@
 //                 <td className="py-3 px-6">{staff.staffName}</td>
 //                 <td className="py-3 px-6">{staff.ms}</td>
 //                 <td className="py-3 px-6">{staff.sp}</td>
+//                 <td className="py-3 px-6">{staff.hsd}</td>
 //                 <td className="py-3 px-6">{staff.holidays}</td>
 //                 <td className="py-3 px-6">{staff.workingDays}</td>
 //                 <td className="py-3 px-6">{staff.total}</td>
@@ -273,18 +292,20 @@ function StaffSalary() {
     hsd: "",
     holidays: "",
     workingDays: "",
+    mscommission: "",
+    spcommission: "",
+    hsdcommission: "",
   });
+
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [error, setError] = useState('');
-
+  
   // Fetch all staff data when the component loads
-//   axios.get("https://marvah-server.onrender.com/staffSalary")
-
   useEffect(() => {
-    axios.get("http://localhost:4000/staffSalary")
+    axios.get("https://marvah-server.onrender.com/staffSalary")
       .then((response) => setStaffData(response.data))
       .catch((error) => console.error("Error fetching staff data:", error));
   }, []);
@@ -297,17 +318,17 @@ function StaffSalary() {
 
   // Handle Add or Update
   const handleAddOrUpdateStaff = () => {
-    const { ms, sp,hsd, workingDays } = newStaff;
+    const { ms, sp,hsd,workingDays,mscommission,spcommission,hsdcommission } = newStaff;
     const total = ms && sp && hsd ? parseFloat(ms) + parseFloat(sp) + parseFloat(hsd) : 0;
     const average = workingDays && parseInt(workingDays) !== 0
       ? (total / parseInt(workingDays)).toFixed(2)
       : "N/A";
 
     // Calculate Total Salary
-    const salary = (ms && sp) ? (parseFloat(ms) * 0.50 + parseFloat(sp) * 0.60 + parseFloat(hsd) * 0.50).toFixed(2) : "N/A";
+    const salary = (ms && sp) ? (parseFloat(ms) * (parseFloat(mscommission) || 0) + parseFloat(sp) * (parseFloat(spcommission) || 0) + parseFloat(hsd) * (parseFloat(hsdcommission) || 0)).toFixed(2) : "N/A";
 
     // Validation check
-    if (!newStaff.staffName || !newStaff.ms || !newStaff.sp || !newStaff.hsd || !newStaff.holidays || !newStaff.workingDays) {
+    if (!newStaff.staffName || !newStaff.ms || !newStaff.sp || !newStaff.hsd || !newStaff.holidays || !newStaff.workingDays || !newStaff.mscommission || !newStaff.spcommission || !newStaff.hsdcommission) {
       setError('All fields are required.');
       return;
     }
@@ -316,7 +337,7 @@ function StaffSalary() {
 
     if (isEditing) {
       // Update staff on backend
-      axios.put(`http://localhost:4000/staffSalary/staffSalaryUpdate/${editingId}`, { ...newStaff, total, average, salary })
+      axios.put(`https://marvah-server.onrender.com/staffSalary/staffSalaryUpdate/${editingId}`, { ...newStaff, total, average, salary })
         .then((response) => {
           const updatedStaffData = staffAverage.map((staff) =>
             staff._id === editingId ? response.data : staff
@@ -331,11 +352,16 @@ function StaffSalary() {
             hsd: "",
             holidays: "",
             workingDays: "",
+            mscommission: "",
+            spcommission: "",
+            hsdcommission: "",
           });
+        }).catch( (error) => {
+          setError('Failed to update staff. Please try again.',error);
         });
     } else {
       // Add new staff to backend
-      axios.post("http://localhost:4000/staffSalary/createStaffSalary", { ...newStaff, total, average, salary })
+      axios.post("https://marvah-server.onrender.com/staffSalary/createStaffSalary", { ...newStaff, total, average, salary })
         .then((response) => {
           setStaffData([...staffAverage, response.data]);
           setNewStaff({
@@ -345,7 +371,12 @@ function StaffSalary() {
             hsd: "",
             holidays: "",
             workingDays: "",
+            mscommission: "",
+            spcommission: "",
+            hsdcommission: "",
           });
+        }).catch( (error) => {
+          setError('Failed to update staff. Please try again.',error);
         });
     }
   };
@@ -363,7 +394,7 @@ function StaffSalary() {
   };
 
   const handleDeleteConfirm = () => {
-    axios.delete(`http://localhost:4000/staffSalary/staffSalaryDelete/${deleteId}`)
+    axios.delete(`https://marvah-server.onrender.com/staffSalary/staffSalaryDelete/${deleteId}`)
       .then(() => {
         const updatedStaffData = staffAverage.filter(
           (staff) => staff._id !== deleteId
@@ -378,9 +409,9 @@ function StaffSalary() {
   };
 
   return (
-    <div className="w-[100%] bg-gray-100 p-10">
+    <div className="min-h-screen bg-gray-100 p-10">
       <h1 className="text-4xl font-bold text-center mb-10 text-gray-800 uppercase">
-        Staff Average Salary
+        Staff Salary
       </h1>
 
       <div className="mb-10">
@@ -411,7 +442,7 @@ function StaffSalary() {
               </td>
               <td className="py-3 px-6 border-r border-gray-200">
                 <input
-                  type="text"
+                  type="number"
                   name="ms"
                   value={newStaff.ms}
                   onChange={handleInputChange}
@@ -421,7 +452,7 @@ function StaffSalary() {
               </td>
               <td className="py-3 px-6 border-r border-gray-200">
                 <input
-                  type="text"
+                  type="number"
                   name="sp"
                   value={newStaff.sp}
                   onChange={handleInputChange}
@@ -431,7 +462,7 @@ function StaffSalary() {
               </td>
               <td className="py-3 px-6 border-r border-gray-200">
                 <input
-                  type="text"
+                  type="number"
                   name="hsd"
                   value={newStaff.hsd}
                   onChange={handleInputChange}
@@ -441,7 +472,7 @@ function StaffSalary() {
               </td>
               <td className="py-3 px-6 border-r border-gray-200">
                 <input
-                  type="text"
+                  type="number"
                   name="holidays"
                   value={newStaff.holidays}
                   onChange={handleInputChange}
@@ -451,7 +482,7 @@ function StaffSalary() {
               </td>
               <td className="py-3 px-6 border-r border-gray-200">
                 <input
-                  type="text"
+                  type="number"
                   name="workingDays"
                   value={newStaff.workingDays}
                   onChange={handleInputChange}
@@ -466,6 +497,55 @@ function StaffSalary() {
                 >
                   {isEditing ? "Update" : "Add"}
                 </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {/* New Table for Commission*/}
+      <h2 className="text-2xl font-semibold text-gray-800 mb-5">Commission</h2>
+      <div className="mb-10">
+        {error && <div className="text-red-500 mb-4">{error}</div>}
+        <table className="min-w-full bg-white border border-gray-200">
+          <thead>
+            <tr className="bg-[#008b8b] text-white uppercase text-sm leading-normal">
+              <th className="py-3 px-6 text-left">Ms</th>
+              <th className="py-3 px-6 text-left">Spd</th>
+              <th className="py-3 px-6 text-left">Hsd</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-900 text-sm font-light">
+            <tr className="border-b border-gray-300 hover:bg-gray-200 transition duration-300 ease-in-out">
+              <td className="py-3 px-6 border-r border-gray-200">
+                <input
+                  type="number"
+                  name="mscommission"
+                  value={newStaff.mscommission}
+                  onChange={handleInputChange}
+                  placeholder="Ms"
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                />
+              </td>
+              <td className="py-3 px-6 border-r border-gray-200">
+                <input
+                  type="number"
+                  name="spcommission"
+                  value={newStaff.spcommission}
+                  onChange={handleInputChange}
+                  placeholder="Sp"
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                />
+              </td>
+              <td className="py-3 px-6 border-r border-gray-200">
+                <input
+                  type="number"
+                  name="hsdcommission"
+                  value={newStaff.hsdcommission}
+                  onChange={handleInputChange}
+                  placeholder="Hsd"
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                />
               </td>
             </tr>
           </tbody>
@@ -490,37 +570,50 @@ function StaffSalary() {
               <th className="py-3 px-6 text-left">Actions</th>
             </tr>
           </thead>
-          <tbody className="text-gray-950 text-sm">
-            {staffAverage.map((staff) => (
-              <tr key={staff._id} className="border-b border-gray-300 hover:bg-gray-200 transition duration-300 ease-in-out">
-                <td className="py-3 px-6">{staff.staffName}</td>
-                <td className="py-3 px-6">{staff.ms}</td>
-                <td className="py-3 px-6">{staff.sp}</td>
-                <td className="py-3 px-6">{staff.hsd}</td>
-                <td className="py-3 px-6">{staff.holidays}</td>
-                <td className="py-3 px-6">{staff.workingDays}</td>
-                <td className="py-3 px-6">{staff.total}</td>
-                <td className="py-3 px-6">{staff.average}</td>
-                <td className="py-3 px-6">{staff.salary}</td> {/* Display Total Salary */}
-                <td className="py-3 px-6">
-                  <button
-                    onClick={() => handleEdit(staff._id)}
-                    className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300 ease-in-out mr-2"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(staff._id)}
-                    className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300 ease-in-out"
-                  >
-                    Delete
-                  </button>
-                </td>
 
+<tbody className="text-gray-950 text-sm">
+  {staffAverage.map((staff) => (
+    <tr key={staff._id} className="border-b border-gray-300 hover:bg-gray-200 transition duration-300 ease-in-out">
+      <td className="py-3 px-6">{staff.staffName}</td>
+      <td className="py-3 px-6">{staff.ms}</td>
+      <td className="py-3 px-6">{staff.sp}</td>
+      <td className="py-3 px-6">{staff.hsd}</td>
+      <td className="py-3 px-6">{staff.holidays}</td>
+      <td className="py-3 px-6">{staff.workingDays}</td>
+      <td className="py-3 px-6">{staff.total}</td>
+      <td className="py-3 px-6">{staff.average}</td>
+      <td className="py-3 px-6">{staff.salary}</td>
+      <td className="py-3 px-6">
+        <button
+          onClick={() => handleEdit(staff._id)}
+          className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300 ease-in-out mr-2"
+        >
+          Edit
+        </button>
+        <button
+          onClick={() => handleDelete(staff._id)}
+          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300 ease-in-out"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  ))}
 
-              </tr>
-            ))}
-          </tbody>
+ 
+  <tr className="font-bold">
+    <td className="px-4 py-2">Total Sales</td>
+    <td className="px-4 py-2">
+      {staffAverage.reduce((total, staff) => total + staff.ms, 0)}
+    </td>
+    <td className="px-4 py-2">
+      {staffAverage.reduce((total, staff) => total + staff.sp, 0)}
+    </td>
+    <td className=" px-6 py-2">
+      {staffAverage.reduce((total, staff) => total + staff.hsd, 0)}
+    </td>
+  </tr>
+</tbody>
         </table>
       </div>
 

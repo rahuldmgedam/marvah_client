@@ -511,6 +511,8 @@ export default function Client() {
   const [speed, setSpeed] = useState("");
   const [selectedInvoice, setSelectedInvoice] = useState("");
 
+  const [tank,setTank] = useState([])
+
   useEffect(() => {
     const totalkl =
       Number(decantation.mskl) +
@@ -656,19 +658,36 @@ export default function Client() {
     }
   };
 
+  // const addProduct = (props) => {
+  //   setMs("");
+  //   setSpeed("");
+  //   sethsd("");
+  //   props.map((item) => {
+  //     console.log("map");
+  //     if (item.ProductName === "MS") {
+  //       setMs(Number(item.klQty));
+  //     }
+  //     if (item.ProductName === "HSD") {
+  //       sethsd(Number(item.klQty));
+  //     }
+  //     if (item.ProductName === "SPEED") {
+  //       setSpeed(Number(item.klQty));
+  //     }
+  //   });
+  // };
   const addProduct = (props) => {
     setMs("");
     setSpeed("");
     sethsd("");
     props.map((item) => {
       console.log("map");
-      if (item.ProductName === "MS") {
+      if (item.ProductName === "TANK-1-MS") {
         setMs(Number(item.klQty));
       }
-      if (item.ProductName === "HSD") {
+      if (item.ProductName === "TANK-3-HSD") {
         sethsd(Number(item.klQty));
       }
-      if (item.ProductName === "SPEED") {
+      if (item.ProductName === "TANK-2-MS") {
         setSpeed(Number(item.klQty));
       }
     });
@@ -688,9 +707,29 @@ export default function Client() {
     return `${day}-${month}-${year}`;
   };
 
-  console.log(getCurrentDate()); // Output example: 19-09-24
+  const fetchTank = () => {
+    axios
+      .get("https://marvah-server.onrender.com/tank")
+      .then((res) => {
+        console.log("tank:", res.data);
+        setTank(res.data);
 
-  console.log("data", petrolInvoice);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  
+  };
+  
+  const fetchTanksName = ()=>{
+ 
+  }
+  
+  useEffect(() => {
+    fetchTank();
+  
+  }, []);
+  // console.log("data", petrolInvoice);
   return (
     <>
       <div className="relative w-[90%]">
@@ -805,7 +844,7 @@ export default function Client() {
           </table>
 
           <br></br>
-          <h6 className="font-bold  uppercase text-xl mb-1 text-center mt-4">Decantation</h6>
+          <h6 className="font-bold  uppercase text-xl mb-1 text-center mt-4"> Tank Decantation</h6>
 
           <table className="text w-[100%] ml-20">
             <thead>
@@ -819,9 +858,9 @@ export default function Client() {
                   {/* Tank 1-15KL <br /> */}
                   MS-1(KL)
                 </th>
-                <th className="border-2 text-center border-gray-700">
+                <th className="border-2 text-center border-gray-700 " >
                   {/* Tank 2-10KL <br></br> */}
-                  MS-2(KL)(SP)
+                  MS-2(KL)(SP) {}
                 </th>
                 <th className="border-2 text-center border-gray-700">
                   {/* Tank 3-9KL <br></br> */}
