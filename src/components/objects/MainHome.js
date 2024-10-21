@@ -15,7 +15,7 @@ const MainHome = () => {
   const [machine, setMachine] = useState([]);
   const [editMachine, setEditMachine] = useState({});
 
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(true);
 
   const fetchTank = () => {
     axios
