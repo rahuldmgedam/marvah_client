@@ -18,7 +18,8 @@ export default function BankDeposits({ dbpath1 }) {
 
 
   const [formData, setFormData] = useState({
-    date: new Date().toISOString().substr(0, 10),
+    // date: new Date().toISOString().substr(0, 10),
+    Mode: '',
     BankId: '',
     checkNo: '',
     amount: '',
@@ -82,6 +83,7 @@ export default function BankDeposits({ dbpath1 }) {
     const res = await createBankTran(formData);
     setFormData((pre) => ({
       ...pre,
+      Mode: '',
       checkNo: '',
       amount: '',
       particulars: '',
@@ -103,12 +105,24 @@ export default function BankDeposits({ dbpath1 }) {
     setAccountNo(data?.bank?.AccountNumber);
     setFormData((pre) => ({
       ...pre,
-      date: new Date().toISOString().substr(0, 10),
+      // date: new Date().toISOString().substr(0, 10),
       BankId: data?.bank?._id,
       checkNo: data?.checkNo,
       amount: data?.amount,
       particulars: data?.particulars,
       nerration: data?.nerration,
+    }))
+  }
+
+  const canselEdit = () => {
+    setEdit(false);
+    setFormData((pre) => ({
+      ...pre,
+      Mode: '',
+      checkNo: '',
+      amount: '',
+      particulars: '',
+      nerration: '',
     }))
   }
 
@@ -172,14 +186,14 @@ export default function BankDeposits({ dbpath1 }) {
           <div className=" flex gap-3 mb-2">
             <div className=" flex gap-2">
               {/* <input type="date" value={date} onChange={(e) => setDate(e.target.value)}/> */}
-              <input
+              {/* <input
                 className=" w-[9rem] form-control editableInput bigFontWeight pl-1 rounded-md"
                 type="date"
                 name="date"
                 value={formData?.date}
                 onChange={handleChenge}
               />
-              <button className=" bg-blue-600 px-3 rounded py-1 text-white" onClick={nextHandler}>Next</button>
+              <button className=" bg-blue-600 px-3 rounded py-1 text-white" onClick={nextHandler}>Next</button> */}
             </div>
 
             <div className=" flex gap-2 ">
@@ -208,7 +222,21 @@ export default function BankDeposits({ dbpath1 }) {
             <thead>
               <tr className="table-secondary">
                 {/*   <th className='tablebg'>Date</th> */}
-                <th className="tablebg" >Check</th>
+                <th className="tablebg" >
+                  <select className=" form-control editableInput bigFontWeight rounded-md " name="Mode" value={formData?.Mode} onChange={handleChenge}
+                  >
+                    <option value="" disabled> - Transaction Mode - </option>
+                    <option value="Cheque" >Cheque</option>
+                    <option value="Cash" >Cash</option>
+                    <option value="Transfer">Transfer</option>
+                    {/* {
+                      banks?.map((d) => (
+                        <option key={d._id} value={d._id}>{d?.BankName}</option>
+                      ))
+                    } */}
+                  </select>
+                </th>
+
                 <th className="tablebg" >Amount</th>
                 <th className="tablebg" >Bank-Particulars</th>
                 <th className="tablebg">Neration</th>
@@ -221,9 +249,9 @@ export default function BankDeposits({ dbpath1 }) {
                 <td>
                   <input
                     type="text"
-                    className="form-control editableInput bigFontWeight"
-                    placeholder="Check No."
-                    name="checkNo"
+                    className={`form-control bigFontWeight ${formData?.Mode == 'Cheque' ? "editableInput" : ""}`}
+                    placeholder="Cheque No."
+                    name="ChequeNo"
                     value={formData?.checkNo}
                     onChange={handleChenge}
                   />
@@ -243,7 +271,7 @@ export default function BankDeposits({ dbpath1 }) {
                 <td>
                   <input
                     type="text"
-                    className="form-control editableInput bigFontWeight"
+                    className={`form-control bigFontWeight ${formData?.Mode == 'Cheque' ? "editableInput" : ""}`}
                     placeholder="Particulars"
                     name="particulars"
                     value={formData?.particulars}
@@ -254,7 +282,7 @@ export default function BankDeposits({ dbpath1 }) {
                 <td>
                   <input
                     type="text"
-                    className="form-control editableInput bigFontWeight"
+                    className={`form-control bigFontWeight ${formData?.Mode == 'Cheque' ? "editableInput" : ""}`}
                     placeholder="Nerration"
                     name="nerration"
                     value={formData?.nerration}
@@ -265,11 +293,19 @@ export default function BankDeposits({ dbpath1 }) {
                 <td>
                   {edit ?
                     (<>
-                      <button type="button" className="btn btn-primary"
+                      <div className=" flex gap-2">
+                        <button type="button" className="btn btn-primary"
                         // onClick={createBankTranHandler}
-                      >
-                        Edit
-                      </button>
+                        >
+                          Edit
+                        </button>
+
+                        <button type="button" className="btn btn-primary"
+                        onClick={canselEdit}
+                        >
+                          Cansel
+                        </button>
+                      </div>
                     </>) :
                     (<>
                       <button type="button" className="btn btn-primary"
