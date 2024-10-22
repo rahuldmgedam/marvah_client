@@ -90,7 +90,7 @@
 //        Reports
 //             </button>
 //             <ul class="dropdown-menu sideDrop1List">
-//               {/* <li><Link class="dropdown-item" to="/mainhome">Add Tank Record</Link></li> 
+//               {/* <li><Link class="dropdown-item" to="/mainhome">Add Tank Record</Link></li>
 //                         <li><Link class="dropdown-item" to="/machineLayout"> Add Make Record</Link></li> */}
 //               <li>
 //                 <Link class="dropdown-item" to="/PetrolReport">
@@ -161,7 +161,7 @@
 //                   Add Make Record
 //                 </Link>
 //               </li>
-//               {/* <li><Link class="dropdown-item" to="/Tanks">Add Tanks</Link></li> 
+//               {/* <li><Link class="dropdown-item" to="/Tanks">Add Tanks</Link></li>
 //                             <li><Link class="dropdown-item" to="/Machine">Add Machines</Link></li> */}
 //               {/* <li>
 //                 <Link class="dropdown-item" to="/Nozzles">
@@ -259,7 +259,7 @@
 //         {/* <footer className='ml-4 p-2 rounded-lg bg-gray-100 text-black font-bold mr-4'>Designed & Developed by Royals Webtech Pvt. Ltd. ©️2024</footer>   */}
 //       </div>
 //     </div>
-     
+
 //     </>
 //   );
 // }
@@ -272,13 +272,20 @@ import { IoMdArrowDropright } from "react-icons/io";
 import { IoMdArrowDropdown } from "react-icons/io";
 import logo from "./images/petrol.jpg";
 import axios from "axios";
-import { MdAccountCircle, MdAdminPanelSettings, MdDarkMode, MdDashboard, MdHome, MdReport } from "react-icons/md";
+import {
+  MdAccountCircle,
+  MdAdminPanelSettings,
+  MdDarkMode,
+  MdDashboard,
+  MdHome,
+  MdReport,
+} from "react-icons/md";
 export default function Sidebar() {
   const [amsToday, setamsToday] = useState([]);
   const [amsLast, setamsLast] = useState(0);
-  const [lastDate, setLastDate] = useState(0)
-  const [isReportsOpen, setIsReportsOpen] = useState(false)
-  const [isAddAccounttOpen, setIsAddAccountOpen] = useState(false)
+  const [lastDate, setLastDate] = useState(0);
+  const [isReportsOpen, setIsReportsOpen] = useState(false);
+  const [isAddAccounttOpen, setIsAddAccountOpen] = useState(false);
   const navigate = useNavigate();
   const fetchMs = () => {
     axios
@@ -286,7 +293,7 @@ export default function Sidebar() {
       .then((res) => {
         // console.log("res ms", res.data[0]);
         setamsLast(res.data[res.data.length - 2].reading);
-        setLastDate(res.data[res.data.length - 1].date)
+        setLastDate(res.data[res.data.length - 1].date);
         // const todayR = res.data.length;
         // console.log("todayR", res.data.length - 1);
         setamsToday(res.data[res.data.length - 1].reading);
@@ -309,8 +316,8 @@ export default function Sidebar() {
 
   function convertToDDMMYYYY(dateString) {
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
     const year = date.getFullYear();
 
     return `${day}-${month}-${year}`;
@@ -333,75 +340,168 @@ export default function Sidebar() {
           </center>
           Current Date : {formattedDate}
           <br></br>
-          Last Entry Date :  {(convertToDDMMYYYY(lastDate))}
+          Last Entry Date : {convertToDDMMYYYY(lastDate)}
         </div>
 
-        <div className="flex items-center justify-between gap-4 px-6 py-2 mt-4 hover:bg-[#008b8b] hover:rounded-md transition-all cursor-pointer">
-          
-            <div onClick={() => navigate("/Day_Start")} className="flex items-center gap-4">
+        <div onClick={() => navigate("/Day_Start")} className="flex items-center justify-between gap-4 px-6 py-2 mt-4 hover:bg-[#008b8b] hover:rounded-md transition-all cursor-pointer">
+         
+          <div
+         
+            className="flex items-center gap-4"
+          >
             <MdHome className="text-2xl" />
             <span className="text-lg">Home</span>
-            </div>
+          </div>
           {/* <button class="" type="button" onClick={() => navigate("/Day_Start")}>
             <div class="dropdown-item">Home</div>
           </button> */}
         </div>
 
-        <div className="flex items-center gap-4 justify-between px-6 py-2 mt-4 hover:bg-[#008b8b] hover:rounded-md transition-all cursor-pointer" onClick={() => setIsReportsOpen(!isReportsOpen)}>
+        <div
+          className="flex items-center gap-4 justify-between px-6 py-2 mt-4 hover:bg-[#008b8b] hover:rounded-md transition-all cursor-pointer"
+          onClick={() => setIsReportsOpen(!isReportsOpen)}
+        >
           <div className="flex items-center gap-4 ">
             <MdReport className="text-2xl" />
             <span className="text-lg">Reports</span>
           </div>
-          {isReportsOpen ?  <IoMdArrowDropdown  className="text-2xl"/> :  <IoMdArrowDropright className="text-2xl" />}
-
+          {isReportsOpen ? (
+            <IoMdArrowDropdown className="text-2xl" />
+          ) : (
+            <IoMdArrowDropright className="text-2xl" />
+          )}
         </div>
         {isReportsOpen && (
           <ul className="ml-10 text-sm h-24 scroll-smooth overflow-y-scroll no-scrollbar text-white space-y-2 mt-2">
-            <li><Link to="/PetrolReport" className="hover:underline">Petrol/HSD Report</Link></li>
-            <li><Link to="/CreditClientReport" className="hover:underline">Credit Report</Link></li>
-            <li><Link to="/ExpensesReport" className="hover:underline">Expenses Report</Link></li>
-            <li><Link to="/BankStatements" className="hover:underline">Bank Statements Report</Link></li>
-            <li><Link to="/CardsReport" className="hover:underline">Cards Report</Link></li>
-            <li><Link to="/AdvancesHandloanReport" className="hover:underline">Advances / Handloan Report</Link></li>
-            <li><Link to="/OilReports" className="hover:underline">Oil Report</Link></li>
-            <li><Link to="/FuelSalesReport" className="hover:underline">Fuel Sales Report</Link></li>
+            <li>
+              <Link to="/PetrolReport" className="hover:underline">
+                Petrol/HSD Report
+              </Link>
+            </li>
+            <li>
+              <Link to="/CreditClientReport" className="hover:underline">
+                Credit Report
+              </Link>
+            </li>
+            <li>
+              <Link to="/ExpensesReport" className="hover:underline">
+                Expenses Report
+              </Link>
+            </li>
+            <li>
+              <Link to="/BankStatements" className="hover:underline">
+                Bank Statements Report
+              </Link>
+            </li>
+            <li>
+              <Link to="/CardsReport" className="hover:underline">
+                Cards Report
+              </Link>
+            </li>
+            <li>
+              <Link to="/AdvancesHandloanReport" className="hover:underline">
+                Advances / Handloan Report
+              </Link>
+            </li>
+            <li>
+              <Link to="/OilReports" className="hover:underline">
+                Oil Report
+              </Link>
+            </li>
+            <li>
+              <Link to="/FuelSalesReport" className="hover:underline">
+                Fuel Sales Report
+              </Link>
+            </li>
           </ul>
         )}
 
         <div>
-          <div className="flex items-center justify-between gap-4 px-6 py-2 mt-4 hover:bg-[#008b8b] hover:rounded-md transition-all cursor-pointer" onClick={() => setIsAddAccountOpen(!isAddAccounttOpen)}>
+          <div
+            className="flex items-center justify-between gap-4 px-6 py-2 mt-4 hover:bg-[#008b8b] hover:rounded-md transition-all cursor-pointer"
+            onClick={() => setIsAddAccountOpen(!isAddAccounttOpen)}
+          >
             <div className="flex gap-4 items-center">
               <MdAccountCircle className="text-2xl" />
               <span className="text-lg">Add Account</span>
             </div>
-            {isAddAccounttOpen ?  <IoMdArrowDropdown  className="text-2xl"/> :  <IoMdArrowDropright className="text-2xl" />}
+            {isAddAccounttOpen ? (
+              <IoMdArrowDropdown className="text-2xl" />
+            ) : (
+              <IoMdArrowDropright className="text-2xl" />
+            )}
           </div>
           {isAddAccounttOpen && (
             <ul className="ml-10 text-sm h-36 scroll-smooth   overflow-y-scroll no-scrollbar text-white space-y-2 mt-2">
-              <li><Link to="/mainhome" className="hover:underline">Add Tank Record</Link></li>
-              <li><Link to="/machineLayout" className="hover:underline">Add Make Record</Link></li>
-              <li><Link to="/Add_Bank" className="hover:underline">Add Banks</Link></li>
+              <li>
+                <Link to="/mainhome" className="hover:underline">
+                  Add Tank Record
+                </Link>
+              </li>
+              <li>
+                <Link to="/machineLayout" className="hover:underline">
+                  Add Make Record
+                </Link>
+              </li>
+              <li>
+                <Link to="/Add_Bank" className="hover:underline">
+                  Add Banks
+                </Link>
+              </li>
               {/* <li><Link to="/add_client2" className="hover:underline">Add Client</Link></li> */}
-              <li><Link to="/add_Credit" className="hover:underline">Add Credit</Link></li>
-              <li><Link to="/add_client" className="hover:underline">Add Handloan Client</Link></li>
-              <li><Link to="/Oil_Products" className="hover:underline">Add Oil Product</Link></li>
-              <li><Link to="/Add_Oil_Pouches" className="hover:underline">Add Oil Pouches</Link></li>
-              <li><Link to="/Petrol_Products" className="hover:underline">Add Petrol Product</Link></li>
-              <li><Link to="/add_payments_mode" className="hover:underline">Add Payments Mode</Link></li>
-              <li><Link to="/Add_Petro_Card" className="hover:underline">Add Petro Card</Link></li>
-              <li><Link to="/Add_Wallet" className="hover:underline">Add Wallet</Link></li>
-              <li><Link to="/Add_Expenses_Topic" className="hover:underline">Add Expenses Topic</Link></li>
+              <li>
+                <Link to="/add_Credit" className="hover:underline">
+                  Add Credit
+                </Link>
+              </li>
+              <li>
+                <Link to="/add_client" className="hover:underline">
+                  Add Handloan Client
+                </Link>
+              </li>
+              <li>
+                <Link to="/Oil_Products" className="hover:underline">
+                  Add Oil Product
+                </Link>
+              </li>
+              <li>
+                <Link to="/Add_Oil_Pouches" className="hover:underline">
+                  Add Oil Pouches
+                </Link>
+              </li>
+              <li>
+                <Link to="/Petrol_Products" className="hover:underline">
+                  Add Petrol Product
+                </Link>
+              </li>
+              <li>
+                <Link to="/add_payments_mode" className="hover:underline">
+                  Add Payments Mode
+                </Link>
+              </li>
+              <li>
+                <Link to="/Add_Petro_Card" className="hover:underline">
+                  Add Petro Card
+                </Link>
+              </li>
+              <li>
+                <Link to="/Add_Wallet" className="hover:underline">
+                  Add Wallet
+                </Link>
+              </li>
+              <li>
+                <Link to="/Add_Expenses_Topic" className="hover:underline">
+                  Add Expenses Topic
+                </Link>
+              </li>
             </ul>
           )}
-
         </div>
         <br />
         <br />
         <br />
         <div class="btn-group flex ml-6 gap-2 mt-6">
-          <button className="ml-4">
-            {/* <MdAdminPanelSettings/> */}
-          </button>
+          <button className="ml-4">{/* <MdAdminPanelSettings/> */}</button>
           <button
             className="bg-green-600 px-4 py-2 rounded-lg ml-2 text-center text-white font-bold uppercase"
             type="button"

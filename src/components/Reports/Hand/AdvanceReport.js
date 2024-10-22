@@ -217,35 +217,7 @@ function AdvanceReport() {
 
   // Handle show button click to display transactions
   const handleShowTransactions = () => {
-    // const formattedSelectedDate = formatDateToDDMMYYYY(selectedDate);
-
-    // const filtered = advances.filter((transaction) => {
-    //   const formattedTransactionDate = formatDateToDDMMYYYY(transaction.date);
-    //   switch (selectedDateType) {
-    //     case 'day':
-    //       return (
-    //         transaction.party_name === selectedAdvance &&
-    //         formattedTransactionDate.day === formattedSelectedDate.day &&
-    //         formattedTransactionDate.month === formattedSelectedDate.month &&
-    //         formattedTransactionDate.year === formattedSelectedDate.year
-    //       );
-    //     case 'month':
-    //       return (
-    //         transaction.party_name === selectedAdvance &&
-    //         formattedTransactionDate.month === formattedSelectedDate.month &&
-    //         formattedTransactionDate.year === formattedSelectedDate.year
-    //       );
-    //     case 'year':
-    //       return (
-    //         transaction.party_name === selectedAdvance &&
-    //         formattedTransactionDate.year === formattedSelectedDate.year
-    //       );
-    //     default:
-    //       return false; // Fallback in case of unexpected date type
-    //   }
-    // });
-
-    // setFilteredTransactions(filtered); // Set the filtered transactions
+   
     setShowTransactions(true); // Show transactions
   }
 
@@ -307,7 +279,7 @@ function AdvanceReport() {
         <h1 className='font-bold text-center my-8 text-2xl'>Advance Report</h1>
         <button
           className='absolute right-10 top-8 bg-[#3B82F6] focus:outline-none text-white px-4 py-2 rounded'
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/advances")}
         >Back</button>
       </div>
       {/* First table: Advance selection */}

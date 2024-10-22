@@ -34,7 +34,7 @@ export default function Nozzles({ dbpath1 }) {
   const [op_meter_reading, setOp_meter_reading] = useState("");
   const [totalAmountVal, setTotalAmountVal] = useState(null);
 
-  //       const loadClients = async () => {
+
   //         let query="select * from rwt_client";
   //             /* alert(query); */
   //             const url = dbpath1 + 'getDynamic.php';
@@ -385,23 +385,7 @@ export default function Nozzles({ dbpath1 }) {
   //         }, []);
   const datecache = Cookies.get("dateCookies");
 
-  //   function convertDateFormat(inputDate) {
-  //     // Split the string into an array [yyyy, mm, dd]
-  //     let parts = inputDate.split('-');
 
-  //     // Rearrange the array and join it back to a string
-  //     return parts[2] + '-' + parts[1] + '-' + parts[0];
-  // }
-
-  /*  const printDiv = () => {
-        const printableElement = document.getElementById('printableDiv').outerHTML;
-        const newWindow = window.open('', '_blank');
-        newWindow.document.write('<html><head><title>Print</title></head><body>');
-        newWindow.document.write(printableElement);
-        newWindow.document.write('</body></html>');
-        newWindow.document.close();
-        newWindow.print();
-    } */
   const componentRef = React.useRef();
 
   const PrintButton = ({ targetRef }) => {
@@ -418,17 +402,18 @@ export default function Nozzles({ dbpath1 }) {
   return (
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-        <h2 className="mt-3 text-center">Generate Bills </h2>
-        <div>
-          {/* <b style={{fontSize:'22px'}}> Date : {convertDateFormat(datecache)} </b> */}
-          <b style={{ fontSize: "18px", marginLeft: "50px" }}>
-            {" "}
-            Last Bill : <span id="lastbill">Loading..</span>
-          </b>
+        <div className="bg-white top-14  w-[100%] z-1 py-2 fixed">
+          <div className="w-[40%]  flex items-center justify-between gap-6">
+            <b>
+              Last Bill : <span id="lastbill">Loading..</span>
+            </b>
+            <h2 className="text-3xl">Generate Bills </h2>
+            {/* <b style={{fontSize:'22px'}}> Date : {convertDateFormat(datecache)} </b> */}
+          </div>
         </div>
         <div>
           <br></br>
-          <table class="table" style={{ width: "1000px" }}>
+          <table className="table w-full relative mt-10" >
             <thead>
               <tr className="table-secondary">
                 <th className="tablebg">Bill No</th>

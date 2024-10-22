@@ -150,12 +150,18 @@ const handleOpenCloseClick = (id, isClosed) => {
         </span>
         <div className="flex justify-between w-[90%]">
             <div></div>
-            <div className="flex">
+            <div className="flex gap-4">
               <button
                 className="bg-blue-500 px-2 py-1 rounded-md text-white"
-                onClick={() => navigate(-1)}
+                onClick={() => navigate("/handloans")}
               >
-                back
+                Handloans
+              </button>
+              <button
+                className="bg-blue-500 px-2 py-1 rounded-md text-white"
+                onClick={() => navigate("/advances")}
+              >
+                Advances
               </button>
             </div>
           </div>

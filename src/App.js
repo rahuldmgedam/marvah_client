@@ -99,6 +99,8 @@ import HandloansReport from "./components/Reports/Hand/HandloansReport";
 import AdvanceReport from "./components/Reports/Hand/AdvanceReport";
 import ConsoliFuelsales from "./components/Reports/FuelSaleReports/ConsoliFuelsales";
 import BankDeposits from "./components/objects/Bank_Deposits";
+import PurchasetdsMain from "./components/Reports/purchaseReports/PurchasetdsMain";
+import StaffSalary from "./components/objects/StaffSalary";
 
 function App() {
   return (
@@ -1173,13 +1175,28 @@ function App() {
           path="/Staff_Salary"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Staff_Salary />
+                </div>
+              </div> */}
+                   <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Staff_Salary />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1213,13 +1230,28 @@ function App() {
           path="/Statement_Entry"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Statement_Entry />
+                </div>
+              </div> */}
+                   <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Statement_Entry />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1302,13 +1334,29 @@ function App() {
           path="/Bank_Statement"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Bank_Statement />
+                </div>
+              </div> */}
+
+              <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                <div>
+                  <Sidebar />
+                </div>
+                </div>
+           
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Bank_Statement />
+                  </div>
+              
                 </div>
               </div>
             </>
@@ -1383,13 +1431,26 @@ function App() {
           path="/Oil_Pouches"
           element={
             <>
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <div>
                   <Sidebar />
                 </div>
                 <div>
                   <Navbar />
                   <Oil_Pouches />
+                </div>
+              </div> */}
+                      <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                  <div>
+                  <Sidebar />
+                  </div>
+                </div>
+                <div className="w-[80%]">
+                  <div>
+                  <Navbar />
+                  <Oil_Pouches/>
+                  </div>
                 </div>
               </div>
             </>
@@ -1978,7 +2039,7 @@ function App() {
            
                 <div className="w-[80%]">
                   <div>
-                  <Navbar />
+                  {/* <Navbar /> */}
                   <PurchaseDecantation />
                   </div>
               
@@ -2120,7 +2181,55 @@ function App() {
           }
         />
 
+<Route
+          path="/purchasetdsmain"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                  <div>
+                    <Sidebar />
+                  </div>
+                </div>
+
+                <div className="w-[80%]">
+                  <div>
+                    {/* <Navbar /> */}
+                    <PurchasetdsMain />
+                  </div>
+
+                </div>
+              </div>
+            </>
+          }
+        />
+
+        
+      <Route
+          path="/staffSalary"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                  <div>
+                    <Sidebar />
+                  </div>
+                </div>
+
+                <div className="w-[80%]">
+                  <div>
+                    <Navbar />
+                    <StaffSalary/>
+                  </div>
+
+                </div>
+              </div>
+            </>
+          }
+        />
+
       </Routes>
+
      
     </Router>
   );
