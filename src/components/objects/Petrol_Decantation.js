@@ -27,6 +27,8 @@
 //   const [speed, setSpeed] = useState("");
 //   const [selectedInvoice, setSelectedInvoice] = useState("");
 
+//   const [tank,setTank] = useState([])
+
 //   useEffect(() => {
 //     const totalkl =
 //       Number(decantation.mskl) +
@@ -172,19 +174,36 @@
 //     }
 //   };
 
+//   // const addProduct = (props) => {
+//   //   setMs("");
+//   //   setSpeed("");
+//   //   sethsd("");
+//   //   props.map((item) => {
+//   //     console.log("map");
+//   //     if (item.ProductName === "MS") {
+//   //       setMs(Number(item.klQty));
+//   //     }
+//   //     if (item.ProductName === "HSD") {
+//   //       sethsd(Number(item.klQty));
+//   //     }
+//   //     if (item.ProductName === "SPEED") {
+//   //       setSpeed(Number(item.klQty));
+//   //     }
+//   //   });
+//   // };
 //   const addProduct = (props) => {
 //     setMs("");
 //     setSpeed("");
 //     sethsd("");
 //     props.map((item) => {
 //       console.log("map");
-//       if (item.ProductName === "MS") {
+//       if (item.ProductName === "TANK-1-MS") {
 //         setMs(Number(item.klQty));
 //       }
-//       if (item.ProductName === "HSD") {
+//       if (item.ProductName === "TANK-3-HSD") {
 //         sethsd(Number(item.klQty));
 //       }
-//       if (item.ProductName === "SPEED") {
+//       if (item.ProductName === "TANK-2-MS") {
 //         setSpeed(Number(item.klQty));
 //       }
 //     });
@@ -204,9 +223,29 @@
 //     return `${day}-${month}-${year}`;
 //   };
 
-//   console.log(getCurrentDate()); // Output example: 19-09-24
+//   const fetchTank = () => {
+//     axios
+//       .get("https://marvah-server.onrender.com/tank")
+//       .then((res) => {
+//         console.log("tank:", res.data);
+//         setTank(res.data);
 
-//   console.log("data", petrolInvoice);
+//       })
+//       .catch((error) => {
+//         console.log(error.message);
+//       });
+  
+//   };
+  
+//   const fetchTanksName = ()=>{
+ 
+//   }
+  
+//   useEffect(() => {
+//     fetchTank();
+  
+//   }, []);
+//   // console.log("data", petrolInvoice);
 //   return (
 //     <>
 //       <div className="relative w-[90%]">
@@ -321,7 +360,7 @@
 //           </table>
 
 //           <br></br>
-//           <h6 className="font-bold  uppercase text-xl mb-1 text-center mt-4">Decantation</h6>
+//           <h6 className="font-bold  uppercase text-xl mb-1 text-center mt-4"> Tank Decantation</h6>
 
 //           <table className="text w-[100%] ml-20">
 //             <thead>
@@ -335,9 +374,9 @@
 //                   {/* Tank 1-15KL <br /> */}
 //                   MS-1(KL)
 //                 </th>
-//                 <th className="border-2 text-center border-gray-700">
+//                 <th className="border-2 text-center border-gray-700 " >
 //                   {/* Tank 2-10KL <br></br> */}
-//                   MS-2(KL)(SP)
+//                   MS-2(KL)(SP) {}
 //                 </th>
 //                 <th className="border-2 text-center border-gray-700">
 //                   {/* Tank 3-9KL <br></br> */}
@@ -356,11 +395,11 @@
 //                 </td>
 //                 <td className="border-8 border-blue-600 rounded-xl" scope="row">
 //                   <input
-//                     type="text"
+//                     type="number"
 //                     id="tank1"
 //                     className="w-20"
 //                     name="tank1"
-//                     value={decantation.tank1}
+//                     value={ms ? ms : 0}
 //                     onChange={handleChange}
 //                   />
 //                 </td>
@@ -368,10 +407,9 @@
 //                   <input
 //                     type="text"
 //                     className="w-20"
-
 //                     id="tank2"
 //                     name="tank2"
-//                     value={decantation.tank2}
+//                     value={speed ? speed : 0}
 //                     onChange={handleChange}
 //                   />
 //                 </td>
@@ -382,7 +420,7 @@
 
 //                     id="tank3"
 //                     name="tank3"
-//                     value={decantation.tank3}
+//                     value={hsd ? hsd : 0}
 //                     onChange={handleChange}
 //                   />
 //                 </td>
@@ -392,7 +430,7 @@
 //                     className="w-20"
 
 //                     name="tanktotalkl"
-//                     value={decantation.tanktotalkl}
+//                     value={ms + hsd + speed}
 //                     placeholder="Total"
 //                     disabled
 //                   />
@@ -510,8 +548,22 @@ export default function Client() {
   const [hsd, sethsd] = useState("");
   const [speed, setSpeed] = useState("");
   const [selectedInvoice, setSelectedInvoice] = useState("");
-
+  const [tankName, setTankName] = useState([])
   const [tank,setTank] = useState([])
+
+
+  const fetchTankName = async () => {
+    try {
+      const response = await axios.get('https://marvah-server.onrender.com/tank')
+      const data = await response.data.map(item => item.product)
+      setTankName(data)
+      console.log(data);
+      
+    } catch (error) {
+      console.log(error)
+      
+    }
+  }
 
   useEffect(() => {
     const totalkl =
@@ -527,6 +579,7 @@ export default function Client() {
       totalkl,
       tanktotalkl,
     }));
+    fetchTankName()
   }, [
     decantation.mskl,
     decantation.hsdkl,
@@ -728,7 +781,7 @@ export default function Client() {
   useEffect(() => {
     fetchTank();
   
-  }, []);
+  }, []);
   // console.log("data", petrolInvoice);
   return (
     <>
@@ -766,9 +819,9 @@ export default function Client() {
             <thead>
               <tr className="text-center mb-2 bg-[#008b8b] text-white">
                 <th className="border-2 text-center border-gray-700">Invoice No</th>
-                <th className="border-2 text-center border-gray-700">MS-1 (KL)</th>
-                <th className="border-2 text-center border-gray-700">MS-2(SP) (KL)</th>
-                <th className="border-2 text-center border-gray-700">HSD (KL)</th>
+                <th className="border-2 text-center border-gray-700">{tankName[0]}</th>
+                <th className="border-2 text-center border-gray-700">{tankName[1]}</th>
+                <th className="border-2 text-center border-gray-700">{tankName[2]}</th>
                 <th className="border-2 text-center border-gray-700">Total (KL)</th>
               </tr>
             </thead>
@@ -856,15 +909,15 @@ export default function Client() {
                   className="border-2 text-center border-gray-700"
                 >
                   {/* Tank 1-15KL <br /> */}
-                  MS-1(KL)
+                  {tankName[0]}
                 </th>
                 <th className="border-2 text-center border-gray-700 " >
                   {/* Tank 2-10KL <br></br> */}
-                  MS-2(KL)(SP) {}
+                  {tankName[1]}
                 </th>
                 <th className="border-2 text-center border-gray-700">
                   {/* Tank 3-9KL <br></br> */}
-                  HSD(KL)
+                  {tankName[2]}
                 </th>
                 <th className="border-2 text-center border-gray-700" id="">
                   Total (KL)
@@ -956,13 +1009,13 @@ export default function Client() {
                   Invoice Number
                 </th>
                 <th class=" text-center text-md  border-2 border-black text-white">
-                  MS-1(KL)
+                {tankName[0]}
                 </th>
                 <th class=" text-center text-md border-2 border-black text-white">
-                  MS-2(KL)(SP)
+                {tankName[1]}
                 </th>
                 <th class=" text-center text-md  border-2 border-black text-white">
-                  HSD(KL)
+                {tankName[2]}
                 </th>
                 <th class=" text-center text-md  border-2 border-black text-white">
                   TOTAL(KL)

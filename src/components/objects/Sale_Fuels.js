@@ -1,3 +1,5 @@
+
+
 // import React, { useState, useEffect } from "react";
 // import axios from "axios";
 // import "../css/Tank.css";
@@ -10,6 +12,20 @@
 //   const [rates, setRates] = useState({ ms1Rate: 0, ms2Rate: 0, hsdRate: 0 });
 
 //   const navigate = useNavigate();
+//   const [tankName, setTankName] = useState([])
+
+//   const fetchTank = () => {
+//     axios
+//     .get('https://marvah-server.onrender.com/tank')
+//     .then((res) => {
+//       console.log("tank", res.data);
+//       const tanksData = res.data.map((tank) => tank.product)
+//       setTankName(tanksData)
+//     })
+//     .catch((error) => {
+//       console.log(error.message);
+//     })
+//   }
 
 //   const fetchMachineReadings = async () => {
 //     try {
@@ -34,6 +50,7 @@
 
 //   useEffect(() => {
 //     fetchMachineReadings();
+//     fetchTank();
 //   }, []);
 
 //   // ms1 data
@@ -142,6 +159,8 @@
 //       );
 //       alert("Data saved successfully!");
 //       setMs2Readings([]); // Reset ms2 readings after successful save
+//       setMachineReadings([]); // Reset machine readings
+//       setTotals2({}); // Reset totals
 //     } catch (error) {
 //       console.error("Error saving data:", error);
 //       alert("Error saving data.");
@@ -181,6 +200,10 @@
 //         "https://marvah-server.onrender.com/fuelsales/create",
 //         hsdReadings
 //       );
+
+//       setHsdReadings([]); // Reset ms2 readings after successful save
+//       setMachineReadings([]); // Reset machine readings
+//       setTotals3({}); // Reset totals
 //       alert("Data saved successfully!");
 //     } catch (error) {
 //       console.error("Error saving data:", error);
@@ -256,13 +279,13 @@
 //             to={"/machineLayout"}
 //           ></Link>
 //         </div>
-//               
+              
 //       </div>
 //       {/* ms1 start */}
 //       <section className="ms-1 mt-16">
 //         <div className="flex justify-center">
 //           <div className="block text-2xl justify-center tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
-//             ms-1
+//             {tankName[0]}
 //           </div>
 //         </div>
 //         <table className="w-[90%] ml-4">
@@ -452,7 +475,7 @@
 //       <section className="ms-2">
 //         <div className="flex justify-center">
 //           <div className="block text-2xl justify-center tracking-wider text-blue-600 px-2 rounded-md uppercase font-bold">
-//             ms-2
+//             {tankName[1]}
 //           </div>
 //         </div>
 //         <table className="w-[90%] ml-4">
@@ -615,7 +638,7 @@
 //       <section className="ms-2">
 //         <div className="flex justify-center">
 //           <div className="block text-2xl justify-center tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
-//             HSD
+//             {tankName[2]}
 //           </div>
 //         </div>
 //         <table className="w-[90%] ml-4">
@@ -777,6 +800,7 @@
 //   );
 // }
 
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/Tank.css";
@@ -798,6 +822,8 @@ export default function Sale_Fuels() {
       console.log("tank", res.data);
       const tanksData = res.data.map((tank) => tank.product)
       setTankName(tanksData)
+      console.log(tanksData);
+      
     })
     .catch((error) => {
       console.log(error.message);
@@ -1083,7 +1109,7 @@ export default function Sale_Fuels() {
                 <td>
                   <input
                     className="text-center w-32"
-                    value={item.nozzleProduct}
+                    value={tankName[0]}
                     readOnly
                   />
                 </td>
@@ -1273,7 +1299,7 @@ export default function Sale_Fuels() {
                 <td>
                   <input
                     className="text-center w-32"
-                    value={item2.nozzleProduct}
+                    value={tankName[1]}
                     readOnly
                   />
                 </td>
@@ -1436,7 +1462,7 @@ export default function Sale_Fuels() {
                 <td>
                   <input
                     className="text-center w-32"
-                    value={item2.nozzleProduct}
+                    value={tankName[2]}
                     readOnly
                   />
                 </td>
