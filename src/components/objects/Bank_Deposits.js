@@ -4,11 +4,13 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { createBankTran, deleteBankTran, getBankData, getBankTranData } from "../../servises/opretions/bank";
+import { createBankTran, deleteBankTran, getBankData, getBankTranData, updateBankTran } from "../../servises/opretions/bank";
 export default function BankDeposits({ dbpath1 }) {
+
   const [statement, setStatemnet] = useState([]);
   const [banks, setBanks] = useState([]);
   const [edit, setEdit] = useState(false);
+  const [editData, setEditData] = useState({});
 
   // const [date, setDate] = useState(new Date().toISOString().substr(0, 10));
   const [bankId, setBankId] = useState("");
@@ -19,9 +21,10 @@ export default function BankDeposits({ dbpath1 }) {
 
   const [formData, setFormData] = useState({
     // date: new Date().toISOString().substr(0, 10),
-    Mode: '',
+    tranId: '',
+    mode: '',
     BankId: '',
-    checkNo: '',
+    chequeNo: '',
     amount: '',
     particulars: '',
     nerration: '',
@@ -83,8 +86,8 @@ export default function BankDeposits({ dbpath1 }) {
     const res = await createBankTran(formData);
     setFormData((pre) => ({
       ...pre,
-      Mode: '',
-      checkNo: '',
+      mode: '',
+      chequeNo: '',
       amount: '',
       particulars: '',
       nerration: '',
@@ -106,20 +109,41 @@ export default function BankDeposits({ dbpath1 }) {
     setFormData((pre) => ({
       ...pre,
       // date: new Date().toISOString().substr(0, 10),
+      tranId : data?._id,
+      mode: data?.mode,
       BankId: data?.bank?._id,
-      checkNo: data?.checkNo,
+      chequeNo: data?.chequeNo,
       amount: data?.amount,
       particulars: data?.particulars,
       nerration: data?.nerration,
     }))
+
+  }
+
+  const editBankTranHandler = async () => {
+    await updateBankTran(formData);
+    setFormData((pre) => ({
+      ...pre,
+      tranId: '',
+      mode: '',
+      chequeNo: '',
+      amount: '',
+      particulars: '',
+      nerration: '',
+    }))
+    
+    setEdit(false);
+
+    getBankTranDataHandler();
   }
 
   const canselEdit = () => {
     setEdit(false);
     setFormData((pre) => ({
       ...pre,
-      Mode: '',
-      checkNo: '',
+      tranId:'',
+      mode: '',
+      chequeNo: '',
       amount: '',
       particulars: '',
       nerration: '',
@@ -223,7 +247,7 @@ export default function BankDeposits({ dbpath1 }) {
               <tr className="table-secondary">
                 {/*   <th className='tablebg'>Date</th> */}
                 <th className="tablebg" >
-                  <select className=" form-control editableInput bigFontWeight rounded-md " name="Mode" value={formData?.Mode} onChange={handleChenge}
+                  <select className=" form-control editableInput bigFontWeight rounded-md " name="mode" value={formData?.mode} onChange={handleChenge}
                   >
                     <option value="" disabled> - Transaction Mode - </option>
                     <option value="Cheque" >Cheque</option>
@@ -245,14 +269,14 @@ export default function BankDeposits({ dbpath1 }) {
             </thead>
             <tbody>
               <tr>
-                {/* checkNo */}
+                {/* chequeNo */}
                 <td>
                   <input
                     type="text"
-                    className={`form-control bigFontWeight ${formData?.Mode == 'Cheque' ? "editableInput" : ""}`}
+                    className={`form-control bigFontWeight ${formData?.mode === 'Cheque' ? "editableInput" : ""}`}
                     placeholder="Cheque No."
-                    name="ChequeNo"
-                    value={formData?.checkNo}
+                    name="chequeNo"
+                    value={formData?.chequeNo}
                     onChange={handleChenge}
                   />
                 </td>
@@ -271,7 +295,7 @@ export default function BankDeposits({ dbpath1 }) {
                 <td>
                   <input
                     type="text"
-                    className={`form-control bigFontWeight ${formData?.Mode == 'Cheque' ? "editableInput" : ""}`}
+                    className={`form-control bigFontWeight ${formData?.mode == 'Cheque' ? "editableInput" : ""}`}
                     placeholder="Particulars"
                     name="particulars"
                     value={formData?.particulars}
@@ -282,7 +306,7 @@ export default function BankDeposits({ dbpath1 }) {
                 <td>
                   <input
                     type="text"
-                    className={`form-control bigFontWeight ${formData?.Mode == 'Cheque' ? "editableInput" : ""}`}
+                    className={`form-control bigFontWeight ${formData?.mode == 'Cheque' ? "editableInput" : ""}`}
                     placeholder="Nerration"
                     name="nerration"
                     value={formData?.nerration}
@@ -295,13 +319,13 @@ export default function BankDeposits({ dbpath1 }) {
                     (<>
                       <div className=" flex gap-2">
                         <button type="button" className="btn btn-primary"
-                        // onClick={createBankTranHandler}
+                          onClick={editBankTranHandler}
                         >
                           Edit
                         </button>
 
                         <button type="button" className="btn btn-primary"
-                        onClick={canselEdit}
+                          onClick={canselEdit}
                         >
                           Cansel
                         </button>
@@ -339,9 +363,10 @@ export default function BankDeposits({ dbpath1 }) {
               <tr className="table-secondary">
                 <th className="tablebg">Sr</th>
                 <th className="tablebg">Bank</th>
-                <th className="tablebg">Account No.</th>
+                <th className="tablebg">Acc. No.</th>
+                <th className="tablebg">Mode</th>
                 <th className="tablebg">Particulars</th>
-                <th className="tablebg">Check</th>
+                <th className="tablebg">Cheque</th>
                 <th className="tablebg">Amount</th>
                 <th className="tablebg">Nerration</th>
                 <th className="tablebg">Action</th>
@@ -353,8 +378,9 @@ export default function BankDeposits({ dbpath1 }) {
                   <td>{index + 1}</td>
                   <td>{res?.bank?.BankName}</td>
                   <td>{res?.bank?.AccountNumber}</td>
+                  <td>{res?.mode}</td>
                   <td>{res?.particulars}</td>
-                  <td>{res?.checkNo}</td>
+                  <td>{res?.chequeNo}</td>
                   <td>{res?.amount}</td>
                   <td>{res?.nerration}</td>
                   <td style={{ width: "120px" }} className=" flex gap-2">
@@ -372,7 +398,7 @@ export default function BankDeposits({ dbpath1 }) {
               ))}
             </tbody>
           </table>
-          <p style={{ marginLeft: "600px" }}> Total Amount : {totalAmountVal} </p>
+          <p style={{ marginLeft: "655px" }}> Total Amount : {totalAmountVal} </p>
         </div>
       </div>
     </>

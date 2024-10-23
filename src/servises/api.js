@@ -1,6 +1,6 @@
 // const BASE_URL = process.env.REACT_APP_BASE_URL
-// const BASE_URL = "http://localhost:4000"
-const BASE_URL = "https://marvah-server.onrender.com"
+const BASE_URL = "http://localhost:4000"
+// const BASE_URL = "https://marvah-server.onrender.com"
 
 export const cardEndpoint = {
     CREATE_PETROCARD_API : BASE_URL + `/petrocard/createPetroCard`,
@@ -45,5 +45,6 @@ export const bankEndpoints = {
     
     CREATE_BANK_TRAN_API : BASE_URL + "/bank/createBankTran",
     GET_BANK_TRAN_DATA_API: BASE_URL + "/bank/getBankTranData",
+    EDIT_BANK_TRAN_DATA_API: BASE_URL + "/bank/updateBankTran",
     DELETE_BANK_TRAN_API : BASE_URL + "/bank/deleteBankTran",
 }
