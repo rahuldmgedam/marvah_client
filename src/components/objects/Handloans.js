@@ -998,8 +998,9 @@ export default function Handloans({ dbpath1 }) {
             <tr className=" text-center  border-2 border-grey-200">
               {/* <th className="tablebg">Sr No.</th> */}
               <th className=" px-1 py-2">Party Name</th>
-              <th className="py-2 w-32">Debit-Out</th>
               <th className="py-2">Credit-In</th>
+              <th className="py-2 w-32">Debit-Out</th>
+          
               <th className="py-2">Narration</th>
             </tr>
           </thead>
@@ -1013,15 +1014,16 @@ export default function Handloans({ dbpath1 }) {
                       {transaction.party_name}
                     </td>
                     <td className="p-2 border-2 border-grey-200">
-                      {transaction.voucher_type === "Debit-Out"
-                        ? transaction.amount
-                        : "-"}
-                    </td>
-                    <td className="p-2 border-2 border-grey-200">
                       {transaction.voucher_type === "Credit-In"
                         ? transaction.amount
                         : "-"}
                     </td>
+                    <td className="p-2 border-2 border-grey-200">
+                      {transaction.voucher_type === "Debit-Out"
+                        ? transaction.amount
+                        : "-"}
+                    </td>
+                 
                     <td className="p-2 border-2 border-grey-200">
                       {transaction.narration}
                     </td>
@@ -1075,8 +1077,9 @@ export default function Handloans({ dbpath1 }) {
                   <tr className=" text-center p-2 border-2 border-grey-200">
                     <th className="items-center p-2">Sr No.</th>
                     <th className="items-center">Date</th>
-                    <th className="">Debit-Out</th>
                     <th className="">Credit-In</th>
+                    <th className="">Debit-Out</th>
+              
                     <th className="">Narration</th>
                   </tr>
                 </thead>
@@ -1092,15 +1095,16 @@ export default function Handloans({ dbpath1 }) {
                           {client?.date}
                         </td>
                         <td className="p-2 border-2 border-grey-200 w-24">
-                          {client.voucher_type === "Debit-Out"
-                            ? client.amount
-                            : "-"}
-                        </td>
-                        <td className="p-2 border-2 border-grey-200 w-24">
                           {client.voucher_type === "Credit-In"
                             ? client.amount
                             : "-"}
                         </td>
+                        <td className="p-2 border-2 border-grey-200 w-24">
+                          {client.voucher_type === "Debit-Out"
+                            ? client.amount
+                            : "-"}
+                        </td>
+                    
                         <td className="p-2 border-2 border-grey-200">
                           {client.narration}
                         </td>

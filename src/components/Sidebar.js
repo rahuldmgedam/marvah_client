@@ -444,29 +444,8 @@ export default function Sidebar() {
                 </Link>
               </li>
               <li>
-                <Link to="/Add_Bank" className="hover:underline">
-                  Add Banks
-                </Link>
-              </li>
-              {/* <li><Link to="/add_client2" className="hover:underline">Add Client</Link></li> */}
-              <li>
-                <Link to="/add_Credit" className="hover:underline">
-                  Add Credit
-                </Link>
-              </li>
-              <li>
                 <Link to="/add_client" className="hover:underline">
                   Add Handloan Client
-                </Link>
-              </li>
-              <li>
-                <Link to="/Oil_Products" className="hover:underline">
-                  Add Oil Product
-                </Link>
-              </li>
-              <li>
-                <Link to="/Add_Oil_Pouches" className="hover:underline">
-                  Add Oil Pouches
                 </Link>
               </li>
               <li>
@@ -475,10 +454,16 @@ export default function Sidebar() {
                 </Link>
               </li>
               <li>
-                <Link to="/add_payments_mode" className="hover:underline">
-                  Add Payments Mode
+                <Link to="/Oil_Products" className="hover:underline">
+                  Add Oil Product
                 </Link>
               </li>
+              <li>
+                <Link to="/add_Credit" className="hover:underline">
+                  Add Credit
+                </Link>
+              </li>
+            
               <li>
                 <Link to="/Add_Petro_Card" className="hover:underline">
                   Add Petro Card
@@ -487,6 +472,25 @@ export default function Sidebar() {
               <li>
                 <Link to="/Add_Wallet" className="hover:underline">
                   Add Wallet
+                </Link>
+              </li>
+              <li>
+                <Link to="/Add_Bank" className="hover:underline">
+                  Add Banks
+                </Link>
+              </li>
+           
+           
+         
+              {/* <li>
+                <Link to="/Add_Oil_Pouches" className="hover:underline">
+                  Add Oil Pouches
+                </Link>
+              </li> */}
+           
+              <li>
+                <Link to="/add_payments_mode" className="hover:underline">
+                  Add Payments Mode
                 </Link>
               </li>
               <li>
