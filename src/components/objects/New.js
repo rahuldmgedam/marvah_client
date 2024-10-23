@@ -803,3 +803,207 @@ const New = () => {
 };
 
 export default New;
+
+
+// import axios from "axios";
+// import React, { useEffect, useState } from "react";
+// import toast from "react-hot-toast";
+
+// const New = () => {
+//   const [data, setData] = useState([]);
+//   const [nozzleData, setNozzleData] = useState([]);
+//   const [machineOpen, setMachineOpen] = useState(false);
+//   const [addMachineOpen, setAddMachineOpen] = useState(false); // For Add Machine Modal
+//   const [machine, setMachine] = useState([]);
+//   const [editMachine, setEditMachine] = useState({});
+//   const [visibleMachines, setVisibleMachines] = useState([]); // Track machine visibility
+//   const [newMachine, setNewMachine] = useState({}); // To add a new machine
+//   const [msProductData, setMsProductData] = useState([]);
+
+//   const fetchMsProductData = async () => {
+//     try {
+//       const response = await axios.get('https://marvah-server.onrender.com/tank');
+//       setMsProductData(response.data);
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//   };
+
+//   const fetchmachine = async () => {
+//     try {
+//       const res = await axios.get("https://marvah-server.onrender.com/machine");
+//       setMachine(res.data.machine);
+//       setVisibleMachines(res.data.machine.map(() => true)); // Initialize visibility state
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchmachine();
+//     fetchMsProductData();
+//   }, []);
+
+//   const closemMachineModal = () => {
+//     setMachineOpen(false);
+//   };
+
+//   const handleMachineEdit = (props) => {
+//     setEditMachine(props);
+//     setMachineOpen(true);
+//   };
+
+//   const handleCloseMachine = (index) => {
+//     const updatedVisibility = [...visibleMachines];
+//     updatedVisibility[index] = !updatedVisibility[index]; // Toggle visibility
+//     setVisibleMachines(updatedVisibility);
+//   };
+
+//   const handleEditMachineChange = (e) => {
+//     const { name, value } = e.target;
+//     setEditMachine({ ...editMachine, [name]: value });
+//   };
+
+//   const handleEditMachineSubmit = () => {
+//     axios
+//       .patch(`https://marvah-server.onrender.com/machine/update/${editMachine._id}`, editMachine)
+//       .then((res) => {
+//         setMachineOpen(false);
+//         toast.success("Machine data updated");
+//         fetchmachine();
+//       })
+//       .catch((error) => {
+//         console.log(error.message);
+//       });
+//   };
+
+//   const handleAddMachineChange = (e) => {
+//     const { name, value } = e.target;
+//     setNewMachine({ ...newMachine, [name]: value });
+//   };
+
+//   const handleAddMachineSubmit = () => {
+//     axios
+//       .post("https://marvah-server.onrender.com/machine/add", newMachine)
+//       .then((res) => {
+//         setAddMachineOpen(false);
+//         toast.success("New machine added successfully");
+//         fetchmachine();
+//       })
+//       .catch((error) => {
+//         console.log(error.message);
+//       });
+//   };
+
+//   const { nozzleLayout } = editMachine;
+
+//   return (
+//     <>
+//       {/* Modal for Edit Machine */}
+//       {machineOpen && (
+//         <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto">
+//           {/* Modal content here */}
+//         </div>
+//       )}
+
+//       {/* Modal for Adding New Machine */}
+//       {addMachineOpen && (
+//         <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto">
+//           <div class="w-full max-w-lg bg-white shadow-lg rounded-lg p-8 relative">
+//             <h3 class="text-blue-600 text-xl font-bold">Add New Machine</h3>
+//             <form class="space-y-4 mt-8">
+//               <div>
+//                 <label class="text-gray-800 text-sm mb-2 block">Dispensing Unit No</label>
+//                 <input
+//                   value={newMachine.machineNo}
+//                   onChange={handleAddMachineChange}
+//                   type="number"
+//                   name="machineNo"
+//                   class="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm rounded-lg"
+//                 />
+//               </div>
+
+//               <div>
+//                 <label class="text-gray-800 text-sm mb-2 block">Make</label>
+//                 <input
+//                   value={newMachine.make}
+//                   onChange={handleAddMachineChange}
+//                   type="text"
+//                   name="make"
+//                   class="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm rounded-lg"
+//                 />
+//               </div>
+
+//               {/* Add more input fields as needed */}
+
+//               <div class="flex justify-end gap-4 !mt-8">
+//                 <button
+//                   onClick={() => setAddMachineOpen(false)}
+//                   type="button"
+//                   class="px-6 py-3 rounded-lg text-gray-800 text-sm bg-gray-200 hover:bg-gray-300"
+//                 >
+//                   Cancel
+//                 </button>
+//                 <button
+//                   type="button"
+//                   onClick={handleAddMachineSubmit}
+//                   class="px-6 py-3 rounded-lg text-white text-sm bg-blue-600 hover:bg-blue-700"
+//                 >
+//                   Add
+//                 </button>
+//               </div>
+//             </form>
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Add Machine Button */}
+//       <div className="mt-4">
+//         <button
+//           onClick={() => setAddMachineOpen(true)}
+//           class="px-6 py-3 rounded-lg text-white text-sm bg-green-600 hover:bg-green-700 mb-4"
+//         >
+//           Add Machine
+//         </button>
+//       </div>
+
+//       {/* Mapping machine data */}
+//       <div className="mt-4">
+//         {machine.map((machine, index) => (
+//           <div className="mb-11" key={index}>
+//             {visibleMachines[index] && (
+//               <div className="flex">
+//                 <div className="w-[90%] m-auto ">
+//                   {/* Machine Details */}
+//                   {/* More UI elements */}
+//                 </div>
+//                 <div>
+//                   <table>
+//                     <tr key={index}>
+//                       <td className="px-4 py-4 flex text-sm text-gray-800 font-bold">
+//                         <button
+//                           class="text-white bg-blue-500 px-2 py-1 rounded-md mr-4"
+//                           onClick={() => handleMachineEdit(machine)}
+//                         >
+//                           Edit
+//                         </button>
+//                         <button
+//                           class="text-white bg-red-500 px-2 py-1 rounded-md"
+//                           onClick={() => handleCloseMachine(index)}
+//                         >
+//                           Close
+//                         </button>
+//                       </td>
+//                     </tr>
+//                   </table>
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+//         ))}
+//       </div>
+//     </>
+//   );
+// };
+
+// export default New;
