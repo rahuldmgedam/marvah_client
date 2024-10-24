@@ -5,6 +5,11 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 export default function BankStatement({ dbpath1 }) {
+  const [bankId, setBankId] = useState("");
+  const [accountNo, setAccountNo] = useState("");
+  const [edit, setEdit] = useState(false);
+  const [amountInWord, setAmountInWord] = useState("");
+
   const [Statement, setStatemnet] = useState([]);
   const [banks, setBanks] = useState([]);
   const [modes, setModes] = useState([]);
@@ -26,356 +31,237 @@ export default function BankStatement({ dbpath1 }) {
   const [check, setCheck] = useState("");
   const [totalAmountVal, setTotalAmountVal] = useState(null);
 
-  // const loadSatement = async (bankid) => {
-  //     let query="select * from rwt_bank_statement where statemnt_id != 0 AND bank_id = "+bankid+" AND date= '"+datecache+"' ORDER BY date";
 
-  //         /*    alert(query); */
-  //     const url = dbpath1 + 'getDynamic.php';
-  //     let fData = new FormData();
+  const [formData, setFormData] = useState({
+    date: new Date().toISOString().substr(0, 10),
+    tranId: '',
+    mode: '',
+    BankId: '',
+    chequeNo: '',
+    amount: '',
+    particulars: '',
+    nerration: '',
+    tranType: '',
+  });
+
+  const handleChenge = (e) => {
+    const { name, value } = e.target;
+    // if (name === "BankName") {
+    //   setBankName(value);
+    //   // setAccountNo()
+    // }
+    // else {
+    // }
+    setFormData((pre) => ({
+      ...pre,
+      [name]: value
+    }))
+  }
+
+  const nextHandler = async () => {
+    let currentDate = new Date(formData.date); // Convert to Date object
+    currentDate.setDate(currentDate.getDate() + 1); // Increment by one day
+
+    const nextDate = currentDate.toISOString().split('T')[0]; // Convert back to 'YYYY-MM-DD' format
+    console.log("nextDate ", nextDate);
+
+    setFormData((pre) => ({
+      ...pre,
+      ["date"]: nextDate,
+    }))
+  };
+
+  const formDataHandler = (data) => {
+    console.log("data ", data);
+    setFormData((pre) => ({
+      ...pre,
+      ["BankId"]: data?._id
+    }));
+    setAccountNo(data?.AccountNumber)
+  }
+
+  console.log("formdata ", formData);
 
-  //     fData.append('query', query);
 
-  //         const response = await axios.post(url, fData);
 
-  //         if (response && response.data) {
-
-  //             if (response.data.phpresult) {
-  //                     setStatemnet(response.data.phpresult);
-  //                 const initialNarration = {};
-  //                     response.data.phpresult.forEach(st => {
-  //                     initialNarration[st.statemnt_id] = st.narration;
-
-  //                 });
-  //                 console.log(initialNarration);
-  //                 /*  setTimeout(function() {
-  //                     loadCheckBoxes(response.data.phpresult);
-  //                 }, 200  );  */
-  //                 setInarration(initialNarration);
-
-  //                 /*   console.log(response.data.phpresult); */
-  //             }
-  //         }
-  // }
-
-  /*    function loadCheckBoxes(boxesdata){
-            let i;
-            for(i=0;i<boxesdata.length;i++)
-            {
-                if(boxesdata[i]['check']==='1')
-                {
-                    
-                    let check = "check"+boxesdata[i]['statemnt_id'];
-                
-                    document.getElementById(check).checked = true;
-                }
-            }
-
-
-        } */
-
-  //     const loadBanks = async () => {
-  //         let query="select * from rwt_bank_account WHERE account_status='active'";
-
-  //         /*    alert(query); */
-  //         const url = dbpath1 + 'getDynamic.php';
-  //         let fData = new FormData();
-
-  //         fData.append('query', query);
-
-  //             const response = await axios.post(url, fData);
-
-  //             if (response && response.data) {
-
-  //                 if (response.data.phpresult) {
-  //                     setBanks(response.data.phpresult);
-  //                     console.log(response.data.phpresult);
-  //                 }
-  //             }
-  //     }
-
-  //     const loadmode = async () => {
-  //         let query="select * from rwt_mode";
-
-  //         /*    alert(query); */
-  //         const url = dbpath1 + 'getDynamic.php';
-  //         let fData = new FormData();
-
-  //         fData.append('query', query);
-
-  //             const response = await axios.post(url, fData);
-
-  //             if (response && response.data) {
-
-  //                 if (response.data.phpresult) {
-  //                     setModes(response.data.phpresult);
-  //                     console.log(response.data.phpresult);
-  //                 }
-  //             }
-  //     }
-
-  //     const navigate = useNavigate();
-
-  //     const onAdd = () =>{
-  //         if (date.length === 0) {
-  //             alert("Date has been left blank!");
-  //         }
-  //     else if (type.length === 0) {
-  //             alert("Debit/Credit has been left blank!");
-  //         }   else if (amount.length === 0) {
-  //             alert("Amount has been left blank!");
-  //         }  else if (bankName.length === 0) {
-  //             alert("Bank has been left blank!");
-  //         }   else {
-
-  //             let dra;
-  //             let cra;
-  //             let tamt;
-
-  //             if(type==='Debit')
-  //             {
-
-  //                 dra=amount;
-  //                 cra='';
-  //                 tamt = parseFloat(totalAmountVal)-parseFloat(amount);
-  //             alert(" tamt = "+parseFloat(totalAmountVal)+"-"+parseFloat(amount));
-  //             }
-  //             if(type==='Credit')
-  //             {
-
-  //                 cra=amount;
-  //                 dra='';
-  //                 tamt = parseFloat(totalAmountVal)+parseFloat(amount);
-  //                 alert(" tamt = "+parseFloat(totalAmountVal)+"+"+parseFloat(amount));
-  //             }
-
-  //             const selectedProduct = banks.find(product => product.bank_account_id === bankName);
-
-  //             let query="INSERT INTO `rwt_bank_statement` (`statemnt_id`, `date`, `particualrs`, `bank_name`, `bank_id`, `acc_no`, `instruments`, `dr_amount`, `cr_amount`, `total_amount`, `check`, `narration`) VALUES (NULL, '"+date+"', '"+selectedProduct.head_name+"', '"+selectedProduct.name+"', '" +bankName+"', '" +selectedProduct.account_no+"', '"+selectedmode+" - "+cheque+"', '"+dra+"', '"+cra+"', '"+tamt.toFixed(2)  +"', '0', '"+narration+"');";
-  //             alert(query);
-  //             const url = dbpath1+'delTank.php';
-  //             let fData = new FormData();
-  //             fData.append('query', query);
-
-  //             axios.post(url, fData)
-  //             .then(response => {alert(response.data);  window.location.reload();})
-  //                 .catch(error => {
-  //                 console.log(error.toJSON());
-  //         });
-  //         }
-  //     }
-
-  //     const getTotalAmount = async () => {
-  //             const selectedProduct = banks.find(product => product.bank_account_id === bankName);
-  //             let query = "SELECT * FROM `rwt_bank_statement` where bank_id = '"+bankName+"' ORDER BY statemnt_id DESC LIMIT 1;";
-  //         /*    alert("3 + "+query); */
-  //             const url = dbpath1 + 'getDynamic.php';
-  //         let fData = new FormData();
-
-  //         fData.append('query', query);
-
-  //         try {
-  //             const response = await axios.post(url, fData);
-
-  //             if (response && response.data && response.data.phpresult) {
-  //                 const fetchedAmount = response.data.phpresult[0]['total_amount'];
-  //                 console.log(fetchedAmount);  // Using fetched value directly
-
-  //                 // Any operations you want to do with fetchedAmount
-  //                 // ...
-
-  //                 // Finally, if you want, you can set it to state.
-  //                 setTotalAmountVal(fetchedAmount);
-  //             }
-  //             else
-  //             {
-  //                 let query1 = "SELECT * FROM `rwt_bank_account` where bank_account_id = '"+bankName+"' ;";
-  //             /*   alert("2 + "+query1); */
-  //                 const url1 = dbpath1 + 'getDynamic.php';
-  //                 let fData1 = new FormData();
-
-  //                 fData1.append('query', query1);
-  //                 const response = await axios.post(url1, fData1);
-
-  //                 const fetchedAmount1 = response.data.phpresult[0]['starting_amount'];
-  //                 console.log(fetchedAmount1);
-
-  //                 setTotalAmountVal(fetchedAmount1);
-  //             }
-  //         } catch (error) {
-  //             console.error("Error fetching data:", error);
-  //         }
-  //     }
-
-  //     const getTotalAmount1 = async (bname) => {
-  //         const selectedProduct = banks.find(product => product.bank_account_id === bankName);
-  //         let query = "SELECT * FROM `rwt_bank_statement` where bank_id = '"+bname+"' ORDER BY statemnt_id DESC LIMIT 1;";
-  //     /*   alert("1 + "+query); */
-  //         const url = dbpath1 + 'getDynamic.php';
-  //         let fData = new FormData();
-
-  //     fData.append('query', query);
-
-  //     {
-  //         const response = await axios.post(url, fData);
-  //         console.log("length "+response.data.phpresult.length);
-  //         console.log(response.data.phpresult.length);
-  //         let length = response.data.phpresult.length;
-  //         if (length>0) {
-  //             const fetchedAmount = response.data.phpresult[0]['total_amount'];
-  //             console.log(fetchedAmount);  // Using fetched value directly
-  //         /*   alert("1");
-  //             alert("4 + "+query); */
-  //             // Any operations you want to do with fetchedAmount
-  //             // ...
-
-  //             // Finally, if you want, you can set it to state.
-  //             setTotalAmountVal(fetchedAmount);
-  //         }
-  //         else
-  //         {
-  //         /*    alert("elsecheck"); */
-  //             let query1 = "SELECT * FROM `rwt_bank_account` where bank_account_id = '"+bname+"' ;";
-  //         /*   alert("5 + "+query1); */
-  //             const url1 = dbpath1 + 'getDynamic.php';
-  //             let fData1 = new FormData();
-
-  //             fData1.append('query', query1);
-  //             const response1 = await axios.post(url1, fData1);
-
-  //             /* alert( response1.data.phpresult[0]['starting_amount']); */
-
-  //             const fetchedAmount1 = response1.data.phpresult[0]['starting_amount'];
-  //             console.log(fetchedAmount1);
-  //             setTotalAmountVal(fetchedAmount1);
-  //         }
-  //     }
-  // }
-
-  //     useEffect(() => {
-  //         const getTotalAmount = async () => {
-  //             const selectedProduct = banks.find(product => product.bank_account_id === bankName);
-  //             let query = "SELECT * FROM `rwt_bank_statement` where bank_id = '"+bankName+"' ORDER BY statemnt_id DESC LIMIT 1;";
-  //         /*  alert("6 + "+query); */
-  //             const url = dbpath1 + 'getDynamic.php';
-  //             let fData = new FormData();
-
-  //             fData.append('query', query);
-
-  //             try {
-  //                 const response = await axios.post(url, fData);
-
-  //                 if (response && response.data && response.data.phpresult) {
-  //                     const fetchedAmount = response.data.phpresult[0]['total_amount'];
-  //                     console.log(fetchedAmount);  // Using fetched value directly
-
-  //                     // Any operations you want to do with fetchedAmount
-  //                     // ...
-
-  //                     // Finally, if you want, you can set it to state.
-  //                     setTotalAmountVal(fetchedAmount);
-  //                 }
-  //                 else
-  //                 {
-  //                     let query1 = "SELECT * FROM `rwt_bank_account` where bank_account_id = '"+bankName+"' ;";
-  //                     /* alert("7 + "+query1); */
-  //                 const url1 = dbpath1 + 'getDynamic.php';
-  //             let fData1 = new FormData();
-
-  //             fData1.append('query', query1);
-  //             const response1 = await axios.post(url1, fData1);
-
-  //                 const fetchedAmount1 = response1.data.phpresult[0]['starting_amount'];
-  //                 alert( response1.data.phpresult[0]['starting_amount']);
-  //                 console.log(fetchedAmount1);  // Using fetched value directly
-
-  //                 // Any operations you want to do with fetchedAmount
-  //                 // ...
-
-  //                 // Finally, if you want, you can set it to state.
-  //                 setTotalAmountVal(fetchedAmount1);
-  //                 }
-  //             } catch (error) {
-  //                 console.error("Error fetching data:", error);
-  //             }
-  //         }
-
-  //         getTotalAmount(); // This will call the async function
-  //     }, []);
-
-  //     function convertDateFormat(inputDate) {
-  //         // Split the string into an array [yyyy, mm, dd]
-  //         let parts = inputDate.split('-');
-
-  //         // Rearrange the array and join it back to a string
-  //         return parts[2] + '-' + parts[1] + '-' + parts[0];
-  //     }
-
-  //     const onDelete = async (index) => {
-  //         let query="DELETE FROM `rwt_bank_statement` WHERE statemnt_id = "+index+";";
-  //         /* alert(query); */
-  //         const url = dbpath1+'delTank.php';
-  //         let fData = new FormData();
-  //         fData.append('query', query);
-
-  //         axios.post(url, fData)
-  //         .then(response => {alert(response.data);  window.location.reload();})
-  //             .catch(error => {
-  //             console.log(error.toJSON());
-  //             });
-  //     }
-
-  //     const onSave = async (index,pstatus) => {
-
-  //         let check = "check"+index;
-  //         let cstatus=0;
-  //         if(document.getElementById(check).checked === true)
-  //         {
-  //             cstatus=1;
-  //         }
-  //         let query="UPDATE rwt_bank_statement SET `check` = '"+cstatus+"', `narration` = '"+document.getElementById('status'+index).value+"' WHERE statemnt_id = "+index+";";
-  //         /* alert(query); */
-  //         const url = dbpath1+'delTank.php';
-  //         let fData = new FormData();
-  //         fData.append('query', query);
-
-  //         axios.post(url, fData)
-  //             .then(response =>{window.location.reload();})
-  //             .catch(error => {
-  //             console.log(error.toJSON());
-  //             });
-  //     }
-
-  //     const showBank = (bankName) => {
-  //         const selectedProduct = banks.find(product => product.bank_account_id === bankName);
-  //         document.getElementById('showbname').innerHTML =selectedProduct.name;
-  //     }
-
-  //     const disabledropop1 = () => {
-  //         document.getElementById('dropop1').disabled = true;
-  //     }
-
-  //     useEffect(() => {
-  //         //loadSatement();
-  //         loadBanks();
-  //         loadmode();
-  //     //  getTotalAmount();
-  //     }, []);
-  const datecache = Cookies.get("dateCookies");
   return (
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-        <h2 className="mt-3 text-center">Bank Statement Entry</h2>
-        <h3 id="showbname" className="mt-3 text-center">
-          - select bank first -
-        </h3>
-        {/*  <b> Date : {convertDateFormat(datecache)}</b> */}
+        <h2 className="mt-3 text-center text-3xl font-semibold">Bank Statement Entry</h2>
+
+        <p> Date : {new Date().toLocaleDateString()}</p>
 
         <div>
           <br></br>
-          <table class="table">
+          <div className=" flex gap-3 mb-2">
+            <div className=" flex gap-2 ">
+              {/* Transaction Type */}
+              <select className=" form-control editableInput bigFontWeight rounded-md "
+                name="tranType" value={formData?.tranType} onChange={handleChenge}>
+                <option value="" disabled>Transaction Type</option>
+                <option value="Deposit">Deposit</option>
+                <option value="Withdraw">Withdraw</option>
+              </select>
+
+              <select className=" form-control editableInput bigFontWeight rounded-md " name="BankId" value={bankId}
+                onChange={(e) => {
+                  const bankData = banks?.find(res => res._id === e.target.value);
+                  setBankId(e.target.value);
+                  if (bankData) {
+                    formDataHandler(bankData);
+                  }
+                }}
+              >
+                <option value="" disabled>     - Select Bank - </option>
+                {
+                  banks?.map((d) => (
+                    <option key={d._id} value={d._id}>{d?.BankName}</option>
+                  ))
+                }
+              </select>
+
+              <input type="text" value={accountNo} className=" form-control editableInput bigFontWeight pl-2 rounded-md" placeholder="Account No. " />
+            </div>
+
+            <div className=" flex gap-2">
+              {/* <input type="date" value={date} onChange={(e) => setDate(e.target.value)}/> */}
+              <input
+                className=" w-[9rem] form-control editableInput bigFontWeight pl-1 rounded-md"
+                type="date"
+                name="date"
+                value={formData?.date}
+                onChange={handleChenge}
+              />
+              <button className=" bg-blue-600 px-3 rounded py-1 text-white" onClick={nextHandler}>Next</button>
+            </div>
+
+          </div>
+
+          <div>
+            {
+              // formData?.tranType === "Deposit" &&
+              (
+                <table className="table">
+                  <thead>
+                    <tr className="table-secondary">
+                      {/*   <th className='tablebg'>Date</th> */}
+                      <th className="tablebg" >
+                        <select className=" form-control editableInput bigFontWeight rounded-md " name="mode" value={formData?.mode} onChange={handleChenge}
+                        >
+                          <option value="" disabled> - Transaction Mode - </option>
+                          <option value="Cheque" >Cheque</option>
+                          <option value="Cash" >Cash</option>
+                          <option value="Transfer">Transfer</option>
+                          {/* {
+                          banks?.map((d) => (
+                            <option key={d._id} value={d._id}>{d?.BankName}</option>
+                          ))
+                        } */}
+                        </select>
+                      </th>
+
+                      <th className="tablebg" >Amount</th>
+                      <th className="tablebg" >Bank-Particulars</th>
+                      <th className="tablebg">Neration</th>
+                      <th className="tablebg">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {/* chequeNo */}
+                      <td>
+                        <input
+                          type="text"
+                          className={`form-control bigFontWeight ${formData?.mode === 'Cheque' ? "editableInput" : ""}`}
+                          placeholder="Cheque No."
+                          name="chequeNo"
+                          value={formData?.chequeNo}
+                          onChange={handleChenge}
+                        />
+                      </td>
+                      {/* amount */}
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control editableInput bigFontWeight"
+                          placeholder="Amount"
+                          name="amount"
+                          value={formData?.amount}
+                          onChange={handleChenge}
+                        />
+                      </td>
+                      {/* particulars */}
+                      <td>
+                        <input
+                          type="text"
+                          className={`form-control bigFontWeight ${formData?.mode == 'Cheque' ? "editableInput" : ""}`}
+                          placeholder="Particulars"
+                          name="particulars"
+                          value={formData?.particulars}
+                          onChange={handleChenge}
+                        />
+                      </td>
+                      {/* nerration */}
+                      <td>
+                        <input
+                          type="text"
+                          className={`form-control bigFontWeight ${formData?.mode == 'Cheque' ? "editableInput" : ""}`}
+                          placeholder="Nerration"
+                          name="nerration"
+                          value={formData?.nerration}
+                          onChange={handleChenge}
+                        />
+                      </td>
+                      {/* Save */}
+                      <td>
+                        {edit ?
+                          (<>
+                            <div className=" flex gap-2">
+                              <button type="button" className="btn btn-primary"
+                                // onClick={editBankTranHandler}
+                              >
+                                Edit
+                              </button>
+
+                              <button type="button" className="btn btn-primary"
+                                // onClick={canselEdit}
+                              >
+                                Cansel
+                              </button>
+                            </div>
+                          </>) :
+                          (<>
+                            <button type="button" className="btn btn-primary"
+                              // onClick={createBankTranHandler}
+                            >
+                              Save
+                            </button>
+                          </>)}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      {/* amount in word */}
+                      <td className="" colSpan="2">
+                        <input
+                          type="text"
+                          className="form-control editableInput bigFontWeight"
+                          placeholder="Amount in Word"
+                          value={amountInWord}
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              )
+            }
+          </div>
+
+          {/* <table class="table">
             <thead>
+
               <tr className="table-secondary">
-                <th className="tablebg">Date</th>
+                <th className="tablebg">Mode</th>
                 <th className="tablebg">Bank-Particualr</th>
                 <th className="tablebg">Narration</th>
                 <th className="tablebg">Mode</th>
@@ -389,26 +275,21 @@ export default function BankStatement({ dbpath1 }) {
             <tbody>
               <tr>
                 <td>
-                  <input
-                    type="date"
-                    class="form-control editableInput bigFontWeight"
-                    placeholder="Date"
-                    onChange={(e) => setDate(e.target.value)}
-                  />
+                  <select className=" form-control editableInput bigFontWeight rounded-md "
+                    name="mode" value={formData?.mode} onChange={handleChenge}
+                  >
+                    <option value="" disabled> - Transaction Mode - </option>
+                    <option value="Cheque" >Cheque</option>
+                    <option value="Cash" >Cash</option>
+                    <option value="Transfer">Transfer</option>
+                  </select>
                 </td>
                 <td scope="row">
                   <select
                     class="form-select editableInput bigFontWeight"
                     aria-label="Default select example"
                     value={bankName}
-                    // onChange={(e) => {
-                    //   setBankName(e.target.value);
-                    //   loadSatement(e.target.value);
-                    //   showBank(e.target.value);
-                    //   getTotalAmount1(
-                    //     e.target.value
-                    //   ); /*  setSelectedValues(e.target.value); */
-                    // }}
+                  
                   >
                     <option selected>- select -</option>
 
@@ -436,7 +317,7 @@ export default function BankStatement({ dbpath1 }) {
                     onChange={(e) => {
                       setSelectedMode(
                         e.target.value
-                      ); /*  setSelectedValues(e.target.value); */
+                      ); 
                     }}
                   >
                     <option selected>- select -</option>
@@ -457,11 +338,7 @@ export default function BankStatement({ dbpath1 }) {
                     class="form-select editableInput bigFontWeight"
                     aria-label="Default select example"
                     value={type}
-                    // onChange={(e) => {
-                    //   setType(e.target.value);
-                    //   setLabel1(e.target.value);
-                    //   disabledropop1(); /*  setSelectedValues(e.target.value); */
-                    // }}
+                  
                   >
                     <option id="dropop1" selected>
                       - select -
@@ -481,14 +358,14 @@ export default function BankStatement({ dbpath1 }) {
                 </td>
                 <td>
                   <button type="button" class="btn btn-primary"
-                //    onClick={onAdd}
-                   >
+                  
+                  >
                     Save
                   </button>
                 </td>
               </tr>
             </tbody>
-          </table>
+          </table> */}
         </div>
         <br></br>
         <div>
