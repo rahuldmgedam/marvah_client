@@ -483,6 +483,15 @@ export default function Navbar() {
             Day End
           </Link>
         </button>
+        <button
+          class="btn navDrop1 btn-secondary"
+          type="button"
+          style={{ width: "110px" }}
+        >
+          <Link class="dropdown-item" to="/planner">
+            Planner
+          </Link>
+        </button>
       </div>
     </>
   );
