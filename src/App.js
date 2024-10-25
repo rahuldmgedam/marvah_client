@@ -102,6 +102,7 @@ import BankDeposits from "./components/objects/Bank_Deposits";
 import PurchasetdsMain from "./components/Reports/purchaseReports/PurchasetdsMain";
 import StaffSalary from "./components/objects/StaffSalary";
 import Planner from "./components/objects/Planner";
+import Rates from "./components/objects/Rates";
 
 function App() {
   return (
@@ -2244,6 +2245,29 @@ function App() {
                   <div>
                     <Navbar />
                     <Planner />
+                  </div>
+
+                </div>
+              </div>
+            </>
+          }
+        />
+
+<Route
+          path="/rates"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                  <div>
+                    <Sidebar />
+                  </div>
+                </div>
+
+                <div className="w-[80%]">
+                  <div>
+                    <Navbar />
+                    <Rates/>
                   </div>
 
                 </div>

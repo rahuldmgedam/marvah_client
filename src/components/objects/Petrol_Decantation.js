@@ -26,8 +26,22 @@
 //   const [hsd, sethsd] = useState("");
 //   const [speed, setSpeed] = useState("");
 //   const [selectedInvoice, setSelectedInvoice] = useState("");
-
+//   const [tankName, setTankName] = useState([])
 //   const [tank,setTank] = useState([])
+
+
+//   const fetchTankName = async () => {
+//     try {
+//       const response = await axios.get('https://marvah-server.onrender.com/tank')
+//       const data = await response.data.map(item => item.product)
+//       setTankName(data)
+//       console.log(data);
+      
+//     } catch (error) {
+//       console.log(error)
+      
+//     }
+//   }
 
 //   useEffect(() => {
 //     const totalkl =
@@ -43,6 +57,7 @@
 //       totalkl,
 //       tanktotalkl,
 //     }));
+//     fetchTankName()
 //   }, [
 //     decantation.mskl,
 //     decantation.hsdkl,
@@ -244,7 +259,7 @@
 //   useEffect(() => {
 //     fetchTank();
   
-//   }, []);
+//   }, []);
 //   // console.log("data", petrolInvoice);
 //   return (
 //     <>
@@ -282,9 +297,9 @@
 //             <thead>
 //               <tr className="text-center mb-2 bg-[#008b8b] text-white">
 //                 <th className="border-2 text-center border-gray-700">Invoice No</th>
-//                 <th className="border-2 text-center border-gray-700">MS-1 (KL)</th>
-//                 <th className="border-2 text-center border-gray-700">MS-2(SP) (KL)</th>
-//                 <th className="border-2 text-center border-gray-700">HSD (KL)</th>
+//                 <th className="border-2 text-center border-gray-700">{tankName[0]}</th>
+//                 <th className="border-2 text-center border-gray-700">{tankName[1]}</th>
+//                 <th className="border-2 text-center border-gray-700">{tankName[2]}</th>
 //                 <th className="border-2 text-center border-gray-700">Total (KL)</th>
 //               </tr>
 //             </thead>
@@ -372,15 +387,15 @@
 //                   className="border-2 text-center border-gray-700"
 //                 >
 //                   {/* Tank 1-15KL <br /> */}
-//                   MS-1(KL)
+//                   {tankName[0]}
 //                 </th>
 //                 <th className="border-2 text-center border-gray-700 " >
 //                   {/* Tank 2-10KL <br></br> */}
-//                   MS-2(KL)(SP) {}
+//                   {tankName[1]}
 //                 </th>
 //                 <th className="border-2 text-center border-gray-700">
 //                   {/* Tank 3-9KL <br></br> */}
-//                   HSD(KL)
+//                   {tankName[2]}
 //                 </th>
 //                 <th className="border-2 text-center border-gray-700" id="">
 //                   Total (KL)
@@ -472,13 +487,13 @@
 //                   Invoice Number
 //                 </th>
 //                 <th class=" text-center text-md  border-2 border-black text-white">
-//                   MS-1(KL)
+//                 {tankName[0]}
 //                 </th>
 //                 <th class=" text-center text-md border-2 border-black text-white">
-//                   MS-2(KL)(SP)
+//                 {tankName[1]}
 //                 </th>
 //                 <th class=" text-center text-md  border-2 border-black text-white">
-//                   HSD(KL)
+//                 {tankName[2]}
 //                 </th>
 //                 <th class=" text-center text-md  border-2 border-black text-white">
 //                   TOTAL(KL)
@@ -550,6 +565,9 @@ export default function Client() {
   const [selectedInvoice, setSelectedInvoice] = useState("");
   const [tankName, setTankName] = useState([])
   const [tank,setTank] = useState([])
+  const [tank1Decantaion, setTank1Decantation] = useState('')
+  const [tank2Decantaion, setTank2Decantation] = useState('')
+  const [tank3Decantaion, setTank3Decantation] = useState('')
 
 
   const fetchTankName = async () => {
@@ -607,10 +625,11 @@ export default function Client() {
       hsdkl: hsd ? hsd : 0,
       speedkl: speed ? speed : 0,
       totalkl: Number(decantation.totalkl),
-      tank1: Number(decantation.tank1),
-      tank2: Number(decantation.tank2),
-      tank3: Number(decantation.tank3),
+      tank1: Number(tank1Decantaion),
+      tank2: Number(tank2Decantaion),
+      tank3: Number(tank3Decantaion),
       tanktotalkl: Number(decantation.tanktotalkl),
+
     };
     console.log("data", formattedData);
 
@@ -933,21 +952,23 @@ export default function Client() {
                 <td className="border-8 border-blue-600 rounded-xl" scope="row">
                   <input
                     type="number"
-                    id="tank1"
+                    id="tank1Decantation"
                     className="w-20"
-                    name="tank1"
-                    value={ms ? ms : 0}
-                    onChange={handleChange}
+                    name="tank1Decantation"
+                    // value={ms ? ms : 0}
+                    value={tank1Decantaion}
+                    onChange={(e) => setTank1Decantation(e.target.value)}
                   />
                 </td>
                 <td className="border-8 border-blue-600 rounded-xl" scope="row">
                   <input
                     type="text"
                     className="w-20"
-                    id="tank2"
-                    name="tank2"
-                    value={speed ? speed : 0}
-                    onChange={handleChange}
+                    id="tank2Decantation"
+                    name="tank2Decantation"
+                    // value={speed ? speed : 0}
+                    value={tank2Decantaion}
+                    onChange={(e) => setTank2Decantation(e.target.value)}
                   />
                 </td>
                 <td className="border-8 border-blue-600 rounded-xl">
@@ -955,19 +976,20 @@ export default function Client() {
                     type="text"
                     className="w-20"
 
-                    id="tank3"
-                    name="tank3"
-                    value={hsd ? hsd : 0}
-                    onChange={handleChange}
+                    id="tank3Decantation"
+                    name="tank3Decantation"
+                    // value={hsd ? hsd : 0}
+                    value={tank3Decantaion}
+                    onChange={(e) => setTank3Decantation(e.target.value)}
                   />
                 </td>
                 <td className="border-8 border-blue-600 rounded-xl" scope="row">
                   <input
-                    type="text"
+                    type="number"
                     className="w-20"
 
                     name="tanktotalkl"
-                    value={ms + hsd + speed}
+                    value={parseInt(tank1Decantaion) + parseInt(tank2Decantaion) + parseInt(tank3Decantaion)}
                     placeholder="Total"
                     disabled
                   />
