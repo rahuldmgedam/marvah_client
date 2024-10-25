@@ -4,14 +4,15 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { createBankTran, getBankData, getBankTranData } from "../../servises/opretions/bank";
 export default function BankStatement({ dbpath1 }) {
   const [bankId, setBankId] = useState("");
   const [accountNo, setAccountNo] = useState("");
   const [edit, setEdit] = useState(false);
   const [amountInWord, setAmountInWord] = useState("");
+  const [banks, setBanks] = useState([]);
 
   const [Statement, setStatemnet] = useState([]);
-  const [banks, setBanks] = useState([]);
   const [modes, setModes] = useState([]);
 
   const [firstName, setFirstName] = useState("");
@@ -58,6 +59,17 @@ export default function BankStatement({ dbpath1 }) {
     }))
   }
 
+  const getBankHandler = async () => {
+    const res = await getBankData();
+    console.log("res in deposits ", res)
+    setBanks(res);
+  }
+
+  useEffect(() => {
+    getBankHandler();
+    getBankTranDataHandler();
+  }, [])
+
   const nextHandler = async () => {
     let currentDate = new Date(formData.date); // Convert to Date object
     currentDate.setDate(currentDate.getDate() + 1); // Increment by one day
@@ -82,6 +94,62 @@ export default function BankStatement({ dbpath1 }) {
 
   console.log("formdata ", formData);
 
+  function numberToWords() {
+    const num = formData?.amount;
+    if (num === "") {
+      setAmountInWord("");
+    }
+    else if (num) {
+      let amountInWordTemp = convertToWords(num);
+      setAmountInWord(amountInWordTemp);
+    }
+
+  }
+
+  useEffect(() => {
+    numberToWords();
+  }, [formData?.amount])
+
+  function convertToWords(num) {
+    const belowTwenty = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+    const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+    if (num === 0) return '';
+    if (num < 20) return belowTwenty[num - 1];
+    if (num < 100) return tens[Math.floor(num / 10)] + (num % 10 ? ' ' + belowTwenty[num % 10 - 1] : '');
+    if (num < 1000) return belowTwenty[Math.floor(num / 100) - 1] + ' hundred,' + (num % 100 ? ' and ' + convertToWords(num % 100) : '');
+    if (num < 100000) return convertToWords(Math.floor(num / 1000)) + ' thousand,' + (num % 1000 ? ' ' + convertToWords(num % 1000) : '');
+    if (num < 10000000) return convertToWords(Math.floor(num / 100000)) + ' lakh,' + (num % 100000 ? ' ' + convertToWords(num % 100000) : '');
+    if (num < 1000000000) return convertToWords(Math.floor(num / 10000000)) + ' crore,' + (num % 10000000 ? ' ' + convertToWords(num % 10000000) : '');
+
+    return 'Number too large';
+  }
+
+
+  const createBankTranHandler = async () => {
+    const res = await createBankTran(formData);
+    setFormData((pre) => ({
+      ...pre,
+      // mode: '',
+      chequeNo: '',
+      amount: '',
+      particulars: '',
+      nerration: '',
+    }))
+
+    getBankTranDataHandler();
+  }
+
+  const getBankTranDataHandler = async () => {
+    const res = await getBankTranData();
+    console.log("res in getBankTranData ", res?.bankTranData);
+    if (res?.bankTranData) {
+      setStatemnet(res?.bankTranData);
+      const amount = res?.bankTranData?.reduce((acc, curr) => acc + curr.amount, 0);
+
+      setTotalAmountVal(amount);
+    }
+  }
 
 
   return (
@@ -92,7 +160,6 @@ export default function BankStatement({ dbpath1 }) {
         <p> Date : {new Date().toLocaleDateString()}</p>
 
         <div>
-          <br></br>
           <div className=" flex gap-3 mb-2">
             <div className=" flex gap-2 ">
               {/* Transaction Type */}
@@ -103,7 +170,7 @@ export default function BankStatement({ dbpath1 }) {
                 <option value="Withdraw">Withdraw</option>
               </select>
 
-              <select className=" form-control editableInput bigFontWeight rounded-md " name="BankId" value={bankId}
+              <select className=" form-control editableInput bigFontWeight rounded-md w-full" name="BankId" value={bankId}
                 onChange={(e) => {
                   const bankData = banks?.find(res => res._id === e.target.value);
                   setBankId(e.target.value);
@@ -194,7 +261,7 @@ export default function BankStatement({ dbpath1 }) {
                       <td>
                         <input
                           type="text"
-                          className={`form-control bigFontWeight ${formData?.mode == 'Cheque' ? "editableInput" : ""}`}
+                          className={`form-control bigFontWeight ${formData?.mode === 'Cheque' ? "editableInput" : ""}`}
                           placeholder="Particulars"
                           name="particulars"
                           value={formData?.particulars}
@@ -205,7 +272,7 @@ export default function BankStatement({ dbpath1 }) {
                       <td>
                         <input
                           type="text"
-                          className={`form-control bigFontWeight ${formData?.mode == 'Cheque' ? "editableInput" : ""}`}
+                          className={`form-control bigFontWeight ${formData?.mode === 'Cheque' ? "editableInput" : ""}`}
                           placeholder="Nerration"
                           name="nerration"
                           value={formData?.nerration}
@@ -218,13 +285,13 @@ export default function BankStatement({ dbpath1 }) {
                           (<>
                             <div className=" flex gap-2">
                               <button type="button" className="btn btn-primary"
-                                // onClick={editBankTranHandler}
+                              // onClick={editBankTranHandler}
                               >
                                 Edit
                               </button>
 
                               <button type="button" className="btn btn-primary"
-                                // onClick={canselEdit}
+                              // onClick={canselEdit}
                               >
                                 Cansel
                               </button>
@@ -232,7 +299,7 @@ export default function BankStatement({ dbpath1 }) {
                           </>) :
                           (<>
                             <button type="button" className="btn btn-primary"
-                              // onClick={createBankTranHandler}
+                              onClick={createBankTranHandler}
                             >
                               Save
                             </button>
@@ -367,21 +434,19 @@ export default function BankStatement({ dbpath1 }) {
             </tbody>
           </table> */}
         </div>
-        <br></br>
         <div>
-          <br></br>
           <table class="table">
             <thead>
               <tr className="table-secondary">
                 <th className="tablebg">Sr</th>
                 <th className="tablebg">Date</th>
-                {/*  <th className='tablebg'>Bank-Particualr</th> */}
+                <th className='tablebg'>Bank-Particualr</th>
                 <th className="tablebg">Mode</th>
                 <th className="tablebg">
-                  Debit<br></br> (outward)
+                  W. Amount
                 </th>
                 <th className="tablebg">
-                  Credit<br></br> (inward)
+                  D. Amount
                 </th>
                 <th className="tablebg">Balance</th>
                 {/*   <th className='tablebg'>Check</th>
@@ -393,11 +458,16 @@ export default function BankStatement({ dbpath1 }) {
               {Statement.map((res, index) => (
                 <tr className="hovereffect" key={index}>
                   <td>{index + 1}</td>
-                  <td>{res.date}</td>
+                  <td>{new Date(res.date)?.toLocaleDateString()}</td>
                   {/*    <td>{res.bank_name} - {res.acc_no} - {res.particualrs}</td> */}
-                  <td>{res.instruments}</td>
-                  <td>{res.dr_amount}</td>
-                  <td>{res.cr_amount}</td>
+                  <td>{res.particulars}</td>
+                  <td>{res.mode}</td>
+                  <td>{
+                    res.tranType === "Withdraw" && res.amount
+                  }</td>
+                  <td>{
+                    res.tranType === "Deposit" && res.amount
+                  }</td>
                   <td>{res.total_amount}</td>
                   {/*       <td> <input style={{width:'20px', height:'20px', border:'1px solid '}} type="checkbox" id={'check'+res.statemnt_id} value='0' class="form-check-input"/> </td>
                                     

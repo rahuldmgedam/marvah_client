@@ -28,6 +28,7 @@ export default function BankDeposits({ dbpath1 }) {
     amount: '',
     particulars: '',
     nerration: '',
+    tranType: 'Deposit',
   });
 
   const handleChenge = (e) => {
