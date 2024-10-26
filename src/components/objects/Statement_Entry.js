@@ -479,7 +479,7 @@ export default function BankStatement({ dbpath1 }) {
                       className=" text-red-600 px-1 py- text-"
                       title="Delete"
                       // id={"data" + res.statemnt_id}
-                      onClick={() => deleteBankTranHandler(res._id)}
+                      // onClick={() => deleteBankTranHandler(res._id)}
                     >
                       Delete
                       {/* <TiDeleteOutline /> */}
