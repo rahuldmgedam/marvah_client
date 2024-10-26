@@ -45,6 +45,7 @@ export const bankEndpoints = {
     
     CREATE_BANK_TRAN_API : BASE_URL + "/bank/createBankTran",
     GET_BANK_TRAN_DATA_API: BASE_URL + "/bank/getBankTranData",
+    GET_BANK_TRAN_DATA_CURRENT_DATE_API: BASE_URL + "/bank/getBankTranDataByDate",
     EDIT_BANK_TRAN_DATA_API: BASE_URL + "/bank/updateBankTran",
     DELETE_BANK_TRAN_API : BASE_URL + "/bank/deleteBankTran",
 }

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { createBankTran, deleteBankTran, getBankData, getBankTranData, updateBankTran } from "../../servises/opretions/bank";
+import { createBankTran, deleteBankTran, getBankData, getBankTranData, getBankTranDataByDate, updateBankTran } from "../../servises/opretions/bank";
 export default function BankDeposits({ dbpath1 }) {
 
   const [statement, setStatemnet] = useState([]);
@@ -68,7 +68,7 @@ export default function BankDeposits({ dbpath1 }) {
   }
 
   const getBankTranDataHandler = async () => {
-    const res = await getBankTranData();
+    const res = await getBankTranDataByDate();
     console.log("res in getBankTranData ", res?.bankTranData);
     if (res?.bankTranData) {
       setStatemnet(res?.bankTranData);
@@ -201,13 +201,10 @@ export default function BankDeposits({ dbpath1 }) {
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
         <h2 className="mt-3 text-center text-3xl">Bank Deposits</h2>
-        <span style={{ fontSize: "22px" }}>
-          {" "}
-          Date : {new Date().toLocaleDateString()}
-        </span>
+        <div className=" mb-3">
+          {" "} Date : {new Date().toLocaleDateString()}
+        </div>
         <div>
-          <br></br>
-
           <div className=" flex gap-3 mb-2">
             <div className=" flex gap-2">
               {/* <input type="date" value={date} onChange={(e) => setDate(e.target.value)}/> */}
@@ -358,7 +355,6 @@ export default function BankDeposits({ dbpath1 }) {
         </div>
         <br></br>
         <div>
-          <br></br>
           <table className="table">
             <thead>
               <tr className="table-secondary">

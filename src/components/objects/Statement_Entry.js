@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { TiDeleteOutline } from "react-icons/ti";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { createBankTran, getBankData, getBankTranData } from "../../servises/opretions/bank";
+import { createBankTran, deleteBankTran, getBankData, getBankTranData } from "../../servises/opretions/bank";
 export default function BankStatement({ dbpath1 }) {
   const [bankId, setBankId] = useState("");
   const [accountNo, setAccountNo] = useState("");
@@ -150,6 +150,12 @@ export default function BankStatement({ dbpath1 }) {
 
       setTotalAmountVal(amount);
     }
+  }
+
+  const deleteBankTranHandler = async (id) => {
+    const res = await deleteBankTran(id);
+
+    getBankTranDataHandler();
   }
 
 
@@ -473,8 +479,7 @@ export default function BankStatement({ dbpath1 }) {
                       className=" text-red-600 px-1 py- text-"
                       title="Delete"
                       // id={"data" + res.statemnt_id}
-                    //   onClick={() => 
-                    //     onDelete(res.statemnt_id)}
+                      onClick={() => deleteBankTranHandler(res._id)}
                     >
                       Delete
                       {/* <TiDeleteOutline /> */}

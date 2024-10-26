@@ -10,6 +10,7 @@ const {
     DELETE_BANK_API,
     CREATE_BANK_TRAN_API,
     GET_BANK_TRAN_DATA_API,
+    GET_BANK_TRAN_DATA_CURRENT_DATE_API,
     EDIT_BANK_TRAN_DATA_API,
     DELETE_BANK_TRAN_API,
 } = bankEndpoints
@@ -106,6 +107,23 @@ export const getBankTranData = async () => {
         const res = await apiConnector("GET", GET_BANK_TRAN_DATA_API);
         response = res?.data
         console.log("GET_BANK_TRAN_DATA_API RES ", res);
+    }
+    catch(error) {
+        console.log("Error", error)
+        toast.error(error?.response?.data?.message);
+    }
+
+    toast.dismiss(toastId);
+    return response
+}
+
+export const getBankTranDataByDate = async () => {
+    const toastId = toast.loading("Loading...");
+    let response ;
+    try{
+        const res = await apiConnector("GET", GET_BANK_TRAN_DATA_CURRENT_DATE_API);
+        response = res?.data
+        console.log("getBankTranDataByDate RES ", res);
     }
     catch(error) {
         console.log("Error", error)
