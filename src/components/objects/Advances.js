@@ -773,6 +773,14 @@ export default function Handloans({ dbpath1 }) {
     setAmountInWords(numberToWords(amount)); // Convert amount to words whenever it changes
   }, [amount]);
 
+  const todaysTotalAmount = todaysTransactions
+  .filter(
+    (transaction) =>
+      todaysDate === transaction.date &&
+      transaction.voucher_type === "Debit-Out"
+  )
+  .reduce((total, transaction) => total + transaction.amount, 0)
+
   return (
     <>
       {" "}
@@ -844,6 +852,7 @@ export default function Handloans({ dbpath1 }) {
         </div>
         </div>
         <table className="w-[90%] ml-6 mt-20 border border-gray-300">
+          
           <thead className="px-2 py-3 w-[100%]">
             <tr className="text-center border-b border-gray-300 text-black">
               <th className="px-2 py-2 border-r border-gray-300">Party Name</th>
@@ -963,13 +972,7 @@ export default function Handloans({ dbpath1 }) {
             <tr className="font-bold text-center text-black">
               <td className="p-2 border-r border-gray-300">Total Advances</td>
               <td className="p-2 border-r border-gray-300">
-                {todaysTransactions
-                  .filter(
-                    (transaction) =>
-                      todaysDate === transaction.date &&
-                      transaction.voucher_type === "Debit-Out"
-                  )
-                  .reduce((total, transaction) => total + transaction.amount, 0)}
+                {todaysTotalAmount}
               </td>
               <td className="p-2 border-gray-300"></td>
             </tr>

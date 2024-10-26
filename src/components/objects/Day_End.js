@@ -1,5 +1,6 @@
 
 import axios from "axios";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 
 const DayEndReport = () => {
@@ -48,7 +49,7 @@ const DayEndReport = () => {
     fetchAllRates()
   },[]);
 
-  console.log("msRate",msRate,speedRate,hsdRate);
+  // console.log("msRate",msRate,speedRate,hsdRate);
 
   function getTodaysDate() {
     const today = new Date();
@@ -96,7 +97,7 @@ const DayEndReport = () => {
       });
   };
 
-  console.log("handloan",handloan)
+  // console.log("handloan",handloan)
 
   useEffect(()=>{
     fetchHandloan()
@@ -117,12 +118,28 @@ const [advances,setAdvances] = useState([]);
       });
   };
 
-  console.log("advances",advances)
+  // console.log("advances",advances)
 
   useEffect(()=>{
     fetchHandloan();
     fetchAdvances()
   },[])
+
+//   const today = new Date();
+// const formattedToday = today.toLocaleDateString('en-GB').split('/').reverse().join('-');
+
+// // Calculate total amount for today's date
+// const totalAmountForToday = advances
+//   .filter(transaction => {
+//     const transactionDate = new Date(transaction.date).toLocaleDateString('en-GB').split('/').reverse().join('-');
+//     return transactionDate === formattedToday;
+//   })
+//   .reduce((total, transaction) => total + transaction.amount, 0);
+
+// console.log("Total amount for today's date:", totalAmountForToday);
+const totalAdvanceAmount =  advances.reduce((total, transaction) => total + transaction.amount, 0);
+
+// advances.reduce((total, transaction) => total + transaction.amount, advances[0]?.amount ?? 0);
   return (
     <div className="p-4 min-h-screen">
       <h2 className="text-center tracking-wide  text-2xl font-bold mb-4">
@@ -261,7 +278,10 @@ const [advances,setAdvances] = useState([]);
                 <input
                   className="w-24 border-4 border-blue-500 text-center"
                   type="number"
-                  value={advances[0]?.amount}
+                  // // value={
+                  // [0]?.amount}
+                  value={totalAdvanceAmount}
+            
                 />
               </td>{" "}
               <td className="py-2 border-b border-gray-700 text-center"></td>

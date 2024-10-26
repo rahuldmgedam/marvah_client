@@ -387,6 +387,7 @@ export default function Sale_Fuels() {
                   />
                 </td>
 
+         
                 {/* <td>
                   <input
                     type="number"
@@ -397,36 +398,8 @@ export default function Sale_Fuels() {
                       const updatedReadings = [...ms1Readings];
                       updatedReadings[index].closing = newClosing;
 
-                      if (newClosing && item.opMeterReading !== undefined) {
-                        updatedReadings[index].sale =
-                          newClosing - item.opMeterReading;
-                      } else {
-                        updatedReadings[index].sale = ""; // Set sale as empty string initially
-                      }
-
-                      // Calculate the actual sale with updated closing value
-                      updatedReadings[index].actualSale =
-                        newClosing -
-                        (item.opMeterReading || 0) -
-                        (item.testing || 0);
-
-                      setMs1Readings(updatedReadings);
-                    }}
-                  />
-                </td> */}
-                <td>
-                  <input
-                    type="number"
-                    value={item.closing || "0"}
-                    className="text-center bg-blue-600 w-32 text-white"
-                    onChange={(e) => {
-                      const newClosing = parseFloat(e.target.value) || 0;
-                      const updatedReadings = [...ms1Readings];
-                      updatedReadings[index].closing = newClosing;
-
-                      // Calculate the sale as soon as closing is entered
                       const sale = newClosing - (item.opMeterReading || 0);
-                      const saleAct = sale - (item.testing || 0); // Default testing to 0
+                      const saleAct = sale - (item.testing || 0); 
 
                       updatedReadings[index].sale = sale;
                       updatedReadings[index].actualSale = saleAct;
@@ -443,37 +416,16 @@ export default function Sale_Fuels() {
                   />
                 </td>
 
-                {/* <td>
-                  <input
-                    className="bg-blue-700 text-center text-white w-16"
-                    value={item.testing || 0}
-                    type="number"
-                    onChange={(e) => {
-                      const newTesting = parseFloat(e.target.value) || 0;
-                      const updatedReadings = [...ms1Readings];
-                      updatedReadings[index].testing = newTesting;
-
-                      // Update actual sale when the testing value changes
-                      updatedReadings[index].actualSale =
-                        (item.closing || 0) -
-                        (item.opMeterReading || 0) -
-                        newTesting;
-
-                      setMs1Readings(updatedReadings);
-                    }}
-                  />
-                </td> */}
                 <td>
                   <input
                     className="bg-blue-700 text-center text-white w-16"
-                    value={item.testing || 0} // Default to 0 if not provided
+                    value={item.testing || 0} 
                     type="number"
                     onChange={(e) => {
                       const newTesting = parseFloat(e.target.value) || 0;
                       const updatedReadings = [...ms1Readings];
                       updatedReadings[index].testing = newTesting;
 
-                      // Update actual sale when testing value changes
                       const saleAct =
                         (item.closing || 0) -
                         (item.opMeterReading || 0) -
@@ -507,7 +459,80 @@ export default function Sale_Fuels() {
                     }`}
                     readOnly
                   />
-                </td>
+                </td> */}
+                <td>
+  <input
+    type="number"
+    value={item.closing || "0"}
+    className={`text-center w-32  ${
+      item.closing < 0 ? "text-red-600 bg-blue-600" : "bg-blue-600 text-white"
+    }`}
+    onChange={(e) => {
+      const newClosing = parseFloat(e.target.value) || 0;
+      const updatedReadings = [...ms1Readings];
+      updatedReadings[index].closing = newClosing;
+
+      // Calculate the sale as soon as closing is entered
+      const sale = newClosing - (item.opMeterReading || 0);
+      const saleAct = sale - (item.testing || 0); // Default testing to 0
+
+      updatedReadings[index].sale = sale;
+      updatedReadings[index].actualSale = saleAct;
+
+      setMs1Readings(updatedReadings);
+    }}
+  />
+</td>
+
+<td>
+  <input
+    value={item.sale !== undefined ? item.sale : ""}
+    className={`text-center w-32 ${item.sale < 0 ? "text-red-600" : ""}`}
+    readOnly
+  />
+</td>
+
+<td>
+  <input
+    className={`bg-blue-700 text-center text-white w-16 ${
+      item.testing < 0 ? "text-red-500" : ""
+    }`}
+    value={item.testing || 0} // Default to 0 if not provided
+    type="number"
+    onChange={(e) => {
+      const newTesting = parseFloat(e.target.value) || 0;
+      const updatedReadings = [...ms1Readings];
+      updatedReadings[index].testing = newTesting;
+
+      // Update actual sale when testing value changes
+      const saleAct =
+        (item.closing || 0) - (item.opMeterReading || 0) - newTesting;
+
+      updatedReadings[index].actualSale = saleAct;
+
+      setMs1Readings(updatedReadings);
+    }}
+  />
+</td>
+
+<td>
+  <input
+    value={
+      item.closing == null ||
+      item.opMeterReading == null ||
+      item.testing == null
+        ? ""
+        : (item.closing || 0) - (item.opMeterReading || 0) - (item.testing || 0)
+    }
+    className={`text-center w-32 ${
+      (item.closing || 0) - (item.opMeterReading || 0) - (item.testing || 0) < 0
+        ? "text-red-600"
+        : ""
+    }`}
+    readOnly
+  />
+</td>
+
                 <td>
                   <input
                     disabled
@@ -555,25 +580,6 @@ export default function Sale_Fuels() {
               </th>
             </tr>
 
-            {/* <tr className="border-2 ">
-              <th className="text-center ml-16" colSpan="4">
-                <span className="ml-80">TOTAL (=)</span>
-              </th>
-              <th className="text-center">
-                {totals.saleTotal === 0 ? "" : totals.saleTotal}
-              </th>
-              <th className="text-center">
-                {totals.testingTotal === 0 ? "" : totals.testingTotal}
-              </th>
-              <th className="text-center">
-                {totals.saleActTotal === 0 ? "" : totals.saleActTotal}
-              </th>
-              <th className="text-center">{ms1Rate}</th>
-              <th className="text-center"></th>
-              <th className="text-center">
-                {totals.saleActTotal === 0 ? "" : totals.saleActTotal * ms1Rate}
-              </th>
-            </tr> */}
           </tbody>
         </table>
 
@@ -587,12 +593,7 @@ export default function Sale_Fuels() {
           >
             Save
           </button>
-          {/* <button
-            className="bg-green-600 px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold"
-            onClick={handleSave}
-          >
-            Save
-          </button> */}
+     
         </div>
       </section>
       {/* ms1 end */}
@@ -646,33 +647,7 @@ export default function Sale_Fuels() {
                     readOnly
                   />
                 </td>
-                {/* <td>
-                  <input
-                    type="number"
-                    value={item2.closing || 0}
-                    className="text-center bg-blue-600 w-32 text-white"
-                    onChange={(e) => {
-                      const newClosing = parseFloat(e.target.value) || 0;
-                      const updatedReadings = [...ms2Readings];
-                      updatedReadings[index].closing = newClosing;
-
-                      // Calculate the sale if both closing and opMeterReading are present
-                      if (newClosing && item2.opMeterReading !== undefined) {
-                        updatedReadings[index].sale2 =
-                          newClosing - item2.opMeterReading;
-                      } else {
-                        updatedReadings[index].sale2 = ""; // Set sale as empty string initially
-                      }
-                      // Calculate the actual sale with updated closing value
-                      updatedReadings[index].actualSale =
-                        newClosing -
-                        (item2.opMeterReading || 0) -
-                        (item2.testing || 0);
-
-                      setMs2Readings(updatedReadings);
-                    }}
-                  />
-                </td> */}
+              
                 <td>
                   <input
                     type="number"
@@ -683,9 +658,8 @@ export default function Sale_Fuels() {
                       const updatedReadings2 = [...ms2Readings];
                       updatedReadings2[index].closing = newClosing2;
 
-                      // Calculate the sale as soon as closing is entered
                       const sale2 = newClosing2 - (item2.opMeterReading || 0);
-                      const saleAct2 = sale2 - (item2.testing || 0); // Default testing to 0
+                      const saleAct2 = sale2 - (item2.testing || 0);
 
                       updatedReadings2[index].sale = sale2;
                       updatedReadings2[index].actualSale = saleAct2;
@@ -702,19 +676,7 @@ export default function Sale_Fuels() {
                   />
                 </td>
 
-                {/* <td>
-                  <input
-                    className="bg-blue-700 text-center text-white w-16"
-                    value={item2.testing || 0}
-                    type="number"
-                    onChange={(e) => {
-                      const newTesting = parseFloat(e.target.value) || 0;
-                      const updatedReadings = [...ms2Readings];
-                      updatedReadings[index].testing = newTesting;
-                      setMs2Readings(updatedReadings);
-                    }}
-                  />
-                </td> */}
+               
                 <td>
                   <input
                     className="bg-blue-700 text-center text-white w-16"

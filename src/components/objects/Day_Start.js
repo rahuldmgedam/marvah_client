@@ -559,6 +559,7 @@ export default function Tankd({ dbpath1, setDate }) {
 
   const [selectedDate, setSelectedDate] = useState(""); // State to store selected date
 
+  const [isRed,setIsRed] = useState(false);
   const fetchTank = () => {
     axios
       .get("https://marvah-server.onrender.com/tank")
@@ -609,8 +610,9 @@ export default function Tankd({ dbpath1, setDate }) {
         sethsdToday(res.data.reading);
         console.log(res.data.reading);
       });
-
+    
       alert("today's reading are saved")
+      setIsRed(true)
   };
 
   const fetchMs = () => {
@@ -661,44 +663,12 @@ export default function Tankd({ dbpath1, setDate }) {
     fetchHsd();
   }, [saveMs]);
 
-  function getTodaysDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = (today.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-    const day = today.getDate().toString().padStart(2, "0");
 
-    return `${day}-${month}-${year}`;
-  }
-  getTodaysDate();
 
-  // Utility function to format the date
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
-    const month = monthNames[date.getMonth()]; // getMonth() returns a zero-based index
-    const day = date.getDate();
-
-    return `${month} ${day}`;
-  }
 
   useEffect(() => {
-    formatDate();
-    getTodaysDate();
+    
+    // getTodaysDate();
   }, []);
 
 
@@ -731,99 +701,28 @@ export default function Tankd({ dbpath1, setDate }) {
 
 
   const [lastDate,setLastDate] = useState(0)
-  const fetchMsd = () => {
-    axios
-      .get("https://marvah-server.onrender.com/ms")
-      .then((res) => {
-        // console.log("res ms", res.data[0]);
-        // setamsLast(res.data[res.data.length - 2].reading);
-        setLastDate(res.data[res.data.length - 1].date)
-        // const todayR = res.data.length;
-        // console.log("todayR", res.data.length - 1);
-        // setamsToday(res.data[res.data.length - 1].reading);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  };
-
-  useEffect(() => {
-    fetchMsd();
-  }, []);
-
-  function convertToDDMMYYYY(dateString) {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
-    const year = date.getFullYear();
-
-    return `${day}-${month}-${year}`;
-}
 
 
-
-
-
-
-const fetchDataForDate = (date) => {
-  console.log(formatToDateString(date))
-  axios
-    .get(`https://marvah-server.onrender.com/ms?date=${formatToDateString(date)}`)
-    .then((res) => {
-      setamsToday(res.data.reading);
-      setamsLast(res.data.previousReading);
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-
-  axios
-    .get(`https://marvah-server.onrender.com/speed?date=${formatToDateString(date)}`)
-    .then((res) => {
-      setbspeedToday(res.data.reading);
-      setbspeedLast(res.data.previousReading);
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-
-  axios
-    .get(`https://marvah-server.onrender.com/hsd?date=${formatToDateString(date)}`)
-    .then((res) => {
-      sethsdToday(res.data.reading);
-      sethsdLast(res.data.previousReading);
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
-
-
-function formatToDateString(dateStr) {
-  const date = new Date(dateStr); // Create a Date object from the string
-
-  const options = {
-    weekday: 'short', // Abbreviated weekday name (e.g., "Tue")
-    year: 'numeric',
-    month: 'short', // Abbreviated month name (e.g., "Oct")
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    timeZoneName: 'short', // Time zone abbreviation
-  };
-
-  const formattedDate = date.toLocaleString('en-GB', options); // Convert to string with specified options
-  return `${formattedDate} GMT+0000 (Coordinated Universal Time)`; // Add the desired time zone information
-}
 
 // Handle date selection
 const handleDateChange = (e) => {
   const selectedDate = e.target.value;
   setSelectedDate((selectedDate));
-  fetchDataForDate(formatToDateString(selectedDate)); // Fetch readings for the selected date
 };
-console.log("selectedDate",selectedDate)
+
+function convertToDDMMYYYY(dateString) {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+  const year = date.getFullYear();
+  
+  return `${day}/${month}/${year}`;
+}
+
+// Example usage:
+const formattedDate = convertToDDMMYYYY(lastDate);
+console.log(formattedDate); // Outputs: "25/10/2024"
+
   return (
     <>
       <div className="">
@@ -846,8 +745,8 @@ console.log("selectedDate",selectedDate)
                       type="date"
                       // type="string"
                       className="px-2 py-2 border-3 border-red-600 rounded-md"
-                      // value={(convertToDDMMYYYY(lastDate))}
-                      value={(selectedDate)}
+                      value={(convertToDDMMYYYY(lastDate))}
+                      // value={(selectedDate)}
                       onChange={handleDateChange} // Trigger fetching data on date change
                       // onChange={}
                     />
@@ -1044,7 +943,7 @@ console.log("selectedDate",selectedDate)
                           <button
                             type="button"
                             //onClick={onAdd}
-                            className="bg-green-500 px-3 py-2 font-bold rounded-md text-white"
+                            className={`${isRed?'bg-red-500 px-3 py-2 font-bold rounded-md text-white':'bg-green-500 px-3 py-2 font-bold rounded-md text-white'}`}
                           >
                             <span onClick={saveMs}>Save</span>
                           </button>

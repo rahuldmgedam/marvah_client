@@ -1,6 +1,3 @@
-
-
-
 // import React, { useState, useEffect } from "react";
 // import "../css/Tank.css";
 // import axios from "axios";
@@ -26,8 +23,21 @@
 //   const [hsd, sethsd] = useState("");
 //   const [speed, setSpeed] = useState("");
 //   const [selectedInvoice, setSelectedInvoice] = useState("");
-
+//   const [tankName, setTankName] = useState([])
 //   const [tank,setTank] = useState([])
+
+//   const fetchTankName = async () => {
+//     try {
+//       const response = await axios.get('https://marvah-server.onrender.com/tank')
+//       const data = await response.data.map(item => item.product)
+//       setTankName(data)
+//       console.log(data);
+
+//     } catch (error) {
+//       console.log(error)
+
+//     }
+//   }
 
 //   useEffect(() => {
 //     const totalkl =
@@ -43,6 +53,7 @@
 //       totalkl,
 //       tanktotalkl,
 //     }));
+//     fetchTankName()
 //   }, [
 //     decantation.mskl,
 //     decantation.hsdkl,
@@ -234,17 +245,17 @@
 //       .catch((error) => {
 //         console.log(error.message);
 //       });
-  
+
 //   };
-  
+
 //   const fetchTanksName = ()=>{
- 
+
 //   }
-  
+
 //   useEffect(() => {
 //     fetchTank();
-  
-//   }, []);
+
+//   }, []);
 //   // console.log("data", petrolInvoice);
 //   return (
 //     <>
@@ -255,7 +266,7 @@
 //           Decantation Record
 //         </h2>
 //         </div>
-        
+
 //         <div className="text-xl flex mt-4 justify-between gap-2 text-white rounded-md ">
 //           <div>
 //             {/* <Link to={"/Petrol_Products"} className="p-2 bg-green-600 rounded-md">
@@ -282,9 +293,9 @@
 //             <thead>
 //               <tr className="text-center mb-2 bg-[#008b8b] text-white">
 //                 <th className="border-2 text-center border-gray-700">Invoice No</th>
-//                 <th className="border-2 text-center border-gray-700">MS-1 (KL)</th>
-//                 <th className="border-2 text-center border-gray-700">MS-2(SP) (KL)</th>
-//                 <th className="border-2 text-center border-gray-700">HSD (KL)</th>
+//                 <th className="border-2 text-center border-gray-700">{tankName[0]}</th>
+//                 <th className="border-2 text-center border-gray-700">{tankName[1]}</th>
+//                 <th className="border-2 text-center border-gray-700">{tankName[2]}</th>
 //                 <th className="border-2 text-center border-gray-700">Total (KL)</th>
 //               </tr>
 //             </thead>
@@ -372,15 +383,15 @@
 //                   className="border-2 text-center border-gray-700"
 //                 >
 //                   {/* Tank 1-15KL <br /> */}
-//                   MS-1(KL)
+//                   {tankName[0]}
 //                 </th>
 //                 <th className="border-2 text-center border-gray-700 " >
 //                   {/* Tank 2-10KL <br></br> */}
-//                   MS-2(KL)(SP) {}
+//                   {tankName[1]}
 //                 </th>
 //                 <th className="border-2 text-center border-gray-700">
 //                   {/* Tank 3-9KL <br></br> */}
-//                   HSD(KL)
+//                   {tankName[2]}
 //                 </th>
 //                 <th className="border-2 text-center border-gray-700" id="">
 //                   Total (KL)
@@ -472,13 +483,13 @@
 //                   Invoice Number
 //                 </th>
 //                 <th class=" text-center text-md  border-2 border-black text-white">
-//                   MS-1(KL)
+//                 {tankName[0]}
 //                 </th>
 //                 <th class=" text-center text-md border-2 border-black text-white">
-//                   MS-2(KL)(SP)
+//                 {tankName[1]}
 //                 </th>
 //                 <th class=" text-center text-md  border-2 border-black text-white">
-//                   HSD(KL)
+//                 {tankName[2]}
 //                 </th>
 //                 <th class=" text-center text-md  border-2 border-black text-white">
 //                   TOTAL(KL)
@@ -511,7 +522,7 @@
 //                     <td className="border-2 text-center border-gray-700">
 //                       {res.tanktotalkl}{" "}
 //                     </td>
-               
+
 //                   </tr>
 //                 ))}
 //             </tbody>
@@ -521,7 +532,6 @@
 //     </>
 //   );
 // }
-
 
 import React, { useState, useEffect } from "react";
 import "../css/Tank.css";
@@ -548,22 +558,24 @@ export default function Client() {
   const [hsd, sethsd] = useState("");
   const [speed, setSpeed] = useState("");
   const [selectedInvoice, setSelectedInvoice] = useState("");
-  const [tankName, setTankName] = useState([])
-  const [tank,setTank] = useState([])
-
+  const [tankName, setTankName] = useState([]);
+  const [tank, setTank] = useState([]);
+  const [tank1Decantaion, setTank1Decantation] = useState("");
+  const [tank2Decantaion, setTank2Decantation] = useState("");
+  const [tank3Decantaion, setTank3Decantation] = useState("");
 
   const fetchTankName = async () => {
     try {
-      const response = await axios.get('https://marvah-server.onrender.com/tank')
-      const data = await response.data.map(item => item.product)
-      setTankName(data)
+      const response = await axios.get(
+        "https://marvah-server.onrender.com/tank"
+      );
+      const data = await response.data.map((item) => item.product);
+      setTankName(data);
       console.log(data);
-      
     } catch (error) {
-      console.log(error)
-      
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     const totalkl =
@@ -579,7 +591,7 @@ export default function Client() {
       totalkl,
       tanktotalkl,
     }));
-    fetchTankName()
+    fetchTankName();
   }, [
     decantation.mskl,
     decantation.hsdkl,
@@ -607,15 +619,18 @@ export default function Client() {
       hsdkl: hsd ? hsd : 0,
       speedkl: speed ? speed : 0,
       totalkl: Number(decantation.totalkl),
-      tank1: Number(decantation.tank1),
-      tank2: Number(decantation.tank2),
-      tank3: Number(decantation.tank3),
+      tank1: Number(tank1Decantaion),
+      tank2: Number(tank2Decantaion),
+      tank3: Number(tank3Decantaion),
       tanktotalkl: Number(decantation.tanktotalkl),
     };
     console.log("data", formattedData);
 
     axios
-      .post("https://marvah-server.onrender.com/petroldecantation/create", formattedData)
+      .post(
+        "https://marvah-server.onrender.com/petroldecantation/create",
+        formattedData
+      )
       .then((res) => {
         if (res.data.state) {
           alert(res.data.msg);
@@ -625,7 +640,7 @@ export default function Client() {
           setDecantation(init);
           setMs("");
           sethsd("");
-          setSpeed("")
+          setSpeed("");
         }
       })
       .catch((error) => {
@@ -766,21 +781,16 @@ export default function Client() {
       .then((res) => {
         console.log("tank:", res.data);
         setTank(res.data);
-
       })
       .catch((error) => {
         console.log(error.message);
       });
-  
   };
-  
-  const fetchTanksName = ()=>{
- 
-  }
-  
+
+  const fetchTanksName = () => {};
+
   useEffect(() => {
     fetchTank();
-  
   }, []);
   // console.log("data", petrolInvoice);
   return (
@@ -788,11 +798,9 @@ export default function Client() {
       <div className="relative w-[90%]">
         {/* <span className="text-2xl font-bold"> Date : {getCurrentDate()} </span> */}
         <div className="w-full mt-4 text-center">
-        <h2 className="text-2xl uppercase font-bold">
-          Decantation Record
-        </h2>
+          <h2 className="text-2xl uppercase font-bold">Decantation Record</h2>
         </div>
-        
+
         <div className="text-xl flex mt-4 justify-between gap-2 text-white rounded-md ">
           <div>
             {/* <Link to={"/Petrol_Products"} className="p-2 bg-green-600 rounded-md">
@@ -800,36 +808,46 @@ export default function Client() {
             </Link> */}
           </div>
           <div>
-            <Link to={"/purchasedecantation"} className="px-2 py-1 bg-blue-600 rounded-md mt-6">
+            <Link
+              to={"/purchasedecantation"}
+              className="px-2 py-1 bg-blue-600 rounded-md mt-6"
+            >
               Reports
             </Link>
           </div>
         </div>
         <div className="my-8">
-          <h1 className="text-md font-bold text-center uppercase text-xl">
+          <h1 className="font-bold text-center uppercase text-xl">
             Purchase Record (Petrol/Diesel):
           </h1>
 
           <div>
-            <div>
-
-            </div>
+            <div></div>
           </div>
-          <table className=" w-[100%] ml-20">
+          <table className=" w-[80%] ml-40">
             <thead>
-              <tr className="text-center mb-2 bg-[#008b8b] text-white">
-                <th className="border-2 text-center border-gray-700">Invoice No</th>
-                <th className="border-2 text-center border-gray-700">{tankName[0]}</th>
-                <th className="border-2 text-center border-gray-700">{tankName[1]}</th>
-                <th className="border-2 text-center border-gray-700">{tankName[2]}</th>
-                <th className="border-2 text-center border-gray-700">Total (KL)</th>
+              <tr className="text-center text-xl mb-2 bg-[#008b8b] text-white">
+                <th className="border-2 text-center border-gray-700">
+                  Invoice No
+                </th>
+                <th className="border-2 text-center border-gray-700">
+                  {tankName[0]}
+                </th>
+                <th className="border-2 text-center border-gray-700">
+                  {tankName[1]}
+                </th>
+                <th className="border-2 text-center border-gray-700">
+                  {tankName[2]}
+                </th>
+                <th className="border-2 text-center border-gray-700">
+                  Total (KL)
+                </th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-2 text-center border-gray-700">
+              <tr className="border-2 text-xl font-bold text-center border-gray-700">
                 <td className="w-24 border-2 border-gray-700 text-cente">
                   <select
-
                     name="invoice"
                     className="px-4 py-2  rounded-md"
                     aria-label="Default select example"
@@ -896,112 +914,127 @@ export default function Client() {
             </tbody>
           </table>
 
-          <br></br>
-          <h6 className="font-bold  uppercase text-xl mb-1 text-center mt-4"> Tank Decantation</h6>
+          <div className="mt-8">
+            <h6 className="font-bold  uppercase text-xl mb-1 text-center">
+              {" "}
+              Tank Decantation
+            </h6>
 
-          <table className="text w-[100%] ml-20">
-            <thead>
-              <tr className="border-2 text-center border-gray-700 bg-[#008b8b] text-white">
-                <th className="border-2 text-center border-gray-700">
-                  Invoice Number
-                </th>
-                <th
-                  className="border-2 text-center border-gray-700"
-                >
-                  {/* Tank 1-15KL <br /> */}
-                  {tankName[0]}
-                </th>
-                <th className="border-2 text-center border-gray-700 " >
-                  {/* Tank 2-10KL <br></br> */}
-                  {tankName[1]}
-                </th>
-                <th className="border-2 text-center border-gray-700">
-                  {/* Tank 3-9KL <br></br> */}
-                  {tankName[2]}
-                </th>
-                <th className="border-2 text-center border-gray-700" id="">
-                  Total (KL)
-                </th>
-                <th className="border-2 text-center border-gray-700">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-2 text-center border-gray-700">
-                <td>
-                  {decantation.invoice}
-                </td>
-                <td className="border-8 border-blue-600 rounded-xl" scope="row">
-                  <input
-                    type="number"
-                    id="tank1"
-                    className="w-20"
-                    name="tank1"
-                    value={ms ? ms : 0}
-                    onChange={handleChange}
-                  />
-                </td>
-                <td className="border-8 border-blue-600 rounded-xl" scope="row">
-                  <input
-                    type="text"
-                    className="w-20"
-                    id="tank2"
-                    name="tank2"
-                    value={speed ? speed : 0}
-                    onChange={handleChange}
-                  />
-                </td>
-                <td className="border-8 border-blue-600 rounded-xl">
-                  <input
-                    type="text"
-                    className="w-20"
-
-                    id="tank3"
-                    name="tank3"
-                    value={hsd ? hsd : 0}
-                    onChange={handleChange}
-                  />
-                </td>
-                <td className="border-8 border-blue-600 rounded-xl" scope="row">
-                  <input
-                    type="text"
-                    className="w-20"
-
-                    name="tanktotalkl"
-                    value={ms + hsd + speed}
-                    placeholder="Total"
-                    disabled
-                  />
-                </td>
-                <td className=" rounded-lg px-2">
-                  <div className="flex items-center gap-2 justify-center">
-                    <button
-                      type="button"
-                      className="bg-blue-600 text-white px-4 py-1 rounded focus:outline-none"
-                      onClick={handleSubmit}
-                    >
-                      SAVE
-                    </button>
-                    {/* <button
-                      className="bg-green-600 text-white px-4 py-1 rounded focus:outline-none"
-                    >EDIT</button> */}
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            <table className="text w-[80%] ml-40">
+              <thead>
+                <tr className="border-2 font-bold text-xl text-center border-gray-700 bg-[#008b8b] text-white">
+                  <th className="border-2 text-center border-gray-700">
+                    Invoice Number
+                  </th>
+                  <th className="border-2 text-center border-gray-700">
+                    {/* Tank 1-15KL <br /> */}
+                    {tankName[0]}
+                  </th>
+                  <th className="border-2 text-center border-gray-700 ">
+                    {/* Tank 2-10KL <br></br> */}
+                    {tankName[1]}
+                  </th>
+                  <th className="border-2 text-center border-gray-700">
+                    {/* Tank 3-9KL <br></br> */}
+                    {tankName[2]}
+                  </th>
+                  <th className="border-2 text-center border-gray-700" id="">
+                    Total (KL)
+                  </th>
+                  <th className="border-2 text-center border-gray-700">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-2 font-bold text-xl text-center border-gray-700">
+                  <td>{decantation.invoice}</td>
+                  <td
+                    className="border-4 border-blue-600 rounded-xl"
+                    scope="row"
+                  >
+                    <input
+                      type="number"
+                      id="tank1Decantation"
+                      className="w-20"
+                      name="tank1Decantation"
+                      // value={ms ? ms : 0}
+                      value={tank1Decantaion}
+                      onChange={(e) => setTank1Decantation(e.target.value)}
+                    />
+                  </td>
+                  <td
+                    className="border-4 border-blue-600 rounded-xl"
+                    scope="row"
+                  >
+                    <input
+                      type="text"
+                      className="w-20"
+                      id="tank2Decantation"
+                      name="tank2Decantation"
+                      // value={speed ? speed : 0}
+                      value={tank2Decantaion}
+                      onChange={(e) => setTank2Decantation(e.target.value)}
+                    />
+                  </td>
+                  <td className="border-4 border-blue-600 rounded-xl">
+                    <input
+                      type="text"
+                      className="w-20"
+                      id="tank3Decantation"
+                      name="tank3Decantation"
+                      // value={hsd ? hsd : 0}
+                      value={tank3Decantaion}
+                      onChange={(e) => setTank3Decantation(e.target.value)}
+                    />
+                  </td>
+                  <td
+                    className="border-4 border-blue-600 rounded-xl"
+                    scope="row"
+                  >
+                    <input
+                      type="number"
+                      className="w-20"
+                      name="tanktotalkl"
+                      value={
+                        parseInt(tank1Decantaion) +
+                        parseInt(tank2Decantaion) +
+                        parseInt(tank3Decantaion)
+                      }
+                      placeholder="Total"
+                      disabled
+                    />
+                  </td>
+                  <td className=" rounded-lg px-2">
+                    <div className="flex items-center gap-2 justify-center">
+                      <button
+                        type="button"
+                        className="bg-green-600 font-bold text-white px-4 py-1 rounded focus:outline-none"
+                        onClick={handleSubmit}
+                      >
+                        SAVE
+                      </button>
+                      {/* <button
+            className="bg-green-600 text-white px-4 py-1 rounded focus:outline-none"
+          >EDIT</button> */}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <br></br>
+      
         <div className="">
-
-          <br></br>
+     
           <h3 className="mt-3 text-center text-xl font-bold mb-1 uppercase">
             Report
           </h3>
 
-          <table class="w-[100%] bg-white ml-20">
+          <table class="w-[80%] bg-white ml-40">
             <thead class="bg-gray-600 whitespace-nowrap">
-              <tr className="bg-[#008b8b] text-white">
+              <tr className="bg-[#008b8b] font-bold text-xl text-white">
                 <th class=" text-center text-md  border-2 border-black text-white">
                   Sr.
                 </th>
@@ -1009,13 +1042,13 @@ export default function Client() {
                   Invoice Number
                 </th>
                 <th class=" text-center text-md  border-2 border-black text-white">
-                {tankName[0]}
+                  {tankName[0]}
                 </th>
                 <th class=" text-center text-md border-2 border-black text-white">
-                {tankName[1]}
+                  {tankName[1]}
                 </th>
                 <th class=" text-center text-md  border-2 border-black text-white">
-                {tankName[2]}
+                  {tankName[2]}
                 </th>
                 <th class=" text-center text-md  border-2 border-black text-white">
                   TOTAL(KL)
@@ -1029,7 +1062,7 @@ export default function Client() {
             <tbody>
               {data &&
                 data.map((res, index) => (
-                  <tr className="" key={index}>
+                  <tr className="font-bold text-xl" key={index}>
                     <td className="border-2 text-center border-gray-700">
                       {index + 1}
                     </td>
@@ -1048,7 +1081,6 @@ export default function Client() {
                     <td className="border-2 text-center border-gray-700">
                       {res.tanktotalkl}{" "}
                     </td>
-               
                   </tr>
                 ))}
             </tbody>

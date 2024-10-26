@@ -200,10 +200,12 @@ export default function BankDeposits({ dbpath1 }) {
   return (
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
+
         <h2 className="mt-3 text-center text-3xl">Bank Deposits</h2>
         <div className=" mb-3">
           {" "} Date : {new Date().toLocaleDateString()}
         </div>
+
         <div>
           <div className=" flex gap-3 mb-2">
             <div className=" flex gap-2">

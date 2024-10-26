@@ -143,11 +143,14 @@ export default function Wallet_Payment({ dbpath1 }) {
   return (
     <>
       <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
-        <h2 className="mt-3 text-3xl text-center">Petro Card</h2>
-        <span style={{ fontSize: "22px" }}>
-          {" "}
-          Date : {new Date().toLocaleDateString()}
-        </span>
+      <div className="relative mb-4">
+          <div className="fixed top-0 py-2 flex items-center bg-white z-10 w-full">
+          <span style={{ fontSize: "22px" }}>
+              Date : {new Date().toLocaleDateString()}
+            </span>
+            <h2 className="ml-60 text-3xl text-center">Petro Card</h2>
+          </div>
+        </div>
         <div>
           <br></br>
           <table className="table">

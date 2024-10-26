@@ -326,13 +326,13 @@ export default function Sidebar() {
   // const formattedddmmyy = convertToDDMMYYYY("Tue Oct 01 2024 06:14:55 GMT+0000");
   // console.log(formattedDate);  // Output: 01-10-2024
 
-  console.log(convertToDDMMYYYY(lastDate));
+  // console.log(convertToDDMMYYYY(lastDate));
 
   return (
     <>
       <div class="bg-[#7b1fa2] h-screen w-full max-w-80 fixed top-0 p-2 text-white">
         <div className="flex items-center justify-center">
-          <img class="w-36 rounded-full" src={logo} />
+          <img className="w-36 rounded-full" src={logo} />
         </div>
         <div className="sideInfo uppercase">
           <center>

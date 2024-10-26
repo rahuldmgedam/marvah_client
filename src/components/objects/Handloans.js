@@ -1038,7 +1038,7 @@ export default function Handloans({ dbpath1 }) {
                 {todaysTransactions
                   .filter(
                     (transaction) =>
-                      transaction.voucher_type === "Debit-Out" &&
+                      transaction.voucher_type === "Credit-In" &&
                       todaysDate === transaction.date
                   )
                   .reduce(
@@ -1050,7 +1050,7 @@ export default function Handloans({ dbpath1 }) {
                 {todaysTransactions
                   .filter(
                     (transaction) =>
-                      transaction.voucher_type === "Credit-In" &&
+                      transaction.voucher_type === "Debit-Out" &&
                       todaysDate === transaction.date
                   )
                   .reduce(
@@ -1058,13 +1058,14 @@ export default function Handloans({ dbpath1 }) {
                     0
                   )}
               </td>
+       
               <td></td>
             </tr>
           </tbody>
         </table>
 
         {/* Client's Transaction History */}
-        {showHistory && (
+        {/* {showHistory && (
           <>
             <div>
               <h2 className="text-center text-xl p-2 font-bold">
@@ -1111,20 +1112,9 @@ export default function Handloans({ dbpath1 }) {
                       </tr>
                     ))}
 
-                  {/* Total Row */}
                   <tr className="font-bold text-center">
                     <td colSpan={2} className="text-center">
                       Total
-                    </td>
-
-                    <td className="p-2 border-2 border-grey-200">
-                      {handloan
-                        .filter(
-                          (client) =>
-                            client.party_name === partyname &&
-                            client.voucher_type === "Debit-Out"
-                        )
-                        .reduce((total, client) => total + client.amount, 0)}
                     </td>
                     <td className="p-2 border-2 border-grey-200">
                       {handloan
@@ -1135,13 +1125,134 @@ export default function Handloans({ dbpath1 }) {
                         )
                         .reduce((total, client) => total + client.amount, 0)}
                     </td>
+                    <td className="p-2 border-2 border-grey-200">
+                      {handloan
+                        .filter(
+                          (client) =>
+                            client.party_name === partyname &&
+                            client.voucher_type === "Debit-Out"
+                        )
+                        .reduce((total, client) => total + client.amount, 0)}
+                    </td>
+            
                     <td></td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </>
-        )}
+        )} */}
+        
+        {showHistory && (
+  <>
+    <div>
+      <h2 className="text-center text-xl p-2 font-bold">
+        Client's Transaction History
+      </h2>
+      <h1 className=" px-2 py-1 text-xl ">Party Name : {partyname}</h1>
+
+      <table className="w-[90%] border-2">
+        <thead className="items-center p-2">
+          <tr className=" text-center p-2 border-2 border-grey-200">
+            <th className="items-center p-2">Sr No.</th>
+            <th className="items-center">Date</th>
+            <th className="">Credit-In</th>
+            <th className="">Debit-Out</th>
+            <th className="">Narration</th>
+          </tr>
+        </thead>
+        <tbody>
+          {handloan
+            .filter((client) => client.party_name === partyname)
+            .map((client, index) => (
+              <tr className="hovereffect text-center" key={index}>
+                <td className="p-2 border-2 border-grey-200 w-20">
+                  {index + 1}
+                </td>
+                <td className="p-2 border-2 border-grey-200 w-32">
+                  {client?.date}
+                </td>
+                <td className="p-2 border-2 border-grey-200 w-24">
+                  {client.voucher_type === "Credit-In"
+                    ? client.amount
+                    : "-"}
+                </td>
+                <td className="p-2 border-2 border-grey-200 w-24">
+                  {client.voucher_type === "Debit-Out"
+                    ? client.amount
+                    : "-"}
+                </td>
+                <td className="p-2 border-2 border-grey-200">
+                  {client.narration}
+                </td>
+              </tr>
+            ))}
+
+          {/* Calculate Total Credit and Total Debit */}
+          {(() => {
+            const totalCredit = handloan
+              .filter(
+                (client) =>
+                  client.party_name === partyname &&
+                  client.voucher_type === "Credit-In"
+              )
+              .reduce((total, client) => total + client.amount, 0);
+
+            const totalDebit = handloan
+              .filter(
+                (client) =>
+                  client.party_name === partyname &&
+                  client.voucher_type === "Debit-Out"
+              )
+              .reduce((total, client) => total + client.amount, 0);
+
+            const balanceDifference = totalCredit - totalDebit;
+
+            return (
+              <>
+                {/* Total Row */}
+                <tr className="font-bold text-center">
+                  <td colSpan={2} className="text-center">
+                    Total
+                  </td>
+                  <td className="p-2 border-2 border-grey-200">
+                    {totalCredit}
+                  </td>
+                  <td className="p-2 border-2 border-grey-200">
+                    {totalDebit}
+                  </td>
+                  <td></td>
+                </tr>
+
+                {/* Conditional Balance Difference Row */}
+                {totalCredit > totalDebit ? (
+                  <tr className="font-bold text-center">
+                    <td className="p-2 border-2 border-grey-200" colSpan={2}>Balance Difference</td>
+                    <td className="p-2 border-2 border-grey-200">
+                      {balanceDifference}
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                ) : (
+                  <tr className="font-bold text-center">
+                    <td className="p-2 border-2 border-grey-200" colSpan={2}>Balance Difference</td>
+                    <td></td>
+                    <td className="p-2 border-2 border-grey-200">
+                      {Math.abs(balanceDifference)}
+                    </td>
+                    <td></td>
+                  </tr>
+                )}
+              </>
+            );
+          })()}
+        </tbody>
+      </table>
+    </div>
+  </>
+)}
+
       </div>
     </>
   );

@@ -318,12 +318,14 @@ export default function Variation() {
   const [speedTank2, setSpeedTank2] = useState(null);
   const [hsdTank3, setHsdTank3] = useState(null);
 
-  const [receipts, setReceipts] = useState([10000,5000]); // Store receipt data
+  const [receipts, setReceipts] = useState([]); // Store receipt data
 
   const [actualBalances, setActualBalances] = useState([null, null, null]); // Store actual balance data
   const [currentDate, setCurrentDate] = useState(""); // Store current date
 
-  const [invoiceNumbers, setInvoiceNumbers] = useState([])
+  const [invoiceNumbers, setInvoiceNumbers] = useState([]);
+
+  const [fuelSaleReadings,setFuelSaleReadings] = useState([])
 
   const fetchInvoiceNumbers = async () =>{
     try {
@@ -336,16 +338,67 @@ export default function Variation() {
     }
   }
 
+  const fetchFuelSales =async ()=>{
+    try {
+      const response = await axios.get('https://marvah-server.onrender.com/fuelsales')
+      if(response.data){
+        setFuelSaleReadings(response.data.fuelSales)
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  console.log(fuelSaleReadings);
+  
+   
+  useEffect(() => {
+    fetchFuelSales();
+      
+  }, []);
+
+  const fuelSalesData = [
+    // Place the fuelSales data array here
+];
+
+function getSaleActTotalsArray(data) {
+    const totals = {
+        MS1: null,
+        MS2: null,
+        HSD: null
+    };
+
+    data.forEach((item) => {
+        const product = item.nozzleProduct;
+
+        if (product.includes("MS-1") && totals.MS1 === null) {
+            totals.MS1 = item.saleActTotal;
+        } else if (product.includes("MS-2") && totals.MS2 === null) {
+            totals.MS2 = item.saleActTotal;
+        } else if (product.includes("HSD") && totals.HSD === null) {
+            totals.HSD = item.saleActTotal;
+        }
+    });
+
+    return [totals.MS1, totals.MS2, totals.HSD];
+}
+
+const saleActTotalsArray = getSaleActTotalsArray(fuelSaleReadings);
+
+console.log("SaleActTotal Array:", saleActTotalsArray);
+
   const [invNo,setInvNo] = useState(0);
 
   // Sales data for different products
-  const Ms = { actualSale: 4326 };
-  const Ms2 = { actualSale: 2047 };
-  const HSD = { actualSale: 2269 };
-
+  const Ms =  saleActTotalsArray[0];
+  const Ms2 =  saleActTotalsArray[1] ;
+  const HSD =  saleActTotalsArray[2];
+console.log(Ms,Ms2,HSD)
   const allReceipts = () => {
     setReceipts(...receipts);
   };
+
+// console.log("allReceipts",allReceipts)
 
   // Fetch total variation data on component mount
   useEffect(() => {
@@ -383,6 +436,7 @@ export default function Variation() {
 
   useEffect(() => {
     fetchReceipts();
+      
   }, []);
   // console.log("fetchReceipts", receipts);
 
@@ -486,16 +540,16 @@ export default function Variation() {
       <br />
       <table className="table">
         <thead>
-          <tr className="table-secondary">
+          <tr className="text-center">
             <th className="tablebg">Product</th>
-            <th className="tablebg">Open. STK</th>
-            <th className="tablebg">Purchase(+)</th>
-            <th className="tablebg">Total Stk(=)</th>
-            <th className="tablebg">A. Sale(-)</th>
-            <th className="tablebg">Bal. STK(=)</th>
-            <th className="tablebg text-center">Actual Bal. Stk(-)</th>
-            <th className="tablebg text-center">Variation on date (=)</th>
-            <th className="tablebg text-center">Total.Variation (-/+)</th>
+            <th className="tablebg">Open. <br /> STK</th>
+            <th className="tablebg">Purchase <br />(+)</th>
+            <th className="tablebg">Total Stk <br />(=)</th>
+            <th className="tablebg">A. Sale <br />(-)</th>
+            <th className="tablebg">Bal. STK <br />(=)</th>
+            <th className="tablebg text-center">Actual Bal.Stk <br />(-)</th>
+            <th className="tablebg text-center">Variation on date <br /> (=)</th>
+            <th className="tablebg text-center">Total.Variation <br /> (-/+)</th>
           </tr>
         </thead>
         <tbody>
@@ -553,10 +607,10 @@ export default function Variation() {
                     className="form-control bigFontWeight"
                     value={
                       index === 0
-                        ? Ms.actualSale
+                        ? Ms
                         : index === 1
-                        ? Ms2.actualSale
-                        : HSD.actualSale
+                        ? Ms2
+                        : HSD
                     }
                     placeholder="Loading.."
                     disabled
@@ -612,8 +666,8 @@ export default function Variation() {
       </table>
       <button
         type="button"
-        style={{ height: "30px", paddingTop: "2px", marginLeft: "90%" }}
-        className="btn btn-primary"
+        style={{ height: "30px", marginLeft: "90%" }}
+        className="bg-green-500 text-white px-3 py-1 rounded-md"
         onClick={handleSave}
       >
         Save

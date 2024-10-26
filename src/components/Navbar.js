@@ -463,7 +463,16 @@ export default function Navbar() {
         </div>
 
         {/* Expenses */}
-        <button
+        {/* <button
+          class="btn navDrop1 btn-secondary"
+          type="button"
+          style={{ width: "110px" }}
+        >
+          <Link class="dropdown-item" to="/Daily_Expenses">
+            Expenses
+          </Link>
+        </button> */}
+           <button
           class="btn navDrop1 btn-secondary"
           type="button"
           style={{ width: "110px" }}
