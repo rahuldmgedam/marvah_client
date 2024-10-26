@@ -2,6 +2,7 @@ import React from "react";
 import "../css/Tank.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { TiDeleteOutline } from "react-icons/ti";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { createBankTran, getBankData, getBankTranData } from "../../servises/opretions/bank";
@@ -440,53 +441,44 @@ export default function BankStatement({ dbpath1 }) {
               <tr className="table-secondary">
                 <th className="tablebg">Sr</th>
                 <th className="tablebg">Date</th>
+                <th className="tablebg">Bank</th>
                 <th className='tablebg'>Bank-Particualr</th>
                 <th className="tablebg">Mode</th>
-                <th className="tablebg">
-                  W. Amount
-                </th>
-                <th className="tablebg">
-                  D. Amount
-                </th>
+                <th className="tablebg">W. Amount</th>
+                <th className="tablebg">D. Amount</th>
                 <th className="tablebg">Balance</th>
-                {/*   <th className='tablebg'>Check</th>
-                                <th className='tablebg'>Narration</th> */}
                 <th className="tablebg">Action</th>
               </tr>
             </thead>
             <tbody>
               {Statement.map((res, index) => (
-                <tr className="hovereffect" key={index}>
-                  <td>{index + 1}</td>
-                  <td>{new Date(res.date)?.toLocaleDateString()}</td>
-                  {/*    <td>{res.bank_name} - {res.acc_no} - {res.particualrs}</td> */}
-                  <td>{res.particulars}</td>
-                  <td>{res.mode}</td>
-                  <td>{
-                    res.tranType === "Withdraw" && res.amount
-                  }</td>
-                  <td>{
-                    res.tranType === "Deposit" && res.amount
-                  }</td>
-                  <td>{res.total_amount}</td>
+                <tr className="hovereffect leading-3 " key={index}>
+                  <td >{index + 1}</td>
+                  <td >{new Date(res.date)?.toLocaleDateString()}</td>
+                  <td >{res?.bank?.BankName} - {res?.bank?.AccountNumber}</td>
+                  <td >{res.particulars}</td>
+                  <td >{res.mode}</td>
+                  <td >{res.tranType === "Withdraw" && res.amount}</td>
+                  <td >{res.tranType === "Deposit" && res.amount}</td>
+                  <td >{res?.totalAmount}</td>
                   {/*       <td> <input style={{width:'20px', height:'20px', border:'1px solid '}} type="checkbox" id={'check'+res.statemnt_id} value='0' class="form-check-input"/> </td>
                                     
                                         <td style={{width:'200px',}}><input style={{ border:'1px solid'}} type='text' class="form-control editableInput bigFontWeight" id={"status"+res.statemnt_id}   value={inarrration[res.statemnt_id]}    onChange={(e) =>{ setInarration({...inarrration, [res.statemnt_id]:e.target.value}); }}  /> 
                                     
                                     </td>
                                         */}
-                  <td style={{ width: "120px" }}>
-                    <button
-                      type="button"
-                      style={{ height: "30px", paddingTop: "2px" }}
-                      id={"data" + res.statemnt_id}
-                      class="btn btn-danger"
+                  <td >
+                    <button 
+                    type="button"
+                      className=" text-red-600 px-1 py- text-"
+                      title="Delete"
+                      // id={"data" + res.statemnt_id}
                     //   onClick={() => 
                     //     onDelete(res.statemnt_id)}
                     >
                       Delete
-                    </button>{" "}
-                    &nbsp;&nbsp;
+                      {/* <TiDeleteOutline /> */}
+                    </button>
                   </td>
                 </tr>
               ))}

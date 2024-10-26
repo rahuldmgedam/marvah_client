@@ -384,13 +384,14 @@ export default function BankDeposits({ dbpath1 }) {
                   <td>{res?.chequeNo}</td>
                   <td>{res?.amount}</td>
                   <td>{res?.nerration}</td>
-                  <td style={{ width: "120px" }} className=" flex gap-2">
-                    <button type="button" style={{ height: "30px", paddingTop: "2px" }} id={"data" + res.statemnt_id}
+                  <td className=" flex gap-2">
+                    {/* <button type="button" style={{ height: "30px", paddingTop: "2px" }} id={"data" + res.statemnt_id}
                       className="btn btn-primary" onClick={() => editHandler(res)}
-                    > Edit </button>{" "}
+                    > Edit </button>{" "} */}
 
-                    <button type="button" style={{ height: "30px", paddingTop: "2px" }} id={"data" + res.statemnt_id}
-                      className="btn btn-primary"
+                    <button type="button"
+                    className="py-1.5 bg-red-400 px-2 my-0 rounded text-white"
+                     id={"data" + res.statemnt_id} 
                       onClick={() => deleteBankTranHandler(res._id)}
                     > Delete </button>{" "}
                     &nbsp;&nbsp;

@@ -20,12 +20,14 @@ export const createBank = async(data) => {
         const res = await apiConnector("POST",CREATE_BANK_API, data);
 
         console.log("Res on bank ", res);
+        toast.success(res?.data?.message);
     }
     catch(error) {
         console.log("Error", error)
     }
 
     toast.dismiss(toastId);
+
 }
 
 export const getBankData = async() => {
@@ -68,6 +70,7 @@ export const deleteBank = async(id) => {
         const res = await apiConnector("DELETE",`${DELETE_BANK_API}/${id}`);
         response = res?.data
         console.log("deleteBank ", res);
+        toast.success(res?.data?.message);
     }
     catch(error) {
         console.log("Error", error)
@@ -85,9 +88,11 @@ export const createBankTran = async (data) => {
         const res = await apiConnector("POST", CREATE_BANK_TRAN_API, data);
         response = res?.data
         console.log("Create Bank Tran ", res);
+        toast.success(res?.data?.message);
     }
     catch(error) {
         console.log("Error", error)
+        toast.error(error?.response?.data?.message);
     }
 
     toast.dismiss(toastId);
@@ -104,6 +109,7 @@ export const getBankTranData = async () => {
     }
     catch(error) {
         console.log("Error", error)
+        toast.error(error?.response?.data?.message);
     }
 
     toast.dismiss(toastId);
@@ -117,6 +123,7 @@ export const updateBankTran = async (data) => {
         const res = await apiConnector("POST", EDIT_BANK_TRAN_DATA_API, data);
         response = res?.data
         console.log("EDIT_BANK_TRAN_DATA_API RES ", res);
+        toast.success(res?.data?.message);
     }
     catch(error) {
         console.log("Error", error)
@@ -135,9 +142,11 @@ export const deleteBankTran = async(id) => {
         const res = await apiConnector("DELETE",`${DELETE_BANK_TRAN_API}/${id}`);
         response = res?.data
         console.log("DELETE_BANK_TRAN_API ", res);
+        toast.success(res?.data?.message);
     }
     catch(error) {
         console.log("Error", error)
+        toast.error(error?.response?.data?.message);
     }
 
     toast.dismiss(toastId);
