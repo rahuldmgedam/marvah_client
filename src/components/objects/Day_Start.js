@@ -709,6 +709,20 @@ const handleDateChange = (e) => {
   const selectedDate = e.target.value;
   setSelectedDate((selectedDate));
 };
+
+function convertToDDMMYYYY(dateString) {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+  const year = date.getFullYear();
+  
+  return `${day}/${month}/${year}`;
+}
+
+// Example usage:
+const formattedDate = convertToDDMMYYYY(lastDate);
+console.log(formattedDate); // Outputs: "25/10/2024"
+
   return (
     <>
       <div className="">
@@ -731,8 +745,8 @@ const handleDateChange = (e) => {
                       type="date"
                       // type="string"
                       className="px-2 py-2 border-3 border-red-600 rounded-md"
-                      // value={(convertToDDMMYYYY(lastDate))}
-                      value={(selectedDate)}
+                      value={(convertToDDMMYYYY(lastDate))}
+                      // value={(selectedDate)}
                       onChange={handleDateChange} // Trigger fetching data on date change
                       // onChange={}
                     />
