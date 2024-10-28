@@ -388,78 +388,7 @@ export default function Sale_Fuels() {
                 </td>
 
          
-                {/* <td>
-                  <input
-                    type="number"
-                    value={item.closing || "0"}
-                    className="text-center bg-blue-600 w-32 text-white"
-                    onChange={(e) => {
-                      const newClosing = parseFloat(e.target.value) || 0;
-                      const updatedReadings = [...ms1Readings];
-                      updatedReadings[index].closing = newClosing;
-
-                      const sale = newClosing - (item.opMeterReading || 0);
-                      const saleAct = sale - (item.testing || 0); 
-
-                      updatedReadings[index].sale = sale;
-                      updatedReadings[index].actualSale = saleAct;
-
-                      setMs1Readings(updatedReadings);
-                    }}
-                  />
-                </td>
-                <td>
-                  <input
-                    value={item.sale !== undefined ? item.sale : ""}
-                    className="text-center w-32"
-                    readOnly
-                  />
-                </td>
-
-                <td>
-                  <input
-                    className="bg-blue-700 text-center text-white w-16"
-                    value={item.testing || 0} 
-                    type="number"
-                    onChange={(e) => {
-                      const newTesting = parseFloat(e.target.value) || 0;
-                      const updatedReadings = [...ms1Readings];
-                      updatedReadings[index].testing = newTesting;
-
-                      const saleAct =
-                        (item.closing || 0) -
-                        (item.opMeterReading || 0) -
-                        newTesting;
-
-                      updatedReadings[index].actualSale = saleAct;
-
-                      setMs1Readings(updatedReadings);
-                    }}
-                  />
-                </td>
-
-                <td>
-                  <input
-                    value={
-                      item.closing == null ||
-                      item.opMeterReading == null ||
-                      item.testing == null
-                        ? ""
-                        : (item.closing || 0) -
-                          (item.opMeterReading || 0) -
-                          (item.testing || 0)
-                    }
-                    className={`text-center w-32 ${
-                      (item.closing || 0) -
-                        (item.opMeterReading || 0) -
-                        (item.testing || 0) >=
-                      0
-                        ? ""
-                        : "text-red-600"
-                    }`}
-                    readOnly
-                  />
-                </td> */}
+   
                 <td>
   <input
     type="number"
@@ -600,6 +529,151 @@ export default function Sale_Fuels() {
 
       {/* ms2 start */}
       <section className="ms-2">
+  <div className="flex justify-center">
+    <div className="block text-2xl justify-center tracking-wider text-blue-600 px-2 rounded-md uppercase font-bold">
+      {tankName[1]}
+    </div>
+  </div>
+  <table className="w-[90%] ml-4">
+    <thead className="tablebg py-2">
+      <tr className="text-center font-bold py-2">
+        <th>Nozzle ID</th>
+        <th>Side</th>
+        <th>Opening</th>
+        <th>Closing</th>
+        <th>Sale</th>
+        <th>Testing</th>
+        <th>Actual Sale</th>
+        <th>Rate</th>
+        <th></th>
+        <th>T Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {ms2Readings.map((item2, index) => (
+        <tr key={item2._id} className="font-bold border-2 border-slate-300">
+          <td>
+            <input className="text-center w-32" value={tankName[1]} readOnly />
+          </td>
+          <td>
+            <input className="text-center w-20" value={item2.sideNo} readOnly />
+          </td>
+          <td>
+            <input className="text-center w-32" value={item2.opMeterReading} readOnly />
+          </td>
+          <td>
+            <input
+              type="number"
+              value={item2.closing || "0"}
+              className={`text-center w-32 ${item2.closing < 0 ? "text-red-600 bg-blue-600" : "bg-blue-600 text-white"}`}
+              onChange={(e) => {
+                const newClosing2 = parseFloat(e.target.value) || 0;
+                const updatedReadings2 = [...ms2Readings];
+                updatedReadings2[index].closing = newClosing2;
+
+                const sale2 = newClosing2 - (item2.opMeterReading || 0);
+                const saleAct2 = sale2 - (item2.testing || 0);
+
+                updatedReadings2[index].sale = sale2;
+                updatedReadings2[index].actualSale = saleAct2;
+
+                setMs2Readings(updatedReadings2);
+              }}
+            />
+          </td>
+          <td>
+            <input
+              value={item2.sale !== undefined ? item2.sale : ""}
+              className={`text-center w-32 ${item2.sale < 0 ? "text-red-600" : ""}`}
+              readOnly
+            />
+          </td>
+          <td>
+            <input
+              className={`bg-blue-700 text-center text-white w-16 ${item2.testing < 0 ? "text-red-500" : ""}`}
+              value={item2.testing || 0}
+              type="number"
+              onChange={(e) => {
+                const newTesting2 = parseFloat(e.target.value) || 0;
+                const updatedReadings2 = [...ms2Readings];
+                updatedReadings2[index].testing = newTesting2;
+
+                const saleAct2 = (item2.closing || 0) - (item2.opMeterReading || 0) - newTesting2;
+                updatedReadings2[index].actualSale = saleAct2;
+
+                setMs2Readings(updatedReadings2);
+              }}
+            />
+          </td>
+          <td>
+            <input
+              value={
+                item2.closing == null ||
+                item2.opMeterReading == null ||
+                item2.testing == null
+                  ? ""
+                  : (item2.closing || 0) - (item2.opMeterReading || 0) - (item2.testing || 0)
+              }
+              className={`text-center w-32 ${
+                (item2.closing || 0) - (item2.opMeterReading || 0) - (item2.testing || 0) < 0
+                  ? "text-red-600"
+                  : ""
+              }`}
+              readOnly
+            />
+          </td>
+          <td>
+            <input
+              disabled
+              style={{ display: "none" }}
+              value={(item2.rate = ms2Rate)}
+              className="text-center w-32 bg-rose-500"
+              readOnly
+            />
+          </td>
+          <td>
+            <input
+              style={{ display: "none" }}
+              className="text-center w-40"
+              value={(item2.saleActTotal = totals2.saleActTotal2)}
+              readOnly
+            />
+          </td>
+          <td>
+            <input
+              hidden
+              className="text-center w-40"
+              value={(item2.totalAmount = totals2.saleActTotal2 * ms2Rate)}
+              readOnly
+            />
+          </td>
+        </tr>
+      ))}
+      <tr className="border-2">
+        <th className="text-center" colSpan="4">
+          <span className="ml-80"> TOTAL(=) </span>
+        </th>
+        <th className="text-center">{totals2.saleTotal2}</th>
+        <th className="text-center">{totals2.testingTotal2}</th>
+        <th className="text-center">{totals2.saleActTotal2}</th>
+        <th className="text-center">{ms2Rate}</th>
+        <th className="text-center"></th>
+        <th className="text-center">{totals2.saleActTotal2 * ms2Rate}</th>
+      </tr>
+    </tbody>
+  </table>
+  <div className="flex justify-between ml-4 w-[90%]">
+    <button></button>
+    <button
+      className={`${isRed2 ? "bg-red-600" : "bg-green-600"} px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold`}
+      onClick={handleSave2}
+    >
+      Save
+    </button>
+  </div>
+</section>
+
+      {/* <section className="ms-2">
         <div className="flex justify-center">
           <div className="block text-2xl justify-center tracking-wider text-blue-600 px-2 rounded-md uppercase font-bold">
             {tankName[1]}
@@ -680,14 +754,13 @@ export default function Sale_Fuels() {
                 <td>
                   <input
                     className="bg-blue-700 text-center text-white w-16"
-                    value={item2.testing || 0} // Default to 0 if not provided
+                    value={item2.testing || 0}
                     type="number"
                     onChange={(e) => {
                       const newTesting2 = parseFloat(e.target.value) || 0;
                       const updatedReadings2 = [...ms2Readings];
                       updatedReadings2[index].testing = newTesting2;
 
-                      // Update actual sale when testing value changes
                       const saleAct2 =
                         (item2.closing || 0) -
                         (item2.opMeterReading || 0) -
@@ -768,18 +841,13 @@ export default function Sale_Fuels() {
           >
             Save
           </button>
-          {/* <button
-            className="bg-green-600 px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold"
-            onClick={handleSave2}
-          >
-            Save
-          </button> */}
+        
         </div>
-      </section>
+      </section> */}
       {/* ms2 end */}
 
       {/* hsd start */}
-      <section className="ms-2">
+      {/* <section className="hsd">
         <div className="flex justify-center">
           <div className="block text-2xl justify-center tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
             {tankName[2]}
@@ -827,34 +895,7 @@ export default function Sale_Fuels() {
                     readOnly
                   />
                 </td>
-                {/* <td>
-                  <input
-                    type="number"
-                    value={item3.closing || 0}
-                    className="text-center bg-blue-600 w-32 text-white"
-                    onChange={(e) => {
-                      const newClosing = parseFloat(e.target.value) || 0;
-                      const updatedReadings = [...hsdReadings];
-                      updatedReadings[index].closing = newClosing;
-
-                      // Calculate the sale if both closing and opMeterReading are present
-                      if (newClosing && item3.opMeterReading !== undefined) {
-                        updatedReadings[index].sale3 =
-                          newClosing - item3.opMeterReading;
-                      } else {
-                        updatedReadings[index].sale3 = ""; // Set sale as empty string initially
-                      }
-
-                      // Calculate the actual sale with updated closing value
-                      updatedReadings[index].actualSale =
-                        newClosing -
-                        (item3.opMeterReading || 0) -
-                        (item3.testing || 0);
-
-                      setHsdReadings(updatedReadings);
-                    }}
-                  />
-                </td> */}
+               
                 <td>
                   <input
                     type="number"
@@ -865,9 +906,8 @@ export default function Sale_Fuels() {
                       const updatedReadings3 = [...hsdReadings];
                       updatedReadings3[index].closing = newClosing3;
 
-                      // Calculate the sale as soon as closing is entered
                       const sale3 = newClosing3 - (item3.opMeterReading || 0);
-                      const saleAct3 = sale3 - (item3.testing || 0); // Default testing to 0
+                      const saleAct3 = sale3 - (item3.testing || 0); 
 
                       updatedReadings3[index].sale = sale3;
                       updatedReadings3[index].actualSale = saleAct3;
@@ -883,31 +923,17 @@ export default function Sale_Fuels() {
                     readOnly
                   />
                 </td>
-                {/* 
+              
                 <td>
                   <input
                     className="bg-blue-700 text-center text-white w-16"
-                    value={item3.testing || 0}
-                    type="number"
-                    onChange={(e) => {
-                      const newTesting = parseFloat(e.target.value) || 0;
-                      const updatedReadings = [...hsdReadings];
-                      updatedReadings[index].testing = newTesting;
-                      setHsdReadings(updatedReadings);
-                    }}
-                  />
-                </td> */}
-                <td>
-                  <input
-                    className="bg-blue-700 text-center text-white w-16"
-                    value={item3.testing || 0} // Default to 0 if not provided
+                    value={item3.testing || 0} 
                     type="number"
                     onChange={(e) => {
                       const newTesting3 = parseFloat(e.target.value) || 0;
                       const updatedReadings3 = [...hsdReadings];
                       updatedReadings3[index].testing = newTesting3;
 
-                      // Update actual sale when testing value changes
                       const saleAct3 =
                         (item3.closing || 0) -
                         (item3.opMeterReading || 0) -
@@ -988,14 +1014,158 @@ export default function Sale_Fuels() {
           >
             Save
           </button>
-          {/* <button
-            className="bg-green-600 px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold"
-            onClick={handleSave3}
-          >
-            Save
-          </button> */}
+         
         </div>
-      </section>
+      </section> */}
+      <section className="hsd">
+  <div className="flex justify-center">
+    <div className="block text-2xl justify-center tracking-wider text-blue-600 p-2 rounded-md uppercase font-bold">
+      {tankName[2]}
+    </div>
+  </div>
+  <table className="w-[90%] ml-4">
+    <thead className="tablebg py-2">
+      <tr className="text-center font-bold py-2">
+        <th>Nozzle ID</th>
+        <th>Side</th>
+        <th>Opening</th>
+        <th>Closing</th>
+        <th>Sale</th>
+        <th>Testing</th>
+        <th>Actual Sale</th>
+        <th>Rate</th>
+        <th></th>
+        <th>T Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {hsdReadings.map((item3, index) => (
+        <tr key={item3._id} className="font-bold border-2 border-slate-300">
+          <td>
+            <input className="text-center w-32" value={tankName[2]} readOnly />
+          </td>
+          <td>
+            <input className="text-center w-20" value={item3.sideNo} readOnly />
+          </td>
+          <td>
+            <input className="text-center w-32" value={item3.opMeterReading} readOnly />
+          </td>
+          <td>
+            <input
+              type="number"
+              value={item3.closing || "0"}
+              className={`text-center w-32 ${
+                item3.closing < 0 ? "text-red-600 bg-blue-600" : "bg-blue-600 text-white"
+              }`}
+              onChange={(e) => {
+                const newClosing3 = parseFloat(e.target.value) || 0;
+                const updatedReadings3 = [...hsdReadings];
+                updatedReadings3[index].closing = newClosing3;
+
+                const sale3 = newClosing3 - (item3.opMeterReading || 0);
+                const saleAct3 = sale3 - (item3.testing || 0);
+
+                updatedReadings3[index].sale = sale3;
+                updatedReadings3[index].actualSale = saleAct3;
+
+                setHsdReadings(updatedReadings3);
+              }}
+            />
+          </td>
+          <td>
+            <input
+              value={item3.sale !== undefined ? item3.sale : ""}
+              className={`text-center w-32 ${item3.sale < 0 ? "text-red-600" : ""}`}
+              readOnly
+            />
+          </td>
+          <td>
+            <input
+              className={`bg-blue-700 text-center text-white w-16 ${item3.testing < 0 ? "text-red-500" : ""}`}
+              value={item3.testing || 0}
+              type="number"
+              onChange={(e) => {
+                const newTesting3 = parseFloat(e.target.value) || 0;
+                const updatedReadings3 = [...hsdReadings];
+                updatedReadings3[index].testing = newTesting3;
+
+                const saleAct3 = (item3.closing || 0) - (item3.opMeterReading || 0) - newTesting3;
+                updatedReadings3[index].actualSale = saleAct3;
+
+                setHsdReadings(updatedReadings3);
+              }}
+            />
+          </td>
+          <td>
+            <input
+              value={
+                item3.closing == null ||
+                item3.opMeterReading == null ||
+                item3.testing == null
+                  ? ""
+                  : (item3.closing || 0) - (item3.opMeterReading || 0) - (item3.testing || 0)
+              }
+              className={`text-center w-32 ${
+                (item3.closing || 0) - (item3.opMeterReading || 0) - (item3.testing || 0) < 0
+                  ? "text-red-600"
+                  : ""
+              }`}
+              readOnly
+            />
+          </td>
+          <td>
+            <input
+              disabled
+              style={{ display: "none" }}
+              value={(item3.rate = hsdRate)}
+              className="text-center w-32 bg-rose-500"
+              readOnly
+            />
+          </td>
+          <td>
+            <input
+              style={{ display: "none" }}
+              className="text-center w-40"
+              value={(item3.saleActTotal = totals3.saleActTotal3)}
+              readOnly
+            />
+          </td>
+          <td>
+            <input
+              hidden
+              className="text-center w-40"
+              value={item3.totalAmount = totals3.saleActTotal3 * hsdRate}
+              readOnly
+            />
+          </td>
+        </tr>
+      ))}
+      <tr className="border-2">
+        <th className="text-center" colSpan="4">
+          <span className="ml-80"> TOTAL(=) </span>
+        </th>
+        <th className="text-center">{totals3.saleTotal3}</th>
+        <th className="text-center">{totals3.testingTotal3}</th>
+        <th className="text-center">{totals3.saleActTotal3}</th>
+        <th className="text-center">{hsdRate}</th>
+        <th className="text-center"></th>
+        <th className="text-center">{totals3.saleActTotal3 * hsdRate}</th>
+      </tr>
+    </tbody>
+  </table>
+  <div className="flex justify-between w-[90%] ml-4">
+    <button></button>
+    <button
+      className={`${
+        isRed3 ? "bg-red-600" : "bg-green-600"
+      } px-3 tracking-wide mr-2 my-2 py-2 rounded-md text-white font-bold`}
+      onClick={handleSave3}
+    >
+      Save
+    </button>
+  </div>
+</section>
+
       {/* hsd end */}
     </main>
   );
