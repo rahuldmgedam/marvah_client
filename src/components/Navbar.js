@@ -257,7 +257,7 @@ export default function Navbar() {
         style={{
           position: "sticky",
           top: "0",
-          zIndex: "2",
+          zIndex: "20",
         }}
       >
         {/* Day Start */}
