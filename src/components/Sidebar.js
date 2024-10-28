@@ -498,6 +498,11 @@ export default function Sidebar() {
                   Add Expenses Topic
                 </Link>
               </li>
+              <li>
+                <Link to="/addplanner" className="hover:underline">
+                  Add Paying Acoounts
+                </Link>
+              </li>
             </ul>
           )}
         </div>

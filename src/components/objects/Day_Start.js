@@ -27,8 +27,6 @@
 //     tank3:""
 //   }]);
 
-
-
 //   const saveMs = () => {
 //     axios
 //       .post("https://marvah-server.onrender.com/ms/create", {
@@ -148,7 +146,6 @@
 //     getTodaysDate();
 //   }, []);
 
-
 //   const [differenceMs, setDifferenceMs] = useState(0);
 //   useEffect(() => {
 //     const differenceMS = amsToday - amsLast;
@@ -175,7 +172,6 @@
 
 //   const borderColorHsd = differenceHsd >= 0 ? "green" : "red";
 //   const navigate = useNavigate();
-
 
 //   const [lastDate,setLastDate] = useState(0)
 //   const fetchMsd = () => {
@@ -207,11 +203,7 @@
 //     return `${day}-${month}-${year}`;
 // }
 
-
-
-
 //   console.log("selectedDate",selectedDate)
-
 
 // const fetchDataForDate = (date) => {
 //   console.log(formatToDateString(date))
@@ -245,7 +237,6 @@
 //       console.log(error.message);
 //     });
 // };
-
 
 // function formatToDateString(dateStr) {
 //   const date = new Date(dateStr); // Create a Date object from the string
@@ -294,7 +285,7 @@
 // useEffect(() => {
 //   fetchTank();
 
-// }, []);  
+// }, []);
 
 // console.log("tan1kData",)
 
@@ -555,33 +546,27 @@ export default function Tankd({ dbpath1, setDate }) {
   const [bspeedLast, setbspeedLast] = useState(0);
   const [hsdLast, sethsdLast] = useState(0);
 
-  const [tankName, setTankName] = useState([])
+  const [tankName, setTankName] = useState([]);
 
   const [selectedDate, setSelectedDate] = useState(""); // State to store selected date
 
-  const [isRed,setIsRed] = useState(false);
+  const [isRed, setIsRed] = useState(false);
   const fetchTank = () => {
     axios
       .get("https://marvah-server.onrender.com/tank")
       .then((res) => {
         console.log("tank:", res.data);
-        const tanksData = res.data.map((tank) => tank.product)
-        setTankName(tanksData)
-  
+        const tanksData = res.data.map((tank) => tank.product);
+        setTankName(tanksData);
       })
       .catch((error) => {
         console.log(error.message);
       });
-  
   };
-  
-  
+
   useEffect(() => {
     fetchTank();
-  
   }, []);
-
-
 
   const saveMs = () => {
     axios
@@ -590,7 +575,6 @@ export default function Tankd({ dbpath1, setDate }) {
       })
       .then((res) => {
         setamsToday(res.data.reading);
-        console.log(res.data.reading);
       });
 
     axios
@@ -599,7 +583,7 @@ export default function Tankd({ dbpath1, setDate }) {
       })
       .then((res) => {
         setbspeedToday(res.data.reading);
-        console.log(res.data.reading);
+        console.log("post bspeed today",bspeedToday);
       });
 
     axios
@@ -608,22 +592,18 @@ export default function Tankd({ dbpath1, setDate }) {
       })
       .then((res) => {
         sethsdToday(res.data.reading);
-        console.log(res.data.reading);
       });
-    
-      alert("today's reading are saved")
-      setIsRed(true)
+
+    alert("today's reading are saved");
+    setIsRed(true);
   };
 
   const fetchMs = () => {
     axios
       .get("https://marvah-server.onrender.com/ms")
       .then((res) => {
-        // console.log("res ms", res.data[0]);
         setamsLast(res.data[res.data.length - 2].reading);
 
-        // const todayR = res.data.length;
-        // console.log("todayR", res.data.length - 1);
         setamsToday(res.data[res.data.length - 1].reading);
       })
       .catch((error) => {
@@ -635,8 +615,8 @@ export default function Tankd({ dbpath1, setDate }) {
     axios
       .get("https://marvah-server.onrender.com/speed")
       .then((res) => {
-        setbspeedToday(res.data[res.data.length - 2].reading);
-        setbspeedLast(res.data[res.data.length - 1].reading);
+        setbspeedToday(res.data[res.data.length - 1].reading);
+        setbspeedLast(res.data[res.data.length - 2].reading);
       })
       .catch((error) => {
         console.log(error.message);
@@ -647,8 +627,8 @@ export default function Tankd({ dbpath1, setDate }) {
     axios
       .get("https://marvah-server.onrender.com/hsd")
       .then((res) => {
-        sethsdToday(res.data[res.data.length - 2].reading);
-        sethsdLast(res.data[res.data.length - 1].reading);
+        sethsdToday(res.data[res.data.length - 1].reading);
+        sethsdLast(res.data[res.data.length - 2].reading);
       })
       .catch((error) => {
         console.log(error.message);
@@ -663,14 +643,9 @@ export default function Tankd({ dbpath1, setDate }) {
     fetchHsd();
   }, [saveMs]);
 
-
-
-
   useEffect(() => {
-    
     // getTodaysDate();
   }, []);
-
 
   const [differenceMs, setDifferenceMs] = useState(0);
   useEffect(() => {
@@ -699,30 +674,33 @@ export default function Tankd({ dbpath1, setDate }) {
   const borderColorHsd = differenceHsd >= 0 ? "green" : "red";
   const navigate = useNavigate();
 
+  const [lastDate, setLastDate] = useState();
 
-  const [lastDate,setLastDate] = useState(0)
+  // Handle date selection
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
+    setSelectedDate(selectedDate);
+  };
+
+  function convertToDDMMYYYY(dateString) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-indexed
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
 
 
-
-// Handle date selection
-const handleDateChange = (e) => {
-  const selectedDate = e.target.value;
-  setSelectedDate((selectedDate));
-};
-
-function convertToDDMMYYYY(dateString) {
-  const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
-  const year = date.getFullYear();
-  
-  return `${day}/${month}/${year}`;
-}
-
-// Example usage:
-const formattedDate = convertToDDMMYYYY(lastDate);
-console.log(formattedDate); // Outputs: "25/10/2024"
-
+  // Example usage:
+  const formattedDate = convertToDDMMYYYY(lastDate);
+  // console.log("lastDate ", lastDate); // Outputs: "25/10/2024"
+  console.log("amsToday",amsToday);
+  console.log("amsLast",amsLast);
+  console.log("bspeedToday",bspeedToday);
+  console.log("bspeedLast",bspeedLast)
+  console.log("hsdToday",hsdToday);
+  console.log("hsdLast",hsdLast)
   return (
     <>
       <div className="">
@@ -742,12 +720,13 @@ console.log(formattedDate); // Outputs: "25/10/2024"
                   </span>{" "}
                   <span className="mr-4">
                     <input
-                      type="date"
-                      // type="string"
+                      // type="date"
+                      type="string"
                       className="px-2 py-2 border-3 border-red-600 rounded-md"
-                      value={(convertToDDMMYYYY(lastDate))}
+                      value={(new Date().toLocaleDateString("en-GB"))}
+                      onChange={(e) => setLastDate(e.target.value)}
                       // value={(selectedDate)}
-                      onChange={handleDateChange} // Trigger fetching data on date change
+                      // onChange={handleDateChange} // Trigger fetching data on date change
                       // onChange={}
                     />
                   </span>
@@ -781,7 +760,9 @@ console.log(formattedDate); // Outputs: "25/10/2024"
                 >
                   <div className="row">
                     <div className="col-4">
-                      <h4 className="font-bold text-red-600 text-2xl">{tankName[0]}</h4>
+                      <h4 className="font-bold text-red-600 text-2xl">
+                        {tankName[0]}
+                      </h4>
                       <br></br>
                       Reading Day
                       <input
@@ -943,7 +924,11 @@ console.log(formattedDate); // Outputs: "25/10/2024"
                           <button
                             type="button"
                             //onClick={onAdd}
-                            className={`${isRed?'bg-red-500 px-3 py-2 font-bold rounded-md text-white':'bg-green-500 px-3 py-2 font-bold rounded-md text-white'}`}
+                            className={`${
+                              isRed
+                                ? "bg-red-500 px-3 py-2 font-bold rounded-md text-white"
+                                : "bg-green-500 px-3 py-2 font-bold rounded-md text-white"
+                            }`}
                           >
                             <span onClick={saveMs}>Save</span>
                           </button>
@@ -960,3 +945,239 @@ console.log(formattedDate); // Outputs: "25/10/2024"
     </>
   );
 }
+
+
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
+// import "../css/Tank.css";
+// import "../css/DayStart.css";
+
+// export default function Tankd({ dbpath1, setDate }) {
+//   const [amsToday, setamsToday] = useState(0);
+//   const [bspeedToday, setbspeedToday] = useState(0);
+//   const [hsdToday, sethsdToday] = useState(0);
+
+//   const [amsLast, setamsLast] = useState(0);
+//   const [bspeedLast, setbspeedLast] = useState(0);
+//   const [hsdLast, sethsdLast] = useState(0);
+
+//   const [differenceMs, setDifferenceMs] = useState(0);
+//   const [differenceSpeed, setDifferenceSpeed] = useState(0);
+//   const [differenceHsd, setDifferenceHsd] = useState(0);
+
+//   const [lastDate, setLastDate] = useState("");
+//   const [tankName, setTankName] = useState([]);
+//   const [isRed, setIsRed] = useState(false);
+
+//   // Fetch tank names
+//   useEffect(() => {
+//     axios.get("https://marvah-server.onrender.com/tank")
+//       .then((res) => {
+//         const tanksData = res.data.map((tank) => tank.product);
+//         setTankName(tanksData);
+//       })
+//       .catch((error) => console.log(error.message));
+//   }, []);
+
+//   // Fetch current and last readings on component mount or save
+//   useEffect(() => {
+//     fetchMs();
+//     fetchSpeed();
+//     fetchHsd();
+//   }, []);
+
+//   // Fetch readings by selected date
+//   const fetchReadingsByDate = () => {
+//     axios
+//       .post("https://marvah-server.onrender.com/ms/create", { lastDate })
+//       .then((res) => {
+//         const data = res.data.data;
+//         setamsToday(data.amsToday || 0);
+//         setamsLast(data.amsLast || 0);
+//         setbspeedToday(data.bspeedToday || 0);
+//         setbspeedLast(data.bspeedLast || 0);
+//         sethsdToday(data.hsdToday || 0);
+//         sethsdLast(data.hsdLast || 0);
+//         calculateDifferences();
+//         console.log("data fetchReadingsByDate:",res.data.data);
+
+//       })
+//       .catch((error) => console.log("Error fetching readings by date:", error.message));
+//   };
+//   // Fetch latest readings (today and last)
+//   const fetchMs = () => {
+//     axios.get("https://marvah-server.onrender.com/ms")
+//       .then((res) => {
+//         setamsToday(res.data[res.data.length - 1].reading);
+//         setamsLast(res.data[res.data.length - 2].reading);
+//       })
+//       .catch((error) => console.log(error.message));
+//   };
+
+//   const fetchSpeed = () => {
+//     axios.get("https://marvah-server.onrender.com/speed")
+//       .then((res) => {
+//         setbspeedToday(res.data[res.data.length - 1].reading);
+//         setbspeedLast(res.data[res.data.length - 2].reading);
+//       })
+//       .catch((error) => console.log(error.message));
+//   };
+
+//   const fetchHsd = () => {
+//     axios.get("https://marvah-server.onrender.com/hsd")
+//       .then((res) => {
+//         sethsdToday(res.data[res.data.length - 1].reading);
+//         sethsdLast(res.data[res.data.length - 2].reading);
+//       })
+//       .catch((error) => console.log(error.message));
+//   };
+
+//   // Calculate differences between today and last readings
+//   const calculateDifferences = () => {
+//     setDifferenceMs(amsToday - amsLast);
+//     setDifferenceSpeed(bspeedToday - bspeedLast);
+//     setDifferenceHsd(hsdToday - hsdLast);
+//   };
+
+//   // Handle date selection and fetch data
+//   const handleDateChange = (e) => {
+//     const selectedDate = e.target.value;
+//     setLastDate(e.target.value);
+//     fetchReadingsByDate();
+//   };
+
+//   // Save today's readings
+//   const saveMs = () => {
+//     axios.post("https://marvah-server.onrender.com/ms/create", { reading: amsToday })
+//       .then(() => setIsRed(true))
+//       .catch((error) => console.log(error.message));
+
+//       axios.post("https://marvah-server.onrender.com/speed/create", { reading: bspeedToday })
+//       .then(() => setIsRed(true))
+//       .catch((error) => console.log(error.message));
+
+//       axios.post("https://marvah-server.onrender.com/hsd/create", { reading: hsdToday })
+//       .then(() => setIsRed(true))
+//       .catch((error) => console.log(error.message));
+//   };
+
+//   const borderColorMs = differenceMs >= 0 ? "green" : "red";
+//   const borderColorSpeed = differenceSpeed >= 0 ? "green" : "red";
+//   const borderColorHsd = differenceHsd >= 0 ? "green" : "red";
+// console.log("amsToday:",amsToday);
+// console.log("amsToday:",bspeedToday);
+
+//   console.log("lastDate",lastDate);
+//   return (
+//     <div className="tankMainDiv">
+//       <center>
+//         <h1 className="text-3xl font-bold">Day Start</h1>
+
+//         <div className="mt-10 flex justify-center gap-4">
+//           <span className="text-xl font-semibold">Reading Date:</span>
+//           <input
+//             type="date"
+//             className="border-3 rounded-md px-2 py-2"
+//             value={lastDate}
+//             onChange={handleDateChange}
+//           />
+//         </div>
+
+//         <div className="container" style={{ padding: "20px" }}>
+//           <div className="row">
+//             {/* Tank 1 */}
+//             <div className="col-4">
+//               <h4 className="font-bold text-red-600 text-2xl">{tankName[0]}</h4>
+//               Reading Today
+//               <input
+//                 type="number"
+//                 className="form-control text-center text-2xl"
+//                 value={amsToday}
+//                 onChange={(e) => setamsToday(e.target.value)}
+//               />
+//               Last Day
+//               <input
+//                 type="number"
+//                 className="form-control text-center text-2xl"
+//                 value={amsLast}
+//                 disabled
+//               />
+//               Difference
+//               <input
+//                 type="number"
+//                 className="form-control text-center text-2xl"
+//                 value={differenceMs}
+//                 style={{ borderColor: borderColorMs }}
+//                 disabled
+//               />
+//             </div>
+            
+//             {/* Tank 2 */}
+//             <div className="col-4">
+//               <h4 className="font-bold text-red-600 text-2xl">{tankName[1]}</h4>
+//               Reading Today
+//               <input
+//                 type="number"
+//                 className="form-control text-center text-2xl"
+//                 value={bspeedToday}
+//                 onChange={(e) => setbspeedToday(e.target.value)}
+//               />
+//               Last Day
+//               <input
+//                 type="number"
+//                 className="form-control text-center text-2xl"
+//                 value={bspeedLast}
+//                 disabled
+//               />
+//               Difference
+//               <input
+//                 type="number"
+//                 className="form-control text-center text-2xl"
+//                 value={differenceSpeed}
+//                 style={{ borderColor: borderColorSpeed }}
+//                 disabled
+//               />
+//             </div>
+            
+//             {/* Tank 3 */}
+//             <div className="col-4">
+//               <h4 className="font-bold text-red-600 text-2xl">{tankName[2]}</h4>
+//               Reading Today
+//               <input
+//                 type="number"
+//                 className="form-control text-center text-2xl"
+//                 value={hsdToday}
+//                 onChange={(e) => sethsdToday(e.target.value)}
+//               />
+//               Last Day
+//               <input
+//                 type="number"
+//                 className="form-control text-center text-2xl"
+//                 value={hsdLast}
+//                 disabled
+//               />
+//               Difference
+//               <input
+//                 type="number"
+//                 className="form-control text-center text-2xl"
+//                 value={differenceHsd}
+//                 style={{ borderColor: borderColorHsd }}
+//                 disabled
+//               />
+//             </div>
+//           </div>
+          
+//           {/* Save button */}
+//           <button
+//             onClick={saveMs}
+//             className={`mt-4 px-3 py-2 font-bold rounded-md text-white ${isRed ? "bg-red-500" : "bg-green-500"}`}
+//           >
+//             Save
+//           </button>
+//         </div>
+//       </center>
+//     </div>
+//   );
+// }
+
+ 

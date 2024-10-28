@@ -103,6 +103,7 @@ import PurchasetdsMain from "./components/Reports/purchaseReports/PurchasetdsMai
 import StaffSalary from "./components/objects/StaffSalary";
 import Planner from "./components/objects/Planner";
 import Rates from "./components/objects/Rates";
+import AddPlanner from "./components/objects/AddPlanner";
 
 function App() {
   return (
@@ -1067,7 +1068,7 @@ function App() {
            
                 <div className="w-[80%]">
                   <div>
-                  {/* <Navbar /> */}
+                  <Navbar />
                   <Petro_Card/>
                   </div>
               
@@ -2245,6 +2246,29 @@ function App() {
                   <div>
                     <Navbar />
                     <Planner />
+                  </div>
+
+                </div>
+              </div>
+            </>
+          }
+        />
+
+<Route
+          path="/addplanner"
+          element={
+            <>
+              <div style={{ display: "flex" }}>
+                <div className="w-[20%]">
+                  <div>
+                    <Sidebar />
+                  </div>
+                </div>
+
+                <div className="w-[80%]">
+                  <div>
+                    <Navbar />
+                    <AddPlanner/>
                   </div>
 
                 </div>
