@@ -781,6 +781,7 @@ export default function Handloans({ dbpath1 }) {
   )
   .reduce((total, transaction) => total + transaction.amount, 0)
 
+
   return (
     <>
       {" "}

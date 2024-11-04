@@ -861,7 +861,7 @@ export default function Handloans({ dbpath1 }) {
       <div className=" ml-6 shadow-lg p-3 bg-body-tertiary rounded bigFontWeight">
         {/* <h2 className="mb-1 p-2 text-3xl fixed ml-[29%] font-bold uppercase text-center">
           Handloans
-        </h2> */}
+        </h2> */}  
         <div className="fixed -mt-4 z-1 bg-white w-[84%]">
         <div className="flex  justify-between mb-4 mt-3 w-[90%]">
           <span className="text-2xl"> Date :{todaysDate}</span>

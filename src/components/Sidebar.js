@@ -340,7 +340,8 @@ export default function Sidebar() {
           </center>
           Current Date : {formattedDate}
           <br></br>
-          Last Entry Date : {convertToDDMMYYYY(lastDate)}
+          Last Entry Date : dd-mm-yyyy
+          {/* {convertToDDMMYYYY(lastDate)} */}
         </div>
 
         <div onClick={() => navigate("/Day_Start")} className="flex items-center justify-between gap-4 px-6 py-2 mt-4 hover:bg-[#008b8b] hover:rounded-md transition-all cursor-pointer">

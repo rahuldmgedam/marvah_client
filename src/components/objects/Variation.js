@@ -314,11 +314,11 @@ export default function Variation() {
   const [totalVariation, setTotalVariation] = useState([]); // Store total variation data
   const [openStocks, setOpenStocks] = useState([]); // Store open stock data
 
-  const [msTank1, setMsTank1] = useState(null);
-  const [speedTank2, setSpeedTank2] = useState(null);
-  const [hsdTank3, setHsdTank3] = useState(null);
+  const [msTank1Decant, setMsTank1Decant] = useState(null);
+  const [speedTank2Decant, setSpeedTank2Decant] = useState(null);
+  const [hsdTank3Decant, setHsdTank3Decant] = useState(null);
 
-  const [receipts, setReceipts] = useState([]); // Store receipt data
+  const [receipts, setReceipts] = useState([msTank1Decant,speedTank2Decant,hsdTank3Decant]); // Store receipt data
 
   const [actualBalances, setActualBalances] = useState([null, null, null]); // Store actual balance data
   const [currentDate, setCurrentDate] = useState(""); // Store current date
@@ -349,7 +349,7 @@ export default function Variation() {
     }
   }
 
-  console.log(fuelSaleReadings);
+  // console.log(fuelSaleReadings);
   
    
   useEffect(() => {
@@ -357,9 +357,7 @@ export default function Variation() {
       
   }, []);
 
-  const fuelSalesData = [
-    // Place the fuelSales data array here
-];
+
 
 function getSaleActTotalsArray(data) {
     const totals = {
@@ -385,7 +383,7 @@ function getSaleActTotalsArray(data) {
 
 const saleActTotalsArray = getSaleActTotalsArray(fuelSaleReadings);
 
-console.log("SaleActTotal Array:", saleActTotalsArray);
+// console.log("SaleActTotal Array:", saleActTotalsArray);
 
   const [invNo,setInvNo] = useState(0);
 
@@ -393,12 +391,10 @@ console.log("SaleActTotal Array:", saleActTotalsArray);
   const Ms =  saleActTotalsArray[0];
   const Ms2 =  saleActTotalsArray[1] ;
   const HSD =  saleActTotalsArray[2];
-console.log(Ms,Ms2,HSD)
+// console.log(Ms,Ms2,HSD)
   const allReceipts = () => {
-    setReceipts(...receipts);
+    setReceipts([msTank1Decant,speedTank2Decant,hsdTank3Decant]);
   };
-
-// console.log("allReceipts",allReceipts)
 
   // Fetch total variation data on component mount
   useEffect(() => {
@@ -410,33 +406,29 @@ console.log(Ms,Ms2,HSD)
       .catch((error) => {
         console.error("There was an error fetching the variations!", error);
       });
-      fetchInvoiceNumbers()
+      fetchInvoiceNumbers();
+      
   }, []);
 
-  // console.log(
-  //   "msTank1",
-  //   msTank1,
-  //   "speedTank2",
-  //   speedTank2,
-  //   "hsdTank3",
-  //   hsdTank3
-  // );
+
 
   const fetchReceipts = () => {
     axios
       .get("https://marvah-server.onrender.com/petroldecantation")
       .then((response) => {
-        // setReceipts(response?.data);
-        setMsTank1(response.data[0]?.tank1 * 1000);
-        setSpeedTank2(response.data[0]?.tank2 * 1000);
-        setHsdTank3(response.data[0]?.tank3 * 1000);
-        setInvNo(response.data?.[0] )
+       
+        setMsTank1Decant(response.data[0]?.tank1 * 1000);
+        setSpeedTank2Decant(response.data[0]?.tank2 * 1000);
+        setHsdTank3Decant(response.data[0]?.tank3 * 1000);
+        setInvNo(response.data?.[0] );
+        // setReceipts(11,22,33);
+
+        // setReceipts(response?.data[0].mskl);
       });
   };
-
   useEffect(() => {
     fetchReceipts();
-      
+      allReceipts()
   }, []);
   // console.log("fetchReceipts", receipts);
 
@@ -481,62 +473,115 @@ console.log(Ms,Ms2,HSD)
     return actualBalance - balanceStock;
   };
 
+  // console.log("calculateVariation",calculateVariation);
   // Handle save button click
-  const handleSave = () => {
-    // Prepare data to save
-    const dataToSave = openStocks.map((item, index) => {
-      const receipt = receipts[index] || 0;
-      const actualSale =
-        index === 0
-          ? Ms.actualSale
-          : index === 1
-          ? Ms2.actualSale
-          : HSD.actualSale;
-      const totalStock = calculateTotalStock(receipt, item.opStock);
-      const balanceStock = totalStock - actualSale;
-      const actualBalance = actualBalances[index];
-      const variationValue = calculateVariation(actualBalance, balanceStock);
-      const tVariation =
-        totalVariation[totalVariation.length - 3 + index]?.tVariation +
-        variationValue;
+  // const handleSave = () => {
+  //   // Prepare data to save
+  //   const dataToSave = openStocks.map((item, index) => {
+  //     const receipt = receipts[index] || 0;
+  //     const actualSale =
+  //       index === 0
+  //         ? Ms.actualSale
+  //         : index === 1
+  //         ? Ms2.actualSale
+  //         : HSD.actualSale;
+  //     const totalStock = calculateTotalStock(receipt, item.opStock);
+  //     const balanceStock = totalStock - actualSale;
+  //     const actualBalance = actualBalances[index];
+  //     const variationValue = calculateVariation(actualBalance, balanceStock);
+  //     const tVariation =
+  //       totalVariation[totalVariation.length - 3 + index]?.tVariation +
+  //       variationValue;
 
-      return {
-        product: item.product,
-        openStock: item.opStock,
-        receipt: receipt,
-        totalStock: totalStock,
-        actualSale: actualSale,
-        balanceStock: balanceStock,
-        actualBalance: actualBalance,
-        variation: variationValue,
-        tVariation: tVariation,
-      };
-    });
+  //     return {
+  //       product: item.product,
+  //       openStock: item.opStock,
+  //       receipt: receipt,
+  //       totalStock: totalStock,
+  //       actualSale: actualSale,
+  //       balanceStock: balanceStock,
+  //       actualBalance: actualBalance,
+  //       variation: variationValue,
+  //       tVariation: tVariation,
+  //     };
+  //   });
 
-    // Post data to the server
-    axios
-      .post("https://marvah-server.onrender.com/variation/create", dataToSave)
-      .then((response) => {
-        console.log(response.data);
-        if (response.statusText === "OK" || response.status === 200) {
-          toast.success(response.data);
-        }
-      })
-      .catch((error) => {
-        console.error("There was an error saving the data!", error);
-        if (error) {
-          toast.error("All fields are required");
-        }
+  //   // Post data to the server
+  //   axios
+  //     .post("https://marvah-server.onrender.com/variation/create", dataToSave)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       if (response.statusText === "OK" || response.status === 200) {
+  //         toast.success(response.data);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("There was an error saving the data!", error);
+  //       if (error) {
+  //         toast.error("All fields are required");
+  //       }
+  //     });
+  // };
+  const handleSave = async () => {
+    try {
+      // Prepare data to save
+      const dataToSave = openStocks.map((item, index) => {
+        const receipt = receipts[index] || 0;
+        const actualSale =
+          index === 0
+            ? Ms || 0
+            : index === 1
+            ? Ms2 || 0
+            : HSD || 0;
+        const totalStock = calculateTotalStock(receipt, item.opStock || 0);
+        const balanceStock = totalStock - actualSale;
+        const actualBalance = actualBalances[index] || 0;
+        const variationValue = calculateVariation(actualBalance, balanceStock);
+        const tVariation =
+          (totalVariation[totalVariation.length - 3 + index]?.tVariation || 0) +
+          variationValue;
+  
+        return {
+          product: item.product,
+          openStock: item.opStock || 0,
+          receipt: receipt,
+          totalStock: totalStock,
+          actualSale: actualSale,
+          balanceStock: balanceStock,
+          actualBalance: actualBalance,
+          variation: variationValue,
+          tVariation: tVariation,
+        };
       });
+      // https://marvah-server.onrender.com
+      // POST data to the server
+      const response = await axios.post(
+        "http://localhost:4000/variation/create",
+        dataToSave
+      );
+  
+      if (response.status === 201) {
+        toast.success("Variation data saved successfully");
+      } else {
+        toast.error("Failed to save variation data");
+      }
+    } catch (error) {
+      console.error("There was an error saving the data!", error);
+      toast.error("All fields are required");
+    }
   };
-
+  
+  console.log("allReceipts",allReceipts);
+  console.log("receipts",receipts)
+  
+  
   return (
     <div className="tankMainDiv shadow-lg p-3 mb-5 bg-body-tertiary rounded bigFontWeight">
       <h2 className="mt-3 text-center text-blue-500 font-bold uppercase text-2xl">
         Variation
       </h2>
       <span style={{ fontSize: "22px" }}> Date: {currentDate} </span>
-      <p>Invoice Numbers:- {invoiceNumbers}</p>
+      <p className="text-xl">Invoice Number:- {invoiceNumbers}</p>
       <br />
       <table className="table">
         <thead>
@@ -552,8 +597,8 @@ console.log(Ms,Ms2,HSD)
             <th className="tablebg text-center">Total.Variation <br /> (-/+)</th>
           </tr>
         </thead>
-        <tbody>
-          {openStocks.map((item, index) => {
+        {/* <tbody>
+          {openStocks?.map((item, index) => {
             const receipt = receipts[index] || 0;
             const totalStock = calculateTotalStock(receipt, item.opStock);
             const balanceStock =
@@ -662,7 +707,105 @@ console.log(Ms,Ms2,HSD)
               </tr>
             );
           })}
-        </tbody>
+        </tbody> */}
+        <tbody>
+  {openStocks?.map((item, index) => {
+    const receipt = receipts[index] || 0;
+    const totalStock = calculateTotalStock(receipt, item.opStock || 0);
+    const actualSale = index === 0 ? Ms || 0 : index === 1 ? Ms2 || 0 : HSD || 0;
+    const balanceStock = totalStock - actualSale;
+    const actualBalance = actualBalances[index] || 0;
+    const variationValue = calculateVariation(actualBalance, balanceStock);
+    const tVariation =
+      (totalVariation[totalVariation.length - 3 + index]?.tVariation || 0) +
+      variationValue;
+
+    return (
+      <tr key={index}>
+        <td className="bigFontWeight">{item.product}</td>
+        <td>
+          <input
+            type="text"
+            className="form-control bigFontWeight"
+            value={item.opStock || 0}
+            placeholder="Loading.."
+            disabled
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            className="form-control bigFontWeight"
+            value={receipt}
+            placeholder="Loading.."
+            disabled
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            className="form-control bigFontWeight"
+            value={totalStock}
+            placeholder="Loading.."
+            disabled
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            className="form-control bigFontWeight"
+            value={actualSale}
+            placeholder="Loading.."
+            disabled
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            className="form-control bigFontWeight"
+            value={balanceStock}
+            placeholder="Loading.."
+            disabled
+          />
+        </td>
+        <td>
+          <input
+            type="number"
+            className="form-control bigFontWeight editableInput"
+            value={actualBalance}
+            placeholder="Actual Bal Stk."
+            onChange={(e) => handleActualBalanceChange(e, index)}
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            className={`${
+              variationValue >= 0
+                ? "form-control bigFontWeight text-center"
+                : "text-red-500 text-center"
+            }`}
+            style={{ width: "112px" }}
+            value={variationValue}
+            placeholder="Loading.."
+            disabled
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            className="form-control bigFontWeight"
+            style={{ width: "112px" }}
+            value={tVariation}
+            placeholder="Loading.."
+            disabled
+          />
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
+
       </table>
       <button
         type="button"
