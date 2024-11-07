@@ -243,13 +243,14 @@
 //   );
 // }
 
-import React from "react";
+import React, { useContext } from "react";
 import "./css/Navbar.css";
-import logo from "./images/petrol.jpg";
 import { Link, useNavigate } from "react-router-dom";
+import { DayStartContext } from "./contexts/DayStartContext";
+
 export default function Navbar() {
   const navigate = useNavigate();
-
+  const { dayStartRed } = useContext(DayStartContext); 
   return (
     <>
       <div
@@ -260,14 +261,22 @@ export default function Navbar() {
           zIndex: "20",
         }}
       >
+    
         {/* Day Start */}
         <button
+        className={` ${dayStartRed ? "bg-red-500 p-2 uppercase" : "uppercase p-2"}`}
+        type="button"
+        onClick={() => navigate("/Day_Start")}
+      >
+        <div className="dropdown-item">Day Start</div>
+      </button>
+        {/* <button
           class="btn navDrop1 btn-secondary"
           type="button"
           onClick={() => navigate("/Day_Start")}
         >
           <div class="dropdown-item">Day Start</div>
-        </button>
+        </button> */}
 
         {/* Loans */}
         <div class="btn-group">

@@ -104,9 +104,14 @@ import StaffSalary from "./components/objects/StaffSalary";
 import Planner from "./components/objects/Planner";
 import Rates from "./components/objects/Rates";
 import AddPlanner from "./components/objects/AddPlanner";
+import { DayStartProvider } from "./components/contexts/DayStartContext";
 
 function App() {
   return (
+    <>
+    <DayStartProvider>
+
+
     <Router>
       <Routes>
         <Route
@@ -122,15 +127,7 @@ function App() {
           path="/mainhome"
           element={
             <>
-              {/* <div style={{ display: "flex" }}>
-                <div>
-                  <Sidebar />
-                </div>
-                <div>
-                  <Navbar />
-                  <MainHome />
-                </div>
-              </div> */}
+           
                        <div style={{ display: "flex" }}>
                 <div className="w-[20%]">
                 <div>
@@ -2304,6 +2301,8 @@ function App() {
 
      
     </Router>
+    </DayStartProvider>
+    </>
   );
 }
 
