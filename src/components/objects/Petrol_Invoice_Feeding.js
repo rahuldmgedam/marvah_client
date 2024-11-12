@@ -1575,7 +1575,7 @@ export default function Petrol_Invoice_Feeding() {
     return {
       Value: parseFloat(Value),
       productAmount: parseFloat(productAmount),
-      vatlst: parseFloat(vatlst * vat),
+      vatlst: parseFloat(vatlst * vat).toFixed(2),
       totalAmount:
         parseFloat(productAmount) +
         parseFloat(vatlst * vat) +
@@ -1642,7 +1642,7 @@ export default function Petrol_Invoice_Feeding() {
       .then((res) => {
         alert(res.data.msg);
         handleFetchData();
-        setSaveData(initValue); // Reset the form
+        // setSaveData(initValue); // Reset the form
         // setShowDecantation(true);
         // navigate("/invLfrTds")
       })
@@ -1678,6 +1678,7 @@ export default function Petrol_Invoice_Feeding() {
     if (res.data.success) {
       alert(res.data.message);
       handleFetchData();
+      
     }
   };
 
@@ -1697,14 +1698,7 @@ export default function Petrol_Invoice_Feeding() {
     handleFetchData();
   }, []);
 
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
-    const year = date.getFullYear();
 
-    return `${day}-${month}-${year}`;
-  }
 
   const [formData, setFormData] = useState(petrolInvoice);
   const [loading, setLoading] = useState(false);
@@ -1793,9 +1787,25 @@ export default function Petrol_Invoice_Feeding() {
   const lastInvoiceDetails = getLastInvoiceDetails(petrolInvoice);
   console.log(lastInvoiceDetails);
   
+ 
+
+  function calculateTotalAmountSum(petrolInvoice, targetInvoiceNumber, targetSerialNumber) {
+    return petrolInvoice.reduce((total, invoice) => {
+      if (invoice.invoiceNumber === targetInvoiceNumber && invoice.serialNumber === targetSerialNumber) {
+        return total + (invoice.totalAmount || 0); // Add totalAmount if it exists, otherwise add 0
+      }
+      return total;
+    }, 0);
+  }
+  const targetInvoiceNumber = "457";
+  const targetSerialNumber = 1;
+  
+  const totalSum = calculateTotalAmountSum(petrolInvoice, targetInvoiceNumber, targetSerialNumber);
+  console.log("Total Sum of totalAmount:", totalSum);  
 
   return (
     <>
+      
       <div className="tankMainDiv relative shadow-lg ml-4 bg-body-tertiary rounded">
         {/* <h2 className="font-bold  fixed items-center justify-center w-[80%]  mb-4 text-2xl text-center uppercase">
           Petrol Invoice Feeding
@@ -1804,7 +1814,9 @@ export default function Petrol_Invoice_Feeding() {
           <div className="text-2xl  font-bold"> Date : {getCurrentDate()} </div>
           <h2 className="font-bold  mb-4 text-2xl text-center uppercase">
             Petrol Invoice Feeding
+       
           </h2>
+ 
           <div className="text-xl flex gap-2 text-white  font-bold rounded-md">
             <div>
               {/* <Link to={"/Petrol_Products"} className="p-2 bg-green-600 rounded-md">
@@ -1825,11 +1837,11 @@ export default function Petrol_Invoice_Feeding() {
           <div>{lastInvoiceDetails?.invoiceNumber}</div>
           <div>{lastInvoiceDetails?.serialNumber}</div>
          </div> */}
-        <div className="w-[90%] ml-4 mt-20">
+        <div className="w-[80%] ml-12 mt-20">
           <form action="" onSubmit={(e) => e.preventDefault()}>
             <table className="table text-center">
               <thead>
-                <tr className="bg-[#008b8b]  text-center">
+                <tr className="bg-[#008b8b] uppercase  text-center">
                   <th className="">S.No.</th>
                   <th className="">Invoice No.</th>
                   <th className="">Product</th>
@@ -1839,9 +1851,9 @@ export default function Petrol_Invoice_Feeding() {
 
                   <th className="">Value</th>
 
-                  <th className="">Taxable Amount</th>
+                  <th className="">Tax Amt</th>
 
-                  <th className="">Product Amount</th>
+                  <th className="">Prod Amt</th>
                   {/* <th className="">TDS %</th> */}
                 </tr>
               </thead>
@@ -1962,6 +1974,7 @@ export default function Petrol_Invoice_Feeding() {
                       className="form-control bigFontWeight"
                       value={saveData.vat}
                       onChange={handleChange}
+                      disabled
                     />
                   </td>
                   <td className="bigFontWeight">
@@ -2061,14 +2074,23 @@ export default function Petrol_Invoice_Feeding() {
                       type="text"
                       name="tdsLfr"
                       className="form-control bigFontWeight"
-                      value={saveData.tdsLfr}
+                      value={saveData.tdsLfr || 0}
                       disabled
                     />
+                  </td>
+                  <td>
+                  <button
+                  type="submit"
+                  className="px-5 py-2.5 bg-blue-500 rounded-lg text-white text-sm tracking-wider font-medium border border-current outline-none bg-gradient-to-tr hover:bg-gradient-to-tl from-blue-700 to-blue-300"
+                  onClick={handleSubmit}
+                >
+                  SAVE
+                </button>
                   </td>
                 </tr>
               </tbody>
             </table>
-            <div className="text-right">
+            {/* <div className="text-right">
               {values ? (
                 <button
                   type="submit"
@@ -2086,7 +2108,7 @@ export default function Petrol_Invoice_Feeding() {
                   SAVE
                 </button>
               )}
-            </div>
+            </div> */}
           </form>
         </div>
         <br />
@@ -2095,9 +2117,9 @@ export default function Petrol_Invoice_Feeding() {
 
         {!showDecantation && (
           <>
-            <h2 className=" text-xl font-bold mb-1 mt-1 text-center uppercase">
+            {/* <h2 className=" text-xl font-bold mb-1 text-center uppercase">
               Invoice entry{" "}
-            </h2>
+            </h2> */}
 
             <div className="relative">
               <div
@@ -2299,9 +2321,7 @@ export default function Petrol_Invoice_Feeding() {
                 </tbody>
               </table>
 
-              <div className="flex justify-between mt-2 mb-4">
-                <div></div>
-              </div>
+        
             </div>
           </>
         )}

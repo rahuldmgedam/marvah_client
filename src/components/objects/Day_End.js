@@ -1,55 +1,53 @@
-
 import axios from "axios";
 // import moment from "moment";
 import React, { useEffect, useState } from "react";
 
 const DayEndReport = () => {
+  const [msRate, setMsRate] = useState(0);
+  const [speedRate, setSpeedRate] = useState(0);
+  const [hsdRate, setHsdRate] = useState(0);
 
-   const [msRate,setMsRate] = useState(0);
-   const [speedRate,setSpeedRate] = useState(0);
-   const [hsdRate,setHsdRate] = useState(0);
+  const [handloanTodayTotal, setHandloanTodayTotal] = useState(0);
+  const [todaysDebitOutTotal, setHandloanDebitOutTotal] = useState(0);
 
-   const [handloanTodayTotal, setHandloanTodayTotal] = useState(0);
-  const [todaysDebitOutTotal,setHandloanDebitOutTotal] = useState(0);
+  const [fuelsaleData,setFuelSaledata] = useState([]);
 
-   const fetchAllRates = () => {
+
+  const fetchAllRates = () => {
     axios
       .get("https://marvah-server.onrender.com/ms")
       .then((res) => {
         // console.log("res ms", res.data[0]);
         setMsRate(res.data[res.data.length - 2].reading);
-
       })
       .catch((error) => {
         console.log(error.message);
       });
 
-      axios
+    axios
       .get("https://marvah-server.onrender.com/speed")
       .then((res) => {
         // console.log("res ms", res.data[0]);
         setSpeedRate(res.data[res.data.length - 2].reading);
-
       })
       .catch((error) => {
         console.log(error.message);
       });
 
-      axios
+    axios
       .get("https://marvah-server.onrender.com/hsd")
       .then((res) => {
         // console.log("res ms", res.data[0]);
         setHsdRate(res.data[res.data.length - 2].reading);
-
       })
       .catch((error) => {
         console.log(error.message);
       });
   };
 
-  useEffect(()=>{
-    fetchAllRates()
-  },[]);
+  useEffect(() => {
+    fetchAllRates();
+  }, []);
 
   // console.log("msRate",msRate,speedRate,hsdRate);
 
@@ -65,9 +63,8 @@ const DayEndReport = () => {
   getTodaysDate();
 
   //5.handloan
-  const [handloan,setHandloan] = useState([]);
+  const [handloan, setHandloan] = useState([]);
 
-  
   function formatDateString(dateString) {
     const date = new Date(dateString);
 
@@ -80,9 +77,9 @@ const DayEndReport = () => {
   }
 
   const handleDateConversion = (data) => {
-    return data.map(item => ({
+    return data.map((item) => ({
       ...item,
-      date: formatDateString(item.date)
+      date: formatDateString(item.date),
     }));
   };
 
@@ -91,50 +88,57 @@ const DayEndReport = () => {
     const day = String(today.getDate()).padStart(2, "0");
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const year = today.getFullYear();
-    
+
     return `${day}-${month}-${year}`;
   }
-  
 
   const fetchHandloan = () => {
-    const today = new Date().toISOString().split('T')[0]; // Formats today's date as yyyy-MM-dd
-  
-    axios.get("https://marvah-server.onrender.com/handloan").then((res) => {
-      const todaysCreditInTotal = res.data
-        .filter((item) => 
-          item.voucher_type === "Credit-In" && 
-          new Date(item.date).toISOString().split('T')[0] === today // Compares date part only
-        )
-        .reduce((sum, item) => sum + item.amount, 0);
-  
-      setHandloanTodayTotal(todaysCreditInTotal);
-    }).catch((error) => console.log(error.message));
+    const today = new Date().toISOString().split("T")[0]; // Formats today's date as yyyy-MM-dd
+
+    axios
+      .get("https://marvah-server.onrender.com/handloan")
+      .then((res) => {
+        const todaysCreditInTotal = res.data
+          .filter(
+            (item) =>
+              item.voucher_type === "Credit-In" &&
+              new Date(item.date).toISOString().split("T")[0] === today // Compares date part only
+          )
+          .reduce((sum, item) => sum + item.amount, 0);
+
+        setHandloanTodayTotal(todaysCreditInTotal);
+      })
+      .catch((error) => console.log(error.message));
   };
 
   const fetchHandloanDebitOutTotal = () => {
-    const today = new Date().toISOString().split('T')[0]; // Formats today's date as yyyy-MM-dd
-  
-    axios.get("https://marvah-server.onrender.com/handloan").then((res) => {
-      const todaysDebitOutTotal = res.data
-        .filter((item) => 
-          item.voucher_type === "Debit-Out" && 
-          new Date(item.date).toISOString().split('T')[0] === today // Compares date part only
-        )
-        .reduce((sum, item) => sum + item.amount, 0);
-  
-      setHandloanDebitOutTotal(todaysDebitOutTotal);
-    }).catch((error) => console.log(error.message));
+    const today = new Date().toISOString().split("T")[0]; // Formats today's date as yyyy-MM-dd
+
+    axios
+      .get("https://marvah-server.onrender.com/handloan")
+      .then((res) => {
+        const todaysDebitOutTotal = res.data
+          .filter(
+            (item) =>
+              item.voucher_type === "Debit-Out" &&
+              new Date(item.date).toISOString().split("T")[0] === today // Compares date part only
+          )
+          .reduce((sum, item) => sum + item.amount, 0);
+
+        setHandloanDebitOutTotal(todaysDebitOutTotal);
+      })
+      .catch((error) => console.log(error.message));
   };
-  
+
   useEffect(() => {
     fetchAllRates();
     fetchHandloan();
-    fetchHandloanDebitOutTotal()
+    fetchHandloanDebitOutTotal();
   }, []);
 
-  console.log(handloanTodayTotal,todaysDebitOutTotal);
+  // console.log(handloanTodayTotal, todaysDebitOutTotal);
   // 6.advances
-const [advances,setAdvances] = useState([]);
+  const [advances, setAdvances] = useState([]);
   const fetchAdvances = () => {
     axios
       .get("https://marvah-server.onrender.com/advances")
@@ -152,44 +156,98 @@ const [advances,setAdvances] = useState([]);
 
   const [todaysAdvancesTotal, setTodaysAdvancesTotal] = useState(0);
 
-const fetchTodaysAdvancesTotal = () => {
-  const today = new Date().toISOString().split('T')[0]; // Formats today's date as yyyy-MM-dd
+  const fetchTodaysAdvancesTotal = () => {
+    const today = new Date().toISOString().split("T")[0]; // Formats today's date as yyyy-MM-dd
 
-  axios
-    .get("https://marvah-server.onrender.com/advances")
-    .then((res) => {
-      const todaysTotal = res.data
-        .filter((item) => 
-          new Date(item.date).toISOString().split('T')[0] === today // Checks if date matches today
-        )
-        .reduce((sum, item) => sum + item.amount, 0); // Sums amounts for today's entries
+    axios
+      .get("https://marvah-server.onrender.com/advances")
+      .then((res) => {
+        const todaysTotal = res.data
+          .filter(
+            (item) => new Date(item.date).toISOString().split("T")[0] === today // Checks if date matches today
+          )
+          .reduce((sum, item) => sum + item.amount, 0); // Sums amounts for today's entries
 
-      setTodaysAdvancesTotal(todaysTotal); // Sets total for today's advances
+        setTodaysAdvancesTotal(todaysTotal); // Sets total for today's advances
+      })
+      .catch((error) => console.log(error.message));
+  };
+
+  // Then call fetchTodaysAdvancesTotal in useEffect or wherever needed.
+
+const fetchFuelSales = ()=>{
+
+  try {
+    axios.get("https://marvah-server.onrender.com/fuelsales").
+    then((res)=>{
+       setFuelSaledata(res.data.fuelSales)
     })
-    .catch((error) => console.log(error.message));
-};
+  } catch (error) {
+    console.log(error);
+  }
 
-// Then call fetchTodaysAdvancesTotal in useEffect or wherever needed.
+}
 
-
-  useEffect(()=>{
+  useEffect(() => {
     fetchHandloan();
     fetchAdvances();
     fetchTodaysAdvancesTotal();
-  },[])
+    fetchFuelSales();
+    // getTodayFuelSales()
+  }, []);
+console.log("fuelsaleData",fuelsaleData);
+
+function getTodayFuelSales(fuelSales) {
+  // Get today's date in yyyy-mm-dd format
+  const today = new Date();
+  const todayDate = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+
+  // Initialize totals for each fuel type
+  const salesTotals = {
+    MS: { saleActTotal: 0, totalAmount: 0 },
+    SP: { saleActTotal: 0, totalAmount: 0 },
+    HSD: { saleActTotal: 0, totalAmount: 0 }
+  };
+
+  // Loop through each sale entry
+  fuelSales.forEach((sale) => {
+    // Extract date without time for comparison
+    const saleDate = new Date(sale.date);
+    const formattedSaleDate = saleDate.getFullYear() + '-' + String(saleDate.getMonth() + 1).padStart(2, '0') + '-' + String(saleDate.getDate()).padStart(2, '0');
+
+    if (formattedSaleDate === todayDate) {
+      // Determine the fuel type based on nozzleProduct
+      if (sale.nozzleProduct.includes('MS') && !sale.nozzleProduct.includes('(SP)')) {
+        salesTotals.MS.saleActTotal += sale.saleActTotal;
+        salesTotals.MS.totalAmount += sale.totalAmount;
+      } else if (sale.nozzleProduct.includes('(SP)')) {
+        salesTotals.SP.saleActTotal += sale.saleActTotal;
+        salesTotals.SP.totalAmount += sale.totalAmount;
+      } else if (sale.nozzleProduct.includes('HSD')) {
+        salesTotals.HSD.saleActTotal += sale.saleActTotal;
+        salesTotals.HSD.totalAmount += sale.totalAmount;
+      }
+    }
+  });
+
+  return salesTotals;
+}
+
+// Example usage with your data
 
 
-const totalAdvanceAmount =  advances.reduce((total, transaction) => total + transaction.amount, 0);
 
+
+
+  const todayFuelSales = getTodayFuelSales(fuelsaleData);
+  console.log("todayFuelSales", todayFuelSales);
   return (
     <div className="p-4 min-h-screen">
       <h2 className="text-center tracking-wide  text-2xl font-bold mb-4">
         DAY END
       </h2>
 
-<div className="text-2xl ">
-  DATE : {getTodaysDate()}
-</div>
+      <div className="text-2xl ">DATE : {getTodaysDate()}</div>
       <div className="flex justify-between text-black w-[90%] ml-4">
         {/* Left Table */}
         <table className="w-1/2 border-r border-gray-700">
@@ -218,12 +276,15 @@ const totalAdvanceAmount =  advances.reduce((total, transaction) => total + tran
                 <input
                   className="w-24 border-4 text-center border-blue-500"
                   type="number"
+                  value={fuelsaleData[0]?.saleActTotal}
+                  
                 />
               </td>
               <td className="py-2 border-b border-gray-700 text-center">
                 <input
                   className="w-24 border-4 text-center border-blue-500"
                   type="number"
+                  value={fuelsaleData[0]?.totalAmount}
                 />
               </td>
             </tr>
@@ -243,12 +304,14 @@ const totalAdvanceAmount =  advances.reduce((total, transaction) => total + tran
                 <input
                   className="w-24 border-4 text-center border-blue-500"
                   type="number"
+                  value={fuelsaleData[6]?.saleActTotal}
                 />
               </td>
               <td className="py-2 border-b border-gray-700 text-center">
                 <input
                   className="w-24 border-4 text-center border-blue-500"
                   type="number"
+                  value={fuelsaleData[7]?.totalAmount}
                 />
               </td>{" "}
             </tr>
@@ -259,19 +322,23 @@ const totalAdvanceAmount =  advances.reduce((total, transaction) => total + tran
                 <input
                   className="w-24 border-4 text-center border-blue-500"
                   type="number"
-                  value={hsdRate} 
+                  value={hsdRate}
                 />
               </td>
               <td className="py-2 border-b border-gray-700 text-center">
                 <input
                   className="w-24 border-4 text-center border-blue-500"
                   type="number"
+                  value={fuelsaleData[13]?.saleActTotal}
+
                 />
               </td>
               <td className="py-2 border-b border-gray-700 text-center">
                 <input
                   className="w-24 border-4 text-center border-blue-500"
                   type="number"
+                  value={fuelsaleData[13]?.totalAmount}
+
                 />
               </td>
             </tr>
@@ -291,12 +358,10 @@ const totalAdvanceAmount =  advances.reduce((total, transaction) => total + tran
             <tr>
               <td className="py-2 border-b border-gray-700 text-center">5.</td>
               <td className="py-2 border-b border-gray-700  text-left uppercase">
-              Handloan (Credit In) <br />
+                Handloan (Credit In) <br />
               </td>
               <td className="py-2 border-b border-gray-700 text-center">
-                <span>
-               
-                </span>
+                <span></span>
               </td>
               <td className="py-2 border-b border-gray-700 text-center"></td>{" "}
               <td className="py-2 border-b border-gray-700 text-center">
@@ -311,7 +376,7 @@ const totalAdvanceAmount =  advances.reduce((total, transaction) => total + tran
             <tr>
               <td className="py-2 border-b border-gray-700 text-center">6.</td>
               <td className="py-2 border-b border-gray-700  text-left uppercase">
-                Advances 
+                Advances
               </td>
               <td className="py-2 border-b border-gray-700 text-center"></td>
               <td className="py-2 border-b border-gray-700 text-center"></td>{" "}
@@ -322,7 +387,6 @@ const totalAdvanceAmount =  advances.reduce((total, transaction) => total + tran
                   // // value={
                   // [0]?.amount}
                   value={todaysAdvancesTotal}
-            
                 />
               </td>{" "}
               <td className="py-2 border-b border-gray-700 text-center"></td>
@@ -361,7 +425,10 @@ const totalAdvanceAmount =  advances.reduce((total, transaction) => total + tran
           <tbody>
             <tr>
               <td className="py-2 border-b border-gray-700 text-center">1.</td>
-              <td className="py-2 border-b border-gray-700 text-left">       BANK DEPOSIT</td>
+              <td className="py-2 border-b border-gray-700 text-left">
+                {" "}
+                BANK DEPOSIT
+              </td>
               <td className="py-2 border-b border-gray-700 text-center">
                 <input
                   className="w-24 border-4 text-center border-blue-500"
@@ -384,7 +451,7 @@ const totalAdvanceAmount =  advances.reduce((total, transaction) => total + tran
             <tr>
               <td className="py-2 border-b border-gray-700 text-center">2.</td>
               <td className="py-2 border-b border-gray-700 text-left">
-              TOTAL POS CARD
+                TOTAL POS CARD
               </td>
               <td className="py-2 border-b border-gray-700 text-center">
                 {/* <input
@@ -407,7 +474,10 @@ const totalAdvanceAmount =  advances.reduce((total, transaction) => total + tran
             </tr>
             <tr>
               <td className="py-2 border-b border-gray-700 text-center">3.</td>
-              <td className="py-2 border-b border-gray-700  text-left">  TOTAL PETRO CARD</td>
+              <td className="py-2 border-b border-gray-700  text-left">
+                {" "}
+                TOTAL PETRO CARD
+              </td>
               <td className="py-2 border-b border-gray-700 text-center">
                 {/* <input
                   className="w-24 border-4 text-center border-blue-500"
@@ -429,7 +499,10 @@ const totalAdvanceAmount =  advances.reduce((total, transaction) => total + tran
             </tr>
             <tr>
               <td className="py-2 border-b border-gray-700 text-center">4.</td>
-              <td className="py-2 border-b border-gray-700  text-left">  CREDIT SALE</td>
+              <td className="py-2 border-b border-gray-700  text-left">
+                {" "}
+                CREDIT SALE
+              </td>
               <td className="py-2 border-b border-gray-700 text-center"></td>
               <td className="py-2 border-b border-gray-700 text-center"></td>{" "}
               <td className="py-2 border-b border-gray-700 text-center">
@@ -443,13 +516,10 @@ const totalAdvanceAmount =  advances.reduce((total, transaction) => total + tran
             <tr>
               <td className="py-2 border-b border-gray-700 text-center">5.</td>
               <td className="py-2 border-b border-gray-700  text-left uppercase">
-              Handloan (Debit out)  <br />
-
+                Handloan (Debit out) <br />
               </td>
               <td className="py-2 border-b border-gray-700 text-center">
-                <span>
-               
-                </span>
+                <span></span>
               </td>
               <td className="py-2 border-b border-gray-700 text-center"></td>{" "}
               <td className="py-2 border-b border-gray-700 text-center">
@@ -464,7 +534,7 @@ const totalAdvanceAmount =  advances.reduce((total, transaction) => total + tran
             <tr>
               <td className="py-2 border-b border-gray-700 text-center">6.</td>
               <td className="py-2 border-b border-gray-700  text-left uppercase">
-              Other Expenses
+                Other Expenses
               </td>
               <td className="py-2 border-b border-gray-700 text-center"></td>
               <td className="py-2 border-b border-gray-700 text-center"></td>{" "}
@@ -493,7 +563,6 @@ const totalAdvanceAmount =  advances.reduce((total, transaction) => total + tran
             </tr>
           </tbody>
         </table>
-
       </div>
     </div>
   );

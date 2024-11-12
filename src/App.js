@@ -105,6 +105,7 @@ import Planner from "./components/objects/Planner";
 import Rates from "./components/objects/Rates";
 import AddPlanner from "./components/objects/AddPlanner";
 import { DayStartProvider } from "./components/contexts/DayStartContext";
+import UseLocation from "./components/objects/UseLocation";
 
 function App() {
   return (
@@ -2297,8 +2298,9 @@ function App() {
           }
         />
 
+<Route path="/location" element={<UseLocation />} />
       </Routes>
-
+    
      
     </Router>
     </DayStartProvider>
